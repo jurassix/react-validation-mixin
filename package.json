@@ -1,0 +1,31 @@
+{
+  "name": "react-validation-mixin",
+  "version": "1.0.0",
+  "description": "Simple Validation Mixin for React",
+  "main": "ValidationMixin.js",
+  "scripts": {
+    "test": "mocha spec",
+    "test-watch": "mocha -w spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jurassix/react-validation-mixin.git"
+  },
+  "keywords": [
+    "react-component",
+    "react",
+    "validation",
+    "validator",
+    "mixin"
+  ],
+  "author": "jurassix (clinton.ayres@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jurassix/react-validation-mixin/issues"
+  },
+  "homepage": "https://github.com/jurassix/react-validation-mixin",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0"
+  }
+}
