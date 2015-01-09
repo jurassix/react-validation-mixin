@@ -1,4 +1,3 @@
-
 module.exports = {
   validate: function(config, state) {
     if (config && state) {
@@ -23,21 +22,30 @@ module.exports = {
     throw new Error('config or state undefined');
   },
   isValid: function(validations, key) {
-    if (key) {
-      var errors = validations[key] || [];
-      if (errors.length === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return Object.keys(validations).reduce(function(memo, key) {
+    if (validations) {
+      if (key) {
         var errors = validations[key] || [];
-        if (errors.length !== 0) {
-          memo = false;
+        if (errors.length === 0) {
+          return true;
+        } else {
+          return false;
         }
-        return memo;
-      }, true);
+      } else {
+        return Object.keys(validations).reduce(function(memo, key) {
+          var errors = validations[key] || [];
+          if (errors.length !== 0) {
+            memo = false;
+          }
+          return memo;
+        }, true);
+      }
     }
+    throw new Error('validations is undefined');
+  },
+  getMessages: function(validations, key) {
+    if (validations) {
+      return validations[key] || [];
+    }
+    throw new Error('validations is undefined');
   }
 };

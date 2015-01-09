@@ -11,6 +11,9 @@ var ValidationMixin = {
     }
     return ValidationFactory.validate(validatorTypes, this.state);
   },
+  getMessages: function(field) {
+    return ValidationFactory.getMessages(this.validate(), field);
+  },
   isValid: function(field) {
     return ValidationFactory.isValid(this.validate(), field);
   }
