@@ -7,7 +7,7 @@ Install mixin via npm:
 
     > npm install --save react-validation-mixin
 
-Install vaidation strategies via npm:
+Install validation strategies via npm:
 
     > npm install --save react-validation-strategies
 
@@ -120,7 +120,7 @@ To get validation messages for a single field:
     module.exports = Signin;
 
 ### Create custom strategies
-Simply define a function that will take a single value and return an error message if validation fails, return `undefied` otherwise:
+Simply define a function that will take a single value and return an error message if validation fails, return `undefined` otherwise:
 
     module.exports = function isValidEmail(email) {
       // http://stackoverflow.com/a/46181/1723135
