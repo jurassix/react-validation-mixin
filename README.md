@@ -1,5 +1,5 @@
 # react-validation-mixin
-Very simple validation mixin for React
+Very simple State validation mixin for React
 
 ### Install
 
@@ -15,14 +15,20 @@ _See [react-validation-strategies](https://github.com/jurassix/react-validation-
 
 ### API
 
-Mixin has a single required object (or function) to define:
+Add the mixin to your React Component:
+
+    mixins: [ValidationMixin]
+
+The Mixin has a single required object (or function) to define on your component.
+
+_This map is the validation description for the components State. Each of the keys of the map should correspond to a key in your state._
 
     validatorTypes: {
       'username': isRequired,
       'password': [isRequired, isLength(12)]
     }
 
-Fields can be validated against a single or multiple strategies.
+Fields can be validated against a single strategy or multiple strategies.
 
 To validate a single field:
 
@@ -39,7 +45,7 @@ To get validation messages for a single field:
 ### Example Component:
 
     var React = require('react/addons');
-    var ReactValidationMixin = require('react-validation-mixin');
+    var ValidationMixin = require('react-validation-mixin');
     var ValidationStrategies = require('react-validation-strategies');
     var UserAction = require('../actions/UserAction');
 
@@ -48,7 +54,7 @@ To get validation messages for a single field:
 
     var Signin = React.createClass({
       displayName: 'Signin',
-      mixins: [ReactValidationMixin],
+      mixins: [ValidationMixin],
       validatorTypes:  {
         'username': isRequired,
         'password': [isRequired, isLength(12)]
