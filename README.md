@@ -34,7 +34,7 @@ To validate all fields:
 
 To get validation messages for a single field:
 
-    this.getMessages('username') // returns array of strings
+    this.getValidationMessages('username') // returns array of strings
 
 ### Example Component:
 
@@ -66,12 +66,12 @@ To get validation messages for a single field:
               <div className={this.getClasses('username')}>
                 <label htmlFor='username'>Username</label>
                 <input type='text' className='form-control' placeholder='Username' onChange={this.handleOnChange('username')}/>
-                {this.getMessages('username').map(this.renderHelpText)}
+                {this.getValidationMessages('username').map(this.renderHelpText)}
               </div>
               <div className={this.getClasses('password')}>
                 <label htmlFor='password'>Password</label>
                 <input type='password' className='form-control' placeholder='Password' onChange={this.handleOnChange('password')}/>
-                {this.getMessages('password').map(this.renderHelpText)}
+                {this.getValidationMessages('password').map(this.renderHelpText)}
               </div>
               <div className='text-center form-group'>
                 <button type='submit' className='btn btn-primary'>Sign in</button>

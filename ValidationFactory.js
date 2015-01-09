@@ -42,7 +42,7 @@ module.exports = {
     }
     throw new Error('validations is undefined');
   },
-  getMessages: function(validations, key) {
+  getValidationMessages: function(validations, key) {
     if (validations) {
       return validations[key] || [];
     }

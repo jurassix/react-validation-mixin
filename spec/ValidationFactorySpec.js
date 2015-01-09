@@ -115,25 +115,25 @@ describe('Validation Factory', function() {
       });
     });
   });
-  describe('getMessages()', function() {
+  describe('getValidationMessages()', function() {
     it('should return single error message for key', function() {
       var validation = ValidationFactory.validate(this.validationTypes, this.state);
-      var result = ValidationFactory.getMessages(validation, 'goo');
+      var result = ValidationFactory.getValidationMessages(validation, 'goo');
       JSON.stringify(result).should.equal(JSON.stringify(['always invalid']));
     });
     it('should return multiple error messages for key', function() {
       var validation = ValidationFactory.validate(this.validationTypes, this.state);
-      var result = ValidationFactory.getMessages(validation, 'boo');
+      var result = ValidationFactory.getValidationMessages(validation, 'boo');
       JSON.stringify(result).should.equal(JSON.stringify(['always invalid', 'always invalid']));
     });
     it('should return empty array when no key is provided', function() {
       var validation = ValidationFactory.validate(this.validationTypes, this.state);
-      var result = ValidationFactory.getMessages(validation);
+      var result = ValidationFactory.getValidationMessages(validation);
       chai.expect(result).to.be.empty;
     });
     it('should throw when no validation results are provided', function() {
       chai.expect(function() {
-        ValidationFactory.getMessages();
+        ValidationFactory.getValidationMessages();
       }).to.throw('validations is undefined');
     });
   });
