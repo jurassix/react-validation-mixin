@@ -1,7 +1,7 @@
 
 "use strict";
 
-var ValidatorFactory = require('./ValidatorFactory');
+var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
   validate: function() {
@@ -9,10 +9,10 @@ var ValidationMixin = {
     if (typeof this.validatorTypes === 'function') {
       validatorTypes = this.validatorTypes();
     }
-    return ValidatorFactory.validate(validatorTypes, this.state);
+    return ValidationFactory.validate(validatorTypes, this.state);
   },
   isValid: function(field) {
-    return ValidatorFactory.isValid(this.validate(), field);
+    return ValidationFactory.isValid(this.validate(), field);
   }
 };
 
