@@ -23,7 +23,7 @@ Add the mixin to your React Component:
 
 ### `validatorTypes`
 
-validatorTypes is the object schema defining the validity of your components state. _You do not have to provide validation for all state fields._ Each validator is defined using [Joi](https://github.com/hapijs/joi). Can be defined as an object of function, as long as a valid Joi schema is returned.
+validatorTypes is the object schema defining the validity of your components state. _You do not have to provide validation for all state fields._ Each validator is defined using [Joi](https://github.com/hapijs/joi). validatorTypes can be defined as an object of function, as long as a valid Joi schema is returned.
 
     // defined as object
     validatorTypes: {
