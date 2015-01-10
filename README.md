@@ -45,7 +45,6 @@ To get validation messages for a single field:
     var React = require('react/addons');
     var ValidationMixin = require('react-validation-mixin');
     var Joi = require('joi');
-    var ValidationStrategies = require('validator');
     var UserAction = require('../actions/UserAction');
 
     var Signin = React.createClass({
