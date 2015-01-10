@@ -16,7 +16,9 @@
     "react",
     "validation",
     "validator",
-    "mixin"
+    "mixin",
+    "joi",
+    "schema"
   ],
   "author": "jurassix (clinton.ayres@gmail.com)",
   "license": "MIT",

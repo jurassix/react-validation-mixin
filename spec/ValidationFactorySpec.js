@@ -31,7 +31,6 @@ describe('Validation Factory', function() {
       });
       it('should return no errors for undefined input', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.additionalState)
-        console.log(result)
         chai.expect(result['foo']).to.be.undefined;
         chai.expect(result['password']).to.be.undefined;
         JSON.stringify(result['username']).should.equal('["username is required"]');

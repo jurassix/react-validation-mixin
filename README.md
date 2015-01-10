@@ -1,7 +1,9 @@
 # react-validation-mixin
-Simple validation mixin for React using [Joi](https://github.com/hapijs/joi)
+Simple validation mixin for React using [Joi](https://github.com/hapijs/joi).
 
-### Install
+This Mixin provides the boilerplate needed to validate your React components state. Simply define the object schema of your state using Joi validators and the mixin will give you access to each fields validity and error messages.
+
+# Install
 
 Install mixin via npm:
 
@@ -13,34 +15,45 @@ Make sure you install the peer dependency Joi:
 
 _See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available._
 
-### API
+# Usage
 
 Add the mixin to your React Component:
 
     mixins: [ValidationMixin]
 
-The Mixin has a single required object (or function) to define on your component. ValidatorTypes is the Joi schema that defines the validity of this componets state.
+### `validatorTypes`
 
-_This map is the validation description for the components State. Each of the keys of the map should correspond to a key in your state._
+validatorTypes is the object schema defining the validity of your components state. _You do not have to provide validation for all state fields._ Each validator is defined using [Joi](https://github.com/hapijs/joi). Can be defined as an object of function, as long as a valid Joi schema is returned.
 
+    // defined as object
     validatorTypes: {
       username: Joi.string().alphanum().min(3).max(30).required(),
       password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
     }
 
-To validate a single field:
+    // defined as function
+    validatorTypes: function() {
+      return Joi.object().keys({
+        username: Joi.string().alphanum().min(3).max(30).required(),
+        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+      });
+    }
 
-    this.isValid('username') // returns boolean for validitiy of only this field
+### `isValid([fieldName])`
 
-To validate all fields:
+returns true|false depending of the validity of the current state.
 
-    this.isValid() // return boolean for validity of all fields
+    this.isValid('username'); // returns boolean for validity of only this field
 
-To get validation messages for a single field:
+    this.isValid(); // returns boolean for validity of all fields in schema
 
-    this.getValidationMessages('username') // returns array of strings
+### `getValidationMessages(fieldName)`
 
-### Example Component:
+returns an array validation messages for this field.
+
+    this.getValidationMessages('username'); // returns array of strings
+
+# Example Component:
 
     var React = require('react/addons');
     var ValidationMixin = require('react-validation-mixin');
@@ -113,3 +126,9 @@ To get validation messages for a single field:
     });
 
     module.exports = Signin;
+
+# Why [Joi](https://github.com/hapijs/joi)?
+
+ Initially I was designing a suite of custom validation strategies to back this mixin, but I quickly realized that was a large initiative of duplicated work. So I refactored this mixin to simply be a wrapper around Joi within the context of a React Component. By doing this I lost some of the flexibility of this mixin; like being able to define custom validators, but Joi is very full featured and custom validations should be handled within their library. This allowed me to offload the responsibility of validation strategies to Joi and keep focused on a simple and clean validation mixin.
+
+### _Please contribute suggestions, features, issues, and pull requests._
