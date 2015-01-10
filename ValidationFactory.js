@@ -17,7 +17,7 @@ var formatErrors = function(result) {
 module.exports = {
   validate: function(schema, state) {
     if (schema && state) {
-      return formatErrors(Joi.validate(state, schema, {abortEarly: false}));
+      return formatErrors(Joi.validate(state, schema, {abortEarly: false, allowUnknown: true,}));
     }
     throw new Error('schema or state undefined');
   },

@@ -18,16 +18,23 @@ describe('Validation Factory', function() {
       username: 'a_',
       password: 'a_'
     }
+    this.additionalState = {
+      foo: 'bar'
+    }
   });
   describe('validation()', function() {
     describe('valid scenarios', function() {
-      it('should return no errors for validator with single strategy', function() {
+      it('should return no errors for valid input', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.state)
         chai.expect(result['username']).to.be.undefined;
-      });
-      it('should return no errors for validator with array of strategies', function() {
-        var result = ValidationFactory.validate(this.validationTypes, this.state)
         chai.expect(result['password']).to.be.undefined;
+      });
+      it('should return no errors for undefined input', function() {
+        var result = ValidationFactory.validate(this.validationTypes, this.additionalState)
+        console.log(result)
+        chai.expect(result['foo']).to.be.undefined;
+        chai.expect(result['password']).to.be.undefined;
+        JSON.stringify(result['username']).should.equal('["username is required"]');
       });
     });
     describe('invalid scenarios', function() {
