@@ -1,7 +1,7 @@
 {
   "name": "react-validation-mixin",
   "version": "1.5.0",
-  "description": "Simple Validation Mixin for React",
+  "description": "Simple Validation Mixin for React based on Joi",
   "main": "ValidationMixin.js",
   "scripts": {
     "test": "mocha spec",
@@ -27,5 +27,8 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "mocha": "^2.1.0"
+  },
+  "peerDependencies": {
+    "joi": ">=5.1.0"
   }
 }

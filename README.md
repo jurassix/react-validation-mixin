@@ -1,5 +1,5 @@
 # react-validation-mixin
-Very simple State validation mixin for React
+Simple validation mixin for React using [Joi](https://github.com/hapijs/joi)
 
 ### Install
 
@@ -7,11 +7,11 @@ Install mixin via npm:
 
     > npm install --save react-validation-mixin
 
-Install validation strategies via npm:
+Make sure you install the peer dependency Joi:
 
-    > npm install --save react-validation-strategies
+    > npm install --save joi
 
-_See [react-validation-strategies](https://github.com/jurassix/react-validation-strategies) for a full list of validation strategies._
+_See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available._
 
 ### API
 
@@ -19,24 +19,22 @@ Add the mixin to your React Component:
 
     mixins: [ValidationMixin]
 
-The Mixin has a single required object (or function) to define on your component.
+The Mixin has a single required object (or function) to define on your component. ValidatorTypes is the Joi schema that defines the validity of this componets state.
 
 _This map is the validation description for the components State. Each of the keys of the map should correspond to a key in your state._
 
     validatorTypes: {
-      'username': isRequired,
-      'password': [isRequired, isLength(12)]
+      username: Joi.string().alphanum().min(3).max(30).required(),
+      password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
     }
-
-Fields can be validated against a single strategy or multiple strategies.
 
 To validate a single field:
 
-    this.isValid('username') // returns boolean for only this field
+    this.isValid('username') // returns boolean for validitiy of only this field
 
 To validate all fields:
 
-    this.isValid() // return boolean for all fields
+    this.isValid() // return boolean for validity of all fields
 
 To get validation messages for a single field:
 
@@ -46,18 +44,16 @@ To get validation messages for a single field:
 
     var React = require('react/addons');
     var ValidationMixin = require('react-validation-mixin');
-    var ValidationStrategies = require('react-validation-strategies');
+    var Joi = require('joi');
+    var ValidationStrategies = require('validator');
     var UserAction = require('../actions/UserAction');
-
-    var isRequired = ValidationStrategies.isRequired;
-    var isLength = ValidationStrategies.isLength;
 
     var Signin = React.createClass({
       displayName: 'Signin',
       mixins: [ValidationMixin],
       validatorTypes:  {
-        'username': isRequired,
-        'password': [isRequired, isLength(12)]
+        username:  Joi.string().alphanum().min(3).max(30).required(),
+        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
       },
       getInitialState: function() {
         return {
@@ -118,14 +114,3 @@ To get validation messages for a single field:
     });
 
     module.exports = Signin;
-
-### Create custom strategies
-Simply define a function that will take a single value and return an error message if validation fails, return `undefined` otherwise:
-
-    module.exports = function isValidEmail(email) {
-      // http://stackoverflow.com/a/46181/1723135
-      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (!re.test(email)) {
-        return 'Invalid Email Address';
-      }
-    };

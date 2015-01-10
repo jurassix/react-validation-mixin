@@ -1,84 +1,63 @@
 var chai = require('chai');
 var should = chai.should();
+var Joi = require('joi');
 
 var ValidationFactory = require('../ValidationFactory');
 
 describe('Validation Factory', function() {
   before(function() {
-    var alwaysValidStategy = function() {};
-    var alwaysInvalidStategy = function() {
-      return 'always invalid';
-    };
     this.validationTypes = {
-      foo: alwaysValidStategy,
-      bar: [alwaysValidStategy, alwaysValidStategy],
-      goo: alwaysInvalidStategy,
-      boo: [alwaysInvalidStategy, alwaysInvalidStategy],
-      coo: [alwaysInvalidStategy, alwaysValidStategy]
-    };
-    this.allValidValidationTypes = {
-      foo: alwaysValidStategy,
-      bar: [alwaysValidStategy, alwaysValidStategy]
-    };
-    this.allInvalidValidationTypes = {
-      foo: alwaysInvalidStategy,
-      bar: [alwaysInvalidStategy, alwaysInvalidStategy]
+      username:  Joi.string().alphanum().min(3).max(30).required(),
+      password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
     };
     this.state = {
-      foo: 'bar'
+      username: 'bar',
+      password: 'ab1'
+    };
+    this.invalidState = {
+      username: 'a_',
+      password: 'a_'
     }
   });
   describe('validation()', function() {
     describe('valid scenarios', function() {
       it('should return no errors for validator with single strategy', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.state)
-        result['foo'].should.be.empty;
+        chai.expect(result['username']).to.be.undefined;
       });
       it('should return no errors for validator with array of strategies', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.state)
-        result['bar'].should.be.empty;
+        chai.expect(result['password']).to.be.undefined;
       });
     });
     describe('invalid scenarios', function() {
       it('should throw exception when no validation types are defined', function() {
         chai.expect(function() {
           ValidationFactory.validate(undefined, this.state);
-        }).to.throw('config or state undefined');
+        }).to.throw('schema or state undefined');
       });
       it('should throw exception when no state is defined', function() {
         chai.expect(function() {
           ValidationFactory.validate(this.validationTypes, undefined);
-        }).to.throw('config or state undefined');
+        }).to.throw('schema or state undefined');
       });
-      it('should return error for validator with single failing strategy', function() {
-        var result = ValidationFactory.validate(this.validationTypes, this.state)
-        result['goo'].should.not.be.empty;
-        JSON.stringify(result['goo']).should.equal(JSON.stringify(['always invalid']));
+      it('should return multiple errors for input failing multiple validations', function() {
+        var result = ValidationFactory.validate(this.validationTypes, this.invalidState)
+        result['username'].should.not.be.empty;
+        JSON.stringify(result['username']).should.equal('["username must only contain alpha-numeric characters","username length must be at least 3 characters long"]');
       });
-      it('should return multiple errors for validator with array of invalid strategies', function() {
-        var result = ValidationFactory.validate(this.validationTypes, this.state)
-        result['boo'].should.not.be.empty;
-        result['boo'].length.should.equal(2);
-        JSON.stringify(result['boo']).should.equal(JSON.stringify(['always invalid', 'always invalid']));
-      });
-      it('should return error for validator with array of invalid and valid strategies', function() {
-        var result = ValidationFactory.validate(this.validationTypes, this.state)
-        result['coo'].should.not.be.empty;
-        result['coo'].length.should.equal(1);
-        JSON.stringify(result['coo']).should.equal(JSON.stringify(['always invalid']));
+      it('should return single error for input failing single validations', function() {
+        var result = ValidationFactory.validate(this.validationTypes, this.invalidState)
+        result['password'].should.not.be.empty;
+        JSON.stringify(result['password']).should.equal('["password fails to match the required pattern"]');
       });
     });
   });
   describe('isValid()', function() {
     describe('valid scenarios', function() {
-      it('should be valid for validator with single strategy for single key', function() {
+      it('should be true if input field is valid', function() {
         var validation = ValidationFactory.validate(this.validationTypes, this.state);
-        var result = ValidationFactory.isValid(validation, 'foo');
-        result.should.be.true;
-      });
-      it('should be valid for validator with array of strategies for single key', function() {
-        var validation = ValidationFactory.validate(this.validationTypes, this.state);
-        var result = ValidationFactory.isValid(validation, 'bar');
+        var result = ValidationFactory.isValid(validation, 'username');
         result.should.be.true;
       });
       it('should be valid when key not found in validation', function() {
@@ -86,48 +65,43 @@ describe('Validation Factory', function() {
         var result = ValidationFactory.isValid(validation, 'unknown');
         result.should.be.true;
       });
-      it('should be valid for validator with single strategy for all keys', function() {
-        var validation = ValidationFactory.validate(this.allValidValidationTypes, this.state);
+      it('should be true when all input is valid', function() {
+        var validation = ValidationFactory.validate(this.validationTypes, this.state);
         var result = ValidationFactory.isValid(validation);
         result.should.be.true;
       });
     });
     describe('invalid scenarios', function() {
-      it('should be invalid for validator with single failing strategy', function() {
-        var validation = ValidationFactory.validate(this.validationTypes, this.state);
-        var result = ValidationFactory.isValid(validation, 'goo');
+      it('should be invalid when input field fails validation', function() {
+        var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
+        var result = ValidationFactory.isValid(validation, 'username');
         result.should.be.false;
       });
-      it('should be invalid for validator with array of invalid strategies', function() {
-        var validation = ValidationFactory.validate(this.validationTypes, this.state);
-        var result = ValidationFactory.isValid(validation, 'boo');
+      it('should be invalid when input field fails multiple validations', function() {
+        var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
+        var result = ValidationFactory.isValid(validation, 'password');
         result.should.be.false;
       });
-      it('should be invalid for validator with array of invalid and valid strategies', function() {
-        var validation = ValidationFactory.validate(this.validationTypes, this.state);
-        var result = ValidationFactory.isValid(validation, 'coo');
-        result.should.be.false;
-      });
-      it('should be ivalid for validator with array of invalid strategies for all keys', function() {
-        var validation = ValidationFactory.validate(this.allInvalidValidationTypes, this.state);
+      it('should be invalid for validator with array of invalid strategies for all keys', function() {
+        var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
         var result = ValidationFactory.isValid(validation);
         result.should.be.false;
       });
     });
   });
   describe('getValidationMessages()', function() {
-    it('should return single error message for key', function() {
-      var validation = ValidationFactory.validate(this.validationTypes, this.state);
-      var result = ValidationFactory.getValidationMessages(validation, 'goo');
-      JSON.stringify(result).should.equal(JSON.stringify(['always invalid']));
-    });
     it('should return multiple error messages for key', function() {
-      var validation = ValidationFactory.validate(this.validationTypes, this.state);
-      var result = ValidationFactory.getValidationMessages(validation, 'boo');
-      JSON.stringify(result).should.equal(JSON.stringify(['always invalid', 'always invalid']));
+      var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
+      var result = ValidationFactory.getValidationMessages(validation, 'username');
+      JSON.stringify(result).should.equal('["username must only contain alpha-numeric characters","username length must be at least 3 characters long"]');
+    });
+    it('should return single error message for key', function() {
+      var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
+      var result = ValidationFactory.getValidationMessages(validation, 'password');
+      JSON.stringify(result).should.equal('["password fails to match the required pattern"]');
     });
     it('should return empty array when no key is provided', function() {
-      var validation = ValidationFactory.validate(this.validationTypes, this.state);
+      var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
       var result = ValidationFactory.getValidationMessages(validation);
       chai.expect(result).to.be.empty;
     });

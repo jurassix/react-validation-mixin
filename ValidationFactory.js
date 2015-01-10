@@ -1,25 +1,25 @@
+var Joi = require('joi');
+
+var formatErrors = function(result) {
+  if (result.error !== null) {
+    return result.error.details.reduce(function(memo, detail) {
+      if (!Array.isArray(memo[detail.path])) {
+        memo[detail.path] = [];
+      }
+      memo[detail.path].push(detail.message);
+      return memo;
+    }, {});
+  } else {
+    return {};
+  }
+};
+
 module.exports = {
-  validate: function(config, state) {
-    if (config && state) {
-      return Object.keys(config).reduce(function(validationMemo, key) {
-        var value = state[key];
-        var strategies = [];
-        if (Array.isArray(config[key])) {
-          strategies = config[key];
-        } else {
-          strategies.push(config[key]);
-        }
-        validationMemo[key] = strategies.reduce(function(memo, Strategy) {
-          var result = Strategy(value);
-          if (result) {
-            memo.push(result);
-          }
-          return memo;
-        }, []);
-        return validationMemo;
-      }, {});
+  validate: function(schema, state) {
+    if (schema && state) {
+      return formatErrors(Joi.validate(state, schema, {abortEarly: false}));
     }
-    throw new Error('config or state undefined');
+    throw new Error('schema or state undefined');
   },
   isValid: function(validations, key) {
     if (validations) {
