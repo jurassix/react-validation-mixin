@@ -1,6 +1,6 @@
 {
   "name": "react-validation-mixin",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Simple Validation Mixin for React based on Joi",
   "main": "ValidationMixin.js",
   "scripts": {
