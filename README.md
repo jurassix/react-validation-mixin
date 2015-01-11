@@ -79,12 +79,12 @@ returns an array validation messages for this field.
             <fieldset>
               <div className={this.getClasses('username')}>
                 <label htmlFor='username'>Username</label>
-                <input type='text' className='form-control' placeholder='Username' onChange={this.handleOnChange('username')}/>
+                <input type='text' className='form-control' placeholder='Username' value={this.state.username} onChange={this.handleOnChange('username')}/>
                 {this.getValidationMessages('username').map(this.renderHelpText)}
               </div>
               <div className={this.getClasses('password')}>
                 <label htmlFor='password'>Password</label>
-                <input type='password' className='form-control' placeholder='Password' onChange={this.handleOnChange('password')}/>
+                <input type='password' className='form-control' placeholder='Password' value={this.state.password} onChange={this.handleOnChange('password')}/>
                 {this.getValidationMessages('password').map(this.renderHelpText)}
               </div>
               <div className='text-center form-group'>
