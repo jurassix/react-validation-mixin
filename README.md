@@ -62,39 +62,69 @@ returns an array validation messages for this field.
     var Joi = require('joi');
     var UserAction = require('../actions/UserAction');
 
-    var Signin = React.createClass({
-      displayName: 'Signin',
-      mixins: [ValidationMixin],
-      validatorTypes:  {
+    var Signup = React.createClass({
+      displayName: 'Signup',
+      mixins: [ValidationMixin, React.addons.LinkedStateMixin],
+      validatorTypes: {
+        firstName: Joi.string().required(),
+        lastName: Joi.string().allow(null),
+        email: Joi.string().email(),
         username:  Joi.string().alphanum().min(3).max(30).required(),
-        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
+        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+        verifyPassword: Joi.ref('password')
       },
       getInitialState: function() {
         return {
+          firstName: null,
+          lastName: null,
+          email: null,
           username: null,
-          password: null
+          password: null,
+          verifyPassword: null
         };
       },
       render: function() {
         return (
-          <form onSubmit={this.handleSubmit} className='form-horizontal'>
-            <fieldset>
-              <div className={this.getClasses('username')}>
-                <label htmlFor='username'>Username</label>
-                <input type='text' className='form-control' placeholder='Username' value={this.state.username} onChange={this.handleOnChange('username')}/>
-                {this.getValidationMessages('username').map(this.renderHelpText)}
-              </div>
-              <div className={this.getClasses('password')}>
-                <label htmlFor='password'>Password</label>
-                <input type='password' className='form-control' placeholder='Password' value={this.state.password} onChange={this.handleOnChange('password')}/>
-                {this.getValidationMessages('password').map(this.renderHelpText)}
-              </div>
-              <div className='text-center form-group'>
-                <button type='submit' className='btn btn-primary'>Sign in</button>
-              </div>
-            </fieldset>
-          </form>
-        );
+          <section className='row'>
+            <h3>Sign Up</h3>
+            <form onSubmit={this.handleSubmit} className='form-horizontal'>
+              <fieldset>
+                <div className={this.getClasses('firstName')}>
+                  <label htmlFor='firstName'>First Name</label>
+                  <input type='text' id='firstName' valueLink={this.linkState('firstName')} className='form-control' placeholder='First Name' />
+                  {this.getValidationMessages('firstName').map(this.renderHelpText)}
+                </div>
+                <div className={this.getClasses('lastName')}>
+                  <label htmlFor='lastName'>Last Name</label>
+                  <input type='text' id='lastName' valueLink={this.linkState('lastName')} className='form-control' placeholder='Last Name' />
+                </div>
+                <div className={this.getClasses('email')}>
+                  <label htmlFor='email'>Email</label>
+                  <input type='email' id='email' valueLink={this.linkState('email')} className='form-control' placeholder='Email' />
+                  {this.getValidationMessages('email').map(this.renderHelpText)}
+                </div>
+                <div className={this.getClasses('username')}>
+                  <label htmlFor='username'>Username</label>
+                  <input type='text' id='username' valueLink={this.linkState('username')} className='form-control' placeholder='Username' />
+                  {this.getValidationMessages('username').map(this.renderHelpText)}
+                </div>
+                <div className={this.getClasses('password')}>
+                  <label htmlFor='password'>Password</label>
+                  <input type='password' id='password' valueLink={this.linkState('password')} className='form-control' placeholder='Password' />
+                  {this.getValidationMessages('password').map(this.renderHelpText)}
+                </div>
+                <div className={this.getClasses('verifyPassword')}>
+                  <label htmlFor='verifyPassword'>Verify Password</label>
+                  <input type='password' id='verifyPassword' valueLink={this.linkState('verifyPassword')} className='form-control' placeholder='Verify Password' />
+                  {this.getValidationMessages('verifyPassword').map(this.renderHelpText)}
+                </div>
+                <div className='text-center form-group'>
+                  <button type='submit' className='btn btn-large btn-primary'>Sign up</button>
+                </div>
+              </fieldset>
+            </form>
+          </section>
+        )
       },
       renderHelpText: function(message) {
         return (
@@ -107,27 +137,16 @@ returns an array validation messages for this field.
           'has-error': !this.isValid(field)
         });
       },
-      handleOnChange: function(field) {
-        return (function(_this) {
-          return function(event) {
-            var newState = {};
-            newState[field] = event.currentTarget.value;
-            return _this.setState(newState);
-          }
-        })(this);
-      },
       handleSubmit: function(event) {
         event.preventDefault();
         if (this.isValid()) {
-          UserAction.signin({
-            username: this.state.username,
-            password: this.state.password
-          });
+          UserAction.signup(this.state);
         }
       }
     });
 
-    module.exports = Signin;
+module.exports = Signup;
+
 
 # Why [Joi](https://github.com/hapijs/joi)?
 
