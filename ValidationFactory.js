@@ -16,13 +16,13 @@ var formatErrors = function(result) {
 
 var ValidationFactory = {
   validate: function(schema, state) {
-    if (schema && state) {
-      return formatErrors(Joi.validate(state, schema, {
+    if (schema) {
+      return formatErrors(Joi.validate(state || {}, schema, {
         abortEarly: false,
         allowUnknown: true,
       }));
     }
-    throw new Error('schema or state undefined');
+    throw new Error('validationTypes schema is undefined');
   },
   isValid: function(validations, key) {
     if (validations) {

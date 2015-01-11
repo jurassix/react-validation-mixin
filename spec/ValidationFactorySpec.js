@@ -40,12 +40,12 @@ describe('Validation Factory', function() {
       it('should throw exception when no validation types are defined', function() {
         chai.expect(function() {
           ValidationFactory.validate(undefined, this.state);
-        }).to.throw('schema or state undefined');
+        }).to.throw('validationTypes schema is undefined');
       });
-      it('should throw exception when no state is defined', function() {
-        chai.expect(function() {
-          ValidationFactory.validate(this.validationTypes, undefined);
-        }).to.throw('schema or state undefined');
+      it('should not throw exception when no state is defined', function() {
+        var result = ValidationFactory.validate(this.validationTypes, undefined);
+        result['username'].should.not.be.empty;
+        JSON.stringify(result['username']).should.equal('["username is required"]');
       });
       it('should return multiple errors for input failing multiple validations', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.invalidState)
