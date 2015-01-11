@@ -145,7 +145,7 @@ returns an array validation messages for this field.
       }
     });
 
-module.exports = Signup;
+    module.exports = Signup;
 
 
 # Why [Joi](https://github.com/hapijs/joi)?
