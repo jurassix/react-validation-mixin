@@ -47,11 +47,13 @@ returns true|false depending of the validity of the current state.
 
     this.isValid(); // returns boolean for validity of all fields in schema
 
-### `getValidationMessages(fieldName)`
+### `getValidationMessages([fieldName])`
 
 returns an array validation messages for this field.
 
-    this.getValidationMessages('username'); // returns array of strings
+    this.getValidationMessages('username'); // returns array of messages for this field or empty array if valid
+
+    this.getValidationMessages(); // returns array of messages for all fields or empty array if valid
 
 # Example Component:
 

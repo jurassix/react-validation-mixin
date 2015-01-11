@@ -14,10 +14,13 @@ var formatErrors = function(result) {
   }
 };
 
-module.exports = {
+var ValidationFactory = {
   validate: function(schema, state) {
     if (schema && state) {
-      return formatErrors(Joi.validate(state, schema, {abortEarly: false, allowUnknown: true,}));
+      return formatErrors(Joi.validate(state, schema, {
+        abortEarly: false,
+        allowUnknown: true,
+      }));
     }
     throw new Error('schema or state undefined');
   },
@@ -44,8 +47,20 @@ module.exports = {
   },
   getValidationMessages: function(validations, key) {
     if (validations) {
-      return validations[key] || [];
+      if (key) {
+        return validations[key] || [];
+      } else {
+        return Object.keys(validations).reduce(function(memo, key) {
+          var messages = validations[key] || [];
+          if (messages.length !== 0) {
+            memo = memo.concat(messages);
+          }
+          return memo;
+        }, []);
+      }
     }
     throw new Error('validations is undefined');
   }
 };
+
+module.exports = ValidationFactory;
