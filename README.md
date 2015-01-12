@@ -17,13 +17,16 @@ _See [Joi](https://github.com/hapijs/joi) for a full list of api validation stra
 
 # Usage
 
-Add the mixin to your React Component:
-
-    mixins: [ValidationMixin]
-
 ### `validatorTypes`
 
-validatorTypes is the object schema defining the validity of your components state. _You do not have to provide validation for all state fields._ Each validator is defined using [Joi](https://github.com/hapijs/joi). validatorTypes can be defined as an object or function, as long as a valid Joi schema is returned.
+validatorTypes is the object schema defining the validity of your components state.
+
+validatorTypes can be defined as an object or function, as long as a valid Joi schema is returned.
+
+You do not have to provide validation for all state fields.
+
+_See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available._
+
 
     // defined as object
     validatorTypes: {
@@ -35,13 +38,31 @@ validatorTypes is the object schema defining the validity of your components sta
     validatorTypes: function() {
       return Joi.object().keys({
         username: Joi.string().alphanum().min(3).max(30).required(),
-        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
       });
+    }
+
+    // defined as a function with conditional component state
+    validatorTypes: function() {
+      var base = Joi.object().keys({
+        firstName: Joi.string().required(),
+        lastName: Joi.string().allow(null),
+        email: Joi.string().email(),
+        username:  Joi.string().alphanum().min(3).max(30).required()
+      });
+      if (this.props.user.anonymous) {
+        return base.keys({
+          newPassword: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+          verifyPassword: Joi.ref('newPassword')
+        });
+      } else {
+        return base;
+      }
     }
 
 ### `isValid([fieldName])`
 
-returns true|false depending of the validity of the current state.
+returns true|false depending on the validity of the current state.
 
     this.isValid('username'); // returns boolean for validity of only this field
 
@@ -49,7 +70,7 @@ returns true|false depending of the validity of the current state.
 
 ### `getValidationMessages([fieldName])`
 
-returns an array validation messages for this field.
+returns an array of validation messages for this field.
 
     this.getValidationMessages('username'); // returns array of messages for this field or empty array if valid
 
@@ -146,10 +167,5 @@ returns an array validation messages for this field.
     });
 
     module.exports = Signup;
-
-
-# Why [Joi](https://github.com/hapijs/joi)?
-
- Initially I was designing a suite of custom validation strategies to back this mixin, but I quickly realized that was a large initiative of duplicated work. So I refactored this mixin to simply be a wrapper around Joi within the context of a React Component. By doing this I lost some of the flexibility of this mixin; like being able to define custom validators, but Joi is very full featured and custom validations should be handled within their library. This allowed me to offload the responsibility of validation strategies to Joi and keep focused on a simple and clean validation mixin.
 
 ### _Please contribute suggestions, features, issues, and pull requests._
