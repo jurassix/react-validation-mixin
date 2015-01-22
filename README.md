@@ -79,9 +79,11 @@ returns an array of validation messages for this field.
 # Example Component:
 
     var React = require('react/addons');
+    var assign = Object.assign || require('object.assign');
     var ValidationMixin = require('react-validation-mixin');
     var Joi = require('joi');
     var UserAction = require('../actions/UserAction');
+    var SessionStore = require('../stores/SessionStore');
 
     var Signup = React.createClass({
       displayName: 'Signup',
@@ -95,14 +97,10 @@ returns an array of validation messages for this field.
         verifyPassword: Joi.ref('password')
       },
       getInitialState: function() {
-        return {
-          firstName: null,
-          lastName: null,
-          email: null,
-          username: null,
+        return assign({
           password: null,
           verifyPassword: null
-        };
+        }, SessionStore.getUser());
       },
       render: function() {
         return (
