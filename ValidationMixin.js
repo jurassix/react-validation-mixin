@@ -1,17 +1,26 @@
-
 "use strict";
 
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
 
-  validate: function() {
-    var validatorTypes = this.validatorTypes || {};
-    if (typeof this.validatorTypes === 'function') {
-      validatorTypes = this.validatorTypes();
-    }
+  componentWillUpdate: function(nextProps, nextState) {
+    this.clearValidations()
+  },
 
-    return ValidationFactory.validate(validatorTypes, this.state);
+  clearValidations: function () {
+    this.__cachedValidationResults = null;
+  },
+
+  validate: function() {
+    if (!this.__cachedValidationResults) {
+      var validatorTypes = this.validatorTypes || {};
+      if (typeof this.validatorTypes === 'function') {
+        validatorTypes = this.validatorTypes();
+      }
+      this.__cachedValidationResults = ValidationFactory.validate(validatorTypes, this.state);
+    }
+    return this.__cachedValidationResults || {};
   },
 
   getValidationMessages: function(field) {

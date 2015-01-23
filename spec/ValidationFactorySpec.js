@@ -7,7 +7,7 @@ var ValidationFactory = require('../ValidationFactory');
 describe('Validation Factory', function() {
   before(function() {
     this.validationTypes = {
-      username: Joi.string().alphanum().min(3).max(30).required(),
+      username: Joi.string().alphanum().min(3).max(30).required().label('Username'),
       password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
     };
     this.state = {
@@ -32,8 +32,10 @@ describe('Validation Factory', function() {
       it('should return no errors for undefined input', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.additionalState)
         chai.expect(result['foo']).to.be.undefined;
-        chai.expect(result['password']).to.be.undefined;
-        JSON.stringify(result['username']).should.equal('["username is required"]');
+      });
+      it('should use labels from Joi Schema when creating error messages', function() {
+        var result = ValidationFactory.validate(this.validationTypes, {})
+        JSON.stringify(result['username']).should.equal('["Username is required"]');
       });
     });
     describe('invalid scenarios', function() {
@@ -45,12 +47,12 @@ describe('Validation Factory', function() {
       it('should not throw exception when no state is defined', function() {
         var result = ValidationFactory.validate(this.validationTypes, undefined);
         result['username'].should.not.be.empty;
-        JSON.stringify(result['username']).should.equal('["username is required"]');
+        JSON.stringify(result['username']).should.equal('["Username is required"]');
       });
       it('should return multiple errors for input failing multiple validations', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.invalidState)
         result['username'].should.not.be.empty;
-        JSON.stringify(result['username']).should.equal('["username must only contain alpha-numeric characters","username length must be at least 3 characters long"]');
+        JSON.stringify(result['username']).should.equal('["Username must only contain alpha-numeric characters","Username length must be at least 3 characters long"]');
       });
       it('should return single error for input failing single validations', function() {
         var result = ValidationFactory.validate(this.validationTypes, this.invalidState)
@@ -99,7 +101,7 @@ describe('Validation Factory', function() {
     it('should return multiple error messages for fieldName', function() {
       var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
       var result = ValidationFactory.getValidationMessages(validation, 'username');
-      JSON.stringify(result).should.equal('["username must only contain alpha-numeric characters","username length must be at least 3 characters long"]');
+      JSON.stringify(result).should.equal('["Username must only contain alpha-numeric characters","Username length must be at least 3 characters long"]');
     });
     it('should return single error message for fieldName', function() {
       var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
@@ -110,7 +112,7 @@ describe('Validation Factory', function() {
       var validation = ValidationFactory.validate(this.validationTypes, this.invalidState);
       var result = ValidationFactory.getValidationMessages(validation);
       result.length.should.equal(3);
-      JSON.stringify(result).should.equal('["username must only contain alpha-numeric characters","username length must be at least 3 characters long","password fails to match the required pattern"]');
+      JSON.stringify(result).should.equal('["Username must only contain alpha-numeric characters","Username length must be at least 3 characters long","password fails to match the required pattern"]');
     });
     it('should throw when no validation results are provided', function() {
       chai.expect(function() {

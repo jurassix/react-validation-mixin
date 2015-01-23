@@ -81,6 +81,22 @@ this.getValidationMessages('username'); // returns array of messages for this fi
 this.getValidationMessages(); // returns array of messages for all fields or empty array if valid
 ```
 
+### `clearValidations()`
+
+  Clears the ValidationMixin cache and forces a full validation on the next call to `isValid` or `getValidationMessages`
+
+```javascript
+this.clearValidations(); // clear cached validation results
+```
+
+# Performance optimizations
+
+Validations are processed lazily; unless a component explicitly calls `isValid` or `getValidationMessages`, no processing will occur.
+
+The validation results cache is invalidated via `ComponentWillUpdate` component lifecycle method. ValidationMixin caches are built on the first call to `isValid` or `getValidationMessages` within the render cycle.
+
+The validation results cache is manually clearable via `clearValidations`. _You typically will not need to manually clear validations, but this is exposed for convenience._
+
 # Example Component:
 
 ```javascript
