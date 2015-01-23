@@ -4,7 +4,7 @@
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
-  autoLabel: [],
+  // autoLabel: [<String>] | Boolean
 
   validate: function() {
     var validatorTypes = this.validatorTypes || {};
