@@ -201,7 +201,5 @@ validatorTypes: function() {
 ```
 
 It's a bit more in-sync, but even more verbose :(
-So **react-validation-mixin** provides a handy method to automate this.
-Declare `autoLabel: true` to auto label every value in `validatorTypes` (which is no longer required to be a function) with corresponding field label. For even more fine-grained control declare `autoLabel: ["serialNumber"... <other refs>]`. Only those keys will be auto labeled. So `autoLabel` can be mixed with manual labelling decribed above.
 
 ### _Please contribute suggestions, features, issues, and pull requests._
