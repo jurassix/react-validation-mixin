@@ -4,6 +4,8 @@
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
+  autoLabel: [],
+
   validate: function() {
     var validatorTypes = this.validatorTypes || {};
     if (typeof this.validatorTypes === 'function') {
@@ -26,9 +28,11 @@ var ValidationMixin = {
 
     return ValidationFactory.validate(validatorTypes, this.state);
   },
+
   getValidationMessages: function(field) {
     return ValidationFactory.getValidationMessages(this.validate(), field);
   },
+
   isValid: function(field) {
     return ValidationFactory.isValid(this.validate(), field);
   }
