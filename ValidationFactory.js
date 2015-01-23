@@ -15,9 +15,10 @@ var formatErrors = function(result) {
 };
 
 var ValidationFactory = {
-  validate: function(schema, state) {
-    if (schema) {
-      return formatErrors(Joi.validate(state || {}, schema, {
+  validate: function(options) {
+    options = options || {};
+    if (options.schema) {
+      return formatErrors(Joi.validate(options.state || {}, options.schema, {
         abortEarly: false,
         allowUnknown: true,
       }));
