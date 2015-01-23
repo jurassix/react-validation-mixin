@@ -3,7 +3,7 @@ Simple validation mixin for React using [Joi](https://github.com/hapijs/joi).
 
 This Mixin provides the boilerplate needed to validate your React components state. Simply define the object schema of your state using Joi validators and the mixin will give you access to each fields validity and error messages.
 
-# Install
+## Install
 
 Install mixin via npm:
 
@@ -15,7 +15,7 @@ Make sure you install the peer dependency Joi:
 
 _See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available._
 
-# Usage
+## Usage
 
 ### `validatorTypes`
 
@@ -165,5 +165,32 @@ returns an array of validation messages for this field.
     });
 
     module.exports = Signup;
+
+## Human readable errors
+
+Messages like "serialNumber must be a number" are not very friendly.
+Joi provides an option to override key name in message with [label](https://github.com/hapijs/joi#anylabelname) method.
+
+	validatorTypes: function() {
+      return {
+        serialNumber: Joi.number().required().label("Serial Number"),
+        assemblyDate: Joi.date().required().label("Assembly Date"),
+        manufacturer: Joi.string().required().label("Manufacturer),
+      };
+    }
+
+But you, probably, have already defined that labels in your form declaration and don't want to repeat it again. To manually handle this it's possible to make `validatorTypes` a function and access field labels by `this.refs`.
+
+    validatorTypes: function() {
+      return {
+        serialNumber: Joi.number().required().label(this.refs.serialNumber.props.label),
+        assemblyDate: Joi.date().required().label(this.refs.assemblyDate.props.label),
+        manufacturer: Joi.string().required().label(this.refs.manufacturer.props.label),
+      };
+    },
+
+It's a bit more in-sync, but even more verbose :(
+So **react-validation-mixin** provides a handy method to automate this.
+Declare `autoLabel: true` to auto label every value in `validatorTypes` (which is no longer required to be a function) with corresponding field label. For even more fine-grained control declare `autoLabel: ["serialNumber"... <other refs>]`. Only those keys will be auto labeled. So `autoLabel` can be mixed with manual labelling decribed above.
 
 ### _Please contribute suggestions, features, issues, and pull requests._
