@@ -8,24 +8,21 @@ var ValidationMixin = {
     this.clearValidations()
   },
 
-  clearValidations: function () {
+  clearValidations: function() {
     this.__cachedValidationResults = null;
   },
 
   validate: function(field) {
-    if (!this.__cachedValidationResults) {
-      var validatorTypes = this.validatorTypes || {};
-      if (typeof this.validatorTypes === 'function') {
-        validatorTypes = this.validatorTypes();
-      }
-      var options = {
-        validations: validatorTypes,
-        state: this.state,
-        field: field
-      };
-      this.__cachedValidationResults = ValidationFactory.validate(options);
+    var validatorTypes = this.validatorTypes || {};
+    if (typeof this.validatorTypes === 'function') {
+      validatorTypes = this.validatorTypes();
     }
-    return this.__cachedValidationResults || {};
+    var options = {
+      schema: validatorTypes,
+      state: this.state,
+      field: field
+    };
+    return ValidationFactory.validate(options);
   },
 
   getValidationMessages: function(field) {

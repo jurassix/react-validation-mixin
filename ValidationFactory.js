@@ -1,30 +1,9 @@
-var Joi = require('joi');
-
-var formatErrors = function(result) {
-  if (result.error !== null) {
-    return result.error.details.reduce(function(memo, detail) {
-      if (!Array.isArray(memo[detail.path])) {
-        memo[detail.path] = [];
-      }
-      memo[detail.path].push(detail.message);
-      return memo;
-    }, {});
-  } else {
-    return {};
-  }
-};
+var validationStrategy = require('./JoiValidationStrategy');
 
 var ValidationFactory = {
-  validate: function(options) {
-    options = options || {};
-    if (options.schema) {
-      return formatErrors(Joi.validate(options.state || {}, options.schema, {
-        abortEarly: false,
-        allowUnknown: true,
-      }));
-    }
-    throw new Error('validationTypes schema is undefined');
-  },
+
+  validate: validationStrategy.validate,
+
   isValid: function(validations, key) {
     if (validations) {
       if (key) {
@@ -46,6 +25,7 @@ var ValidationFactory = {
     }
     throw new Error('validations is undefined');
   },
+
   getValidationMessages: function(validations, key) {
     if (validations) {
       if (key) {
@@ -62,6 +42,7 @@ var ValidationFactory = {
     }
     throw new Error('validations is undefined');
   }
+
 };
 
 module.exports = ValidationFactory;

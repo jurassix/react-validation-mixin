@@ -5,7 +5,10 @@
   "main": "ValidationMixin.js",
   "scripts": {
     "test": "mocha spec",
-    "test-watch": "mocha -w spec"
+    "test-watch": "mocha -w spec",
+    "precommit": "npm test",
+    "prepush": "npm test",
+    "postmerge": "npm install"
   },
   "repository": {
     "type": "git",
@@ -28,6 +31,7 @@
   "homepage": "https://github.com/jurassix/react-validation-mixin",
   "devDependencies": {
     "chai": "^1.10.0",
+    "husky": "^0.6.2",
     "mocha": "^2.1.0"
   },
   "peerDependencies": {
