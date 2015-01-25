@@ -5,6 +5,14 @@ var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
 
+  /**
+   * Validate signle form field against React state. If no field is
+   * provided, validate entire form.
+   *
+   * @param {?string} state field name to validate
+   * @return {object} newly updated errors object keyed on state field
+   * names. Missing key or undefined value indicates no error.
+   */
   validate: function(field) {
     var validatorTypes = this.validatorTypes || {};
     if (typeof this.validatorTypes === 'function') {
@@ -22,19 +30,48 @@ var ValidationMixin = {
     return nextErrors;
   },
 
-  handleValidation: function(field) {
-    return function() {
+  /**
+   * Convenience method to generate a event handling callback. Allow user
+   * to validate individual fields or entire form on an event handler like
+   * onBlur, onClick, onChange, etc...
+   *
+   * @param {?string} state field name to validate
+   * @param {?boolean} flag to indicate that this event should be canceled.
+   * default is false.
+   * @return {function} validation event handler
+   */
+  handleValidation: function(field, preventDefault) {
+    return function(event) {
+      if (preventDefault === true) {
+        event.preventDefault();
+      }
       this.validate(field);
     }.bind(this);
   },
 
+  /**
+   * Returns all validation messages for a single field, or all fields if
+   * no field is provided.
+   *
+   * @param {?string} state field name to validate
+   * @return {array} all validation messages
+   */
   getValidationMessages: function(field) {
     return ValidationFactory.getValidationMessages(this.state.errors, field);
   },
 
+  /**
+   * Determines in the current React state is valid. This method is lazy
+   * if a field is specified, allowing users to check if errors have been
+   * reported for this field without forcing a revalidation. If no field is
+   * provided the entire form will be forcefully revalidated.
+   *
+   * @param {?string} state field name to validate
+   * @return {boolean} returns validity of single field or entire form
+   */
   isValid: function(field) {
     if (field) {
-      //validate single field only
+      //validate single field only; lazy validation
       return ValidationFactory.isValid(this.state.errors, field);
     } else {
       //force full form validation if no field is provided

@@ -61,9 +61,25 @@ validatorTypes: function() {
 }
 ```
 
+### `validate([fieldName])`
+
+validates the specified field, or entire form if no field specifed.
+
+returns errors messages for the field or all messages for the form, depending on the validity of the current state.
+
+This API is lazy for single fields, allowing developers to check for the validity of a single field and pull the results from `this.state.errors`. When no field is provided the API eagerly validates the entire form and returns the validity.
+
+```javascript
+this.isValid('username'); // returns boolean for validity of only this field
+
+this.isValid(); // returns boolean for validity of all fields in schema
+```
+
 ### `isValid([fieldName])`
 
 returns true|false depending on the validity of the current state.
+
+This API is lazy for single fields, allowing developers to check for the validity of a single field and pull the results from `this.state.errors`. When no field is provided the API eagerly validates the entire form and returns the validity.
 
 ```javascript
 this.isValid('username'); // returns boolean for validity of only this field
@@ -75,27 +91,33 @@ this.isValid(); // returns boolean for validity of all fields in schema
 
 returns an array of validation messages for this field.
 
+This API is lazy for all invocations; all results are pulled directly from `this.state.errors`.
+
 ```javascript
 this.getValidationMessages('username'); // returns array of messages for this field or empty array if valid
 
 this.getValidationMessages(); // returns array of messages for all fields or empty array if valid
 ```
 
-### `clearValidations()`
+### `handleValidation([fieldName], [preventDefault])`
 
-  Clears the ValidationMixin cache and forces a full validation on the next call to `isValid` or `getValidationMessages`
+returns an event handler for this field or entire form.
+
+This is a simple wrapper around `this.validate([fieldName])`.
+
+Allows the developer to attach this call to onBlur, etc and lazily validate the form. *Contains a second paramater to toggle preventDefault on the event; false by default.*
+
+This API is lazy for all invocations; all results are pulled directly from `this.state.errors`.
 
 ```javascript
-this.clearValidations(); // clear cached validation results
+onBlur={this.handleValidation('username')} // returns an event handler to validate this field
+
+onSubmit={this.handleValidation(undefined, true)} // returns an event handler to validate the entire form
 ```
 
-# Performance optimizations
+### `this.state.errors`
 
-Validations are processed lazily; unless a component explicitly calls `isValid` or `getValidationMessages`, no processing will occur.
-
-The validation results cache is invalidated via `ComponentWillUpdate` component lifecycle method. ValidationMixin caches are built on the first call to `isValid` or `getValidationMessages` within the render cycle.
-
-The validation results cache is manually clearable via `clearValidations`. _You typically will not need to manually clear validations, but this is exposed for convenience._
+Validation results are stored on the components state, allowing developers direct access to the underlying validity of the form.
 
 # Example Component:
 
@@ -132,31 +154,31 @@ var Signup = React.createClass({
           <fieldset>
             <div className={this.getClasses('firstName')}>
               <label htmlFor='firstName'>First Name</label>
-              <input type='text' id='firstName' valueLink={this.linkState('firstName')} className='form-control' placeholder='First Name' />
+              <input type='text' id='firstName' onBlur={this.handleValidation('firstName')} valueLink={this.linkState('firstName')} className='form-control' placeholder='First Name' />
               {this.getValidationMessages('firstName').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('lastName')}>
               <label htmlFor='lastName'>Last Name</label>
-              <input type='text' id='lastName' valueLink={this.linkState('lastName')} className='form-control' placeholder='Last Name' />
+              <input type='text' id='lastName' onBlur={this.handleValidation('lastName')} valueLink={this.linkState('lastName')} className='form-control' placeholder='Last Name' />
             </div>
             <div className={this.getClasses('email')}>
               <label htmlFor='email'>Email</label>
-              <input type='email' id='email' valueLink={this.linkState('email')} className='form-control' placeholder='Email' />
+              <input type='email' id='email' onBlur={this.handleValidation('email')} valueLink={this.linkState('email')} className='form-control' placeholder='Email' />
               {this.getValidationMessages('email').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('username')}>
               <label htmlFor='username'>Username</label>
-              <input type='text' id='username' valueLink={this.linkState('username')} className='form-control' placeholder='Username' />
+              <input type='text' id='username' onBlur={this.handleValidation('username')} valueLink={this.linkState('username')} className='form-control' placeholder='Username' />
               {this.getValidationMessages('username').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('password')}>
               <label htmlFor='password'>Password</label>
-              <input type='password' id='password' valueLink={this.linkState('password')} className='form-control' placeholder='Password' />
+              <input type='password' id='password' onBlur={this.handleValidation('password')} valueLink={this.linkState('password')} className='form-control' placeholder='Password' />
               {this.getValidationMessages('password').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('verifyPassword')}>
               <label htmlFor='verifyPassword'>Verify Password</label>
-              <input type='password' id='verifyPassword' valueLink={this.linkState('verifyPassword')} className='form-control' placeholder='Verify Password' />
+              <input type='password' id='verifyPassword' onBlur={this.handleValidation('verifyPassword')} valueLink={this.linkState('verifyPassword')} className='form-control' placeholder='Verify Password' />
               {this.getValidationMessages('verifyPassword').map(this.renderHelpText)}
             </div>
             <div className='text-center form-group'>
