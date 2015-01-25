@@ -105,7 +105,7 @@ returns an event handler for this field or entire form.
 
 This is a simple wrapper around `this.validate([fieldName])`.
 
-Allows the developer to attach this call to onBlur, etc and lazily validate the form. *Contains a second paramater to toggle preventDefault on the event; false by default.*
+Allows the developer to easily validate onBlur, onChange, onSubmit, etc. *Contains a second paramater to toggle preventDefault on the event; false by default.*
 
 This API is lazy for all invocations; all results are pulled directly from `this.state.errors`.
 
