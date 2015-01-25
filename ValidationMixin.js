@@ -1,16 +1,9 @@
 "use strict";
 
+var assign = Object.assign || require('object.assign');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
-
-  componentWillUpdate: function(nextProps, nextState) {
-    this.clearValidations()
-  },
-
-  clearValidations: function() {
-    this.__cachedValidationResults = null;
-  },
 
   validate: function(field) {
     var validatorTypes = this.validatorTypes || {};
@@ -22,16 +15,20 @@ var ValidationMixin = {
       state: this.state,
       field: field
     };
-    return ValidationFactory.validate(options);
+    var nextErrors = assign({}, this.state.errors, ValidationFactory.validate(options));
+    this.setState({
+      errors: nextErrors
+    });
   },
 
   getValidationMessages: function(field) {
-    return ValidationFactory.getValidationMessages(this.validate(field), field);
+    return ValidationFactory.getValidationMessages(field);
   },
 
   isValid: function(field) {
-    return ValidationFactory.isValid(this.validate(field), field);
+    return ValidationFactory.isValid(field);
   }
+
 };
 
 module.exports = ValidationMixin;

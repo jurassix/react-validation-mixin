@@ -13,6 +13,12 @@ describe('Validation Factory', function() {
       password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
     };
 
+    this.refValidationTypes = {
+      username: Joi.string().alphanum().min(3).max(30).required().label('Username'),
+      password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).label('Password'),
+      verifyPassword: Joi.ref('password')
+    };
+
     this.state = {
       username: 'bar',
       password: 'ab1'
@@ -110,6 +116,24 @@ describe('Validation Factory', function() {
 
           var result = ValidationFactory.validate(options);
           JSON.stringify(result['username']).should.equal('["Username is required"]');
+          chai.expect(result['password']).to.be.undefined;
+
+        });
+
+        it('when field is a ref include the reference', function() {
+
+          var options = {
+            schema: this.refValidationTypes,
+            state: {
+              username: 'anoyn',
+              password: '1234abcd',
+              verifyPassword: null
+            },
+            field: 'verifyPassword'
+          };
+
+          var result = ValidationFactory.validate(options);
+          JSON.stringify(result['verifyPassword']).should.equal('["verifyPassword must be one of ref:password"]');
           chai.expect(result['password']).to.be.undefined;
 
         });

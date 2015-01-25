@@ -25,16 +25,15 @@ var JoiValidationStrategy = {
 
   validate: function(options) {
     if (options && options.schema) {
-      options.state = options.state || {};
+      var errors = formatErrors(joiValidation(options.state || {}, options.schema));
       if (options.field) {
-        var _schema = {};
-        var _state = {};
-        _schema[options.field] = options.schema[options.field];
-        _state[options.field] = options.state[options.field];
-        return formatErrors(joiValidation(_state, _schema))
+        var result = {};
+        result[options.field] = errors[options.field];
+        return result;
       } else {
-        return formatErrors(joiValidation(options.state, options.schema))
+        return errors;
       }
+
     }
     throw new Error('schema is undefined');
   }

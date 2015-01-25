@@ -1,8 +1,7 @@
-var validationStrategy = require('./JoiValidationStrategy');
+var assign = Object.assign || require('object.assign');
+var ValidationStrategy = require('./JoiValidationStrategy');
 
-var ValidationFactory = {
-
-  validate: validationStrategy.validate,
+var ValidationFactory = assign({
 
   isValid: function(validations, key) {
     if (validations) {
@@ -43,6 +42,6 @@ var ValidationFactory = {
     throw new Error('validations is undefined');
   }
 
-};
+}, ValidationStrategy);
 
 module.exports = ValidationFactory;
