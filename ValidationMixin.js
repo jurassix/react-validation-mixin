@@ -6,8 +6,8 @@ var ValidationFactory = require('./ValidationFactory');
 var ValidationMixin = {
 
   /**
-   * Validate signle form field against React state. If no field is
-   * provided, validate entire form.
+   * Validate single form field against the components state. If no field
+   * is provided, validate entire form.
    *
    * @param {?string} state field name to validate
    * @return {object} newly updated errors object keyed on state field
@@ -31,8 +31,7 @@ var ValidationMixin = {
   },
 
   /**
-   * Convenience method to generate a event handling callback. Allow user
-   * to validate individual fields or entire form on an event handler like
+   * Convenience method to validate a field via an event handler. Useful for
    * onBlur, onClick, onChange, etc...
    *
    * @param {?string} state field name to validate
@@ -61,10 +60,10 @@ var ValidationMixin = {
   },
 
   /**
-   * Determines in the current React state is valid. This method is lazy
-   * if a field is specified, allowing users to check if errors have been
-   * reported for this field without forcing a revalidation. If no field is
-   * provided the entire form will be forcefully revalidated.
+   * Determines if the current components state is valid. This method is lazy
+   * if a field is specified. This allows developers to check if errors have
+   * been reported for this field without forcing a revalidation. If no field
+   * is provided the entire form will be forcefully revalidated.
    *
    * @param {?string} state field name to validate
    * @return {boolean} returns validity of single field or entire form
