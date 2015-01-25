@@ -21,8 +21,9 @@ var ValidationFactory = assign({
           return memo;
         }, true);
       }
+    } else {
+      return true;
     }
-    throw new Error('validations is undefined');
   },
 
   getValidationMessages: function(validations, key) {
@@ -38,8 +39,9 @@ var ValidationFactory = assign({
           return memo;
         }, []);
       }
+    } else {
+      return [];
     }
-    throw new Error('validations is undefined');
   }
 
 }, ValidationStrategy);

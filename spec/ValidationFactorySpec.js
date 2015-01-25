@@ -252,6 +252,18 @@ describe('Validation Factory', function() {
         result.should.be.true;
 
       });
+
+      it('should return true when validations is undefined', function() {
+
+        var options = {
+          schema: this.validationTypes,
+          state: this.invalidState
+        };
+
+        var result = ValidationFactory.isValid();
+        result.should.be.true;
+
+      });
     });
 
     describe('invalid scenarios', function() {
@@ -325,6 +337,18 @@ describe('Validation Factory', function() {
 
     });
 
+    it('should return empty array when validations is undefined', function() {
+
+      var options = {
+        schema: this.validationTypes,
+        state: this.invalidState
+      };
+
+      var result = ValidationFactory.getValidationMessages(undefined, 'password');
+      result.should.be.empty;
+
+    });
+
     it('should return all messages when no fieldName is provided', function() {
 
       var options = {
@@ -336,14 +360,6 @@ describe('Validation Factory', function() {
       var result = ValidationFactory.getValidationMessages(validation);
       result.length.should.equal(3);
       JSON.stringify(result).should.equal('["Username must only contain alpha-numeric characters","Username length must be at least 3 characters long","password fails to match the required pattern"]');
-
-    });
-
-    it('should throw when no validation results are provided', function() {
-
-      chai.expect(function() {
-        ValidationFactory.getValidationMessages();
-      }).to.throw('validations is undefined');
 
     });
   });

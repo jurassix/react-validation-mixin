@@ -19,14 +19,27 @@ var ValidationMixin = {
     this.setState({
       errors: nextErrors
     });
+    return nextErrors;
+  },
+
+  handleValidation: function(field) {
+    return function() {
+      this.validate(field);
+    }.bind(this);
   },
 
   getValidationMessages: function(field) {
-    return ValidationFactory.getValidationMessages(field);
+    return ValidationFactory.getValidationMessages(this.state.errors, field);
   },
 
   isValid: function(field) {
-    return ValidationFactory.isValid(field);
+    if (field) {
+      //validate single field only
+      return ValidationFactory.isValid(this.state.errors, field);
+    } else {
+      //force full form validation if no field is provided
+      return ValidationFactory.isValid(this.validate(), field);
+    }
   }
 
 };
