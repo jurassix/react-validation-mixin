@@ -1,11 +1,12 @@
 {
   "name": "react-validation-mixin",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Simple Validation Mixin for React based on Joi",
   "main": "ValidationMixin.js",
   "scripts": {
     "test": "mocha spec",
     "test-watch": "mocha -w spec",
+    "doc" : "jsdoc ValidationMixin.js",
     "precommit": "npm test",
     "prepush": "npm test",
     "postmerge": "npm install"
@@ -32,6 +33,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "husky": "^0.6.2",
+    "jsdoc": "^3.3.0-beta1",
     "mocha": "^2.1.0"
   },
   "peerDependencies": {
