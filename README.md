@@ -1,7 +1,17 @@
 # react-validation-mixin
-Simple validation mixin for React using [Joi](https://github.com/hapijs/joi).
+Simple validation mixin for React.
 
-This Mixin provides the boilerplate needed to validate your React components state. Simply define the object schema of your state using Joi validators and the mixin will give you access to each fields validity and error messages.
+This library provides the boilerplate needed to validate your React component state.
+State validation concerns foremost form components, though is not limited to them.
+
+**react-validation-mixin** aims to provide low-to-middle level toolkit for state validation,
+relying on existing validation libraries. We don't reinvent the wheel.
+
+For now **react-validation-mixin** supports only [Joi](https://github.com/hapijs/joi) which proved to be one the best
+validation libraries in JS.
+
+Simply define the validation schema of your state using Joi validators, and the mixin will give you access
+to each fields validity and error messages.
 
 ## Install
 
