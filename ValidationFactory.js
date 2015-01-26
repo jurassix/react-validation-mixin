@@ -1,46 +1,27 @@
+var isEmpty = require("lodash.isempty");
+var flatten = require("lodash.flatten");
 var assign = Object.assign || require('object.assign');
 var ValidationStrategy = require('./JoiValidationStrategy');
 
 var ValidationFactory = assign({
 
   isValid: function(validations, key) {
-    if (validations) {
-      if (key) {
-        var errors = validations[key] || [];
-        if (errors.length === 0) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return Object.keys(validations).reduce(function(memo, key) {
-          var errors = validations[key] || [];
-          if (errors.length !== 0) {
-            memo = false;
-          }
-          return memo;
-        }, true);
-      }
-    } else {
+    if (isEmpty(validations)) {
       return true;
+    } else {
+      return key ? isEmpty(validations[key]) : isEmpty(validations);
     }
   },
 
   getValidationMessages: function(validations, key) {
-    if (validations) {
+    if (isEmpty(validations)) {
+      return [];
+    } else {
       if (key) {
         return validations[key] || [];
       } else {
-        return Object.keys(validations).reduce(function(memo, key) {
-          var messages = validations[key] || [];
-          if (messages.length !== 0) {
-            memo = memo.concat(messages);
-          }
-          return memo;
-        }, []);
+        return flatten(Object.keys(validations).map(function(key) { return validations[key] || []; }));
       }
-    } else {
-      return [];
     }
   }
 
