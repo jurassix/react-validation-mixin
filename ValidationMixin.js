@@ -9,8 +9,8 @@ var ValidationMixin = {
    * Validate single form field against the components state. If no field
    * is provided, validate entire form.
    *
-   * @param {?string} state field name to validate
-   * @return {object} newly updated errors object keyed on state field
+   * @param {?String} field State key to validate
+   * @return {Object} newly updated errors object keyed on state field
    * names. Missing key or undefined value indicates no error.
    */
   validate: function(field) {
@@ -34,8 +34,8 @@ var ValidationMixin = {
    * Convenience method to validate a field via an event handler. Useful for
    * onBlur, onClick, onChange, etc...
    *
-   * @param {?string} state field name to validate
-   * @param {?boolean} flag to indicate that this event should be canceled.
+   * @param {?String} field State key to validate
+   * @param {?Boolean} preventDefault flag to indicate that this event should be canceled.
    * default is false.
    * @return {function} validation event handler
    */
@@ -52,8 +52,8 @@ var ValidationMixin = {
    * Returns all validation messages for a single field, or all fields if
    * no field is provided.
    *
-   * @param {?string} state field name to validate
-   * @return {array} all validation messages
+   * @param {?String} field State key to validate
+   * @return {Array} all validation messages
    */
   getValidationMessages: function(field) {
     return ValidationFactory.getValidationMessages(this.state.errors, field);
@@ -65,8 +65,8 @@ var ValidationMixin = {
    * been reported for this field without forcing a revalidation. If no field
    * is provided the entire form will be forcefully revalidated.
    *
-   * @param {?string} state field name to validate
-   * @return {boolean} returns validity of single field or entire form
+   * @param {?String} field State key to validate
+   * @return {Boolean} returns validity of single field or entire form
    */
   isValid: function(field) {
     if (field) {
