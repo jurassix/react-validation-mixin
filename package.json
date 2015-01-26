@@ -38,6 +38,7 @@
     "joi": ">=5.1.0"
   },
   "dependencies": {
+    "lodash": "^2.4.1",
     "object.assign": "^1.1.1"
   }
 }
