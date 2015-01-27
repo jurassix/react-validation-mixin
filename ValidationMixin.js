@@ -1,83 +1,53 @@
-"use strict";
+'use strict';
 
 require('object.assign').shim();
+var result = require('lodash.result');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
+  /**
+   * Check for sane configurations
+   */
+  componentDidMount: function() {
+    if (typeof this.validatorTypes !== 'function' && !Array.isArray(this.validatorTypes)) {
+      throw Error('invalid `validatorTypes` type');
+    }
+  },
 
   /**
-   * Validate single form field against the components state. If no field
-   * is provided, validate entire form.
+   * Validate single form field or entire form against the component's state.
    *
-   * @param {?String} field State key to validate
-   * @return {Object} newly updated errors object keyed on state field
-   * names. Missing key or undefined value indicates no error.
+   * @param {?String} key. Field key to validate (entire form if undefined).
+   * @return {Boolean} Result of `isValid` call after validation.
    */
-  validate: function(field) {
-    var validatorTypes = this.validatorTypes || {};
-    if (typeof this.validatorTypes === 'function') {
-      validatorTypes = this.validatorTypes();
-    }
-    var options = {
-      schema: validatorTypes,
-      state: this.state,
-      field: field
-    };
-    var nextErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(options));
+  validate: function(key) {
+    var schema = result(this, 'validatorTypes', {});
+    var errors = Object.assign({}, this.state.errors, ValidationFactory.validate(this.state, schema, key));
     this.setState({
-      errors: nextErrors
+      errors: errors
     });
-    return nextErrors;
+    return this.isValid(key);
   },
 
   /**
-   * Convenience method to validate a field via an event handler. Useful for
-   * onBlur, onClick, onChange, etc...
+   * Get current validation messages for a specified field or entire form.
    *
-   * @param {?String} field State key to validate
-   * @param {?Boolean} preventDefault flag to indicate that this event should be canceled.
-   * default is false.
-   * @return {function} validation event handler
+   * @param {?String} key. Field key to get messages (entire form if undefined)
+   * @return {Array}
    */
-  handleValidation: function(field, preventDefault) {
-    return function(event) {
-      if (preventDefault === true) {
-        event.preventDefault();
-      }
-      this.validate(field);
-    }.bind(this);
+  getValidationMessages: function(key) {
+    return ValidationFactory.getValidationMessages(this.state.errors, key);
   },
 
   /**
-   * Returns all validation messages for a single field, or all fields if
-   * no field is provided.
+   * Check current validity for a specified field or entire form.
    *
-   * @param {?String} field State key to validate
-   * @return {Array} all validation messages
+   * @param {?String} key. Field key to check validity (entire form if undefined).
+   * @return {Boolean}.
    */
-  getValidationMessages: function(field) {
-    return ValidationFactory.getValidationMessages(this.state.errors, field);
-  },
-
-  /**
-   * Determines if the current components state is valid. This method is lazy
-   * if a field is specified. This allows developers to check if errors have
-   * been reported for this field without forcing a revalidation. If no field
-   * is provided the entire form will be forcefully revalidated.
-   *
-   * @param {?String} field State key to validate
-   * @return {Boolean} returns validity of single field or entire form
-   */
-  isValid: function(field) {
-    if (field) {
-      //validate single field only; lazy validation
-      return ValidationFactory.isValid(this.state.errors, field);
-    } else {
-      //force full form validation if no field is provided
-      return ValidationFactory.isValid(this.validate(), field);
-    }
+  isValid: function(key) {
+    return ValidationFactory.isValid(this.state.errors, key);
   }
-
 };
 
 module.exports = ValidationMixin;
