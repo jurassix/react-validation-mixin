@@ -1,6 +1,6 @@
 require('object.assign').shim();
-var isEmpty = require("lodash.isempty");
-var flatten = require("lodash.flatten");
+var isEmpty = require('lodash.isempty');
+var flatten = require('lodash.flatten');
 var ValidationStrategy = require('./JoiValidationStrategy');
 
 var ValidationFactory = Object.assign({
