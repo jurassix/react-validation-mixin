@@ -4,22 +4,22 @@ var flatten = require("lodash.flatten");
 var ValidationStrategy = require('./JoiValidationStrategy');
 
 var ValidationFactory = Object.assign({
-  isValid: function(validations, key) {
-    if (isEmpty(validations)) {
+  isValid: function(errors, key) {
+    if (isEmpty(errors)) {
       return true;
     } else {
-      return key ? isEmpty(validations[key]) : isEmpty(validations);
+      return key ? isEmpty(errors[key]) : isEmpty(errors);
     }
   },
 
-  getValidationMessages: function(validations, key) {
-    if (isEmpty(validations)) {
+  getValidationMessages: function(errors, key) {
+    if (isEmpty(errors)) {
       return [];
     } else {
       if (key) {
-        return validations[key] || [];
+        return errors[key] || [];
       } else {
-        return flatten(Object.keys(validations).map(function(key) { return validations[key] || []; }));
+        return flatten(Object.keys(errors).map(function(key) { return errors[key] || []; }));
       }
     }
   }
