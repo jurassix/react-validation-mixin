@@ -2,12 +2,14 @@ var Joi = require('joi');
 
 var JoiValidationStrategy = {
   validate: function(joiSchema, data, key) {
-    joiSchema = joiSchema === undefined ? {} : joiSchema;
-    data = data === undefined ? {} : data;
-    var errors = this.format(Joi.validate(data, joiSchema, {
+    joiSchema = joiSchema || {};
+    data = data || {};
+    var joiOptions = {
       abortEarly: false,
       allowUnknown: true,
-    }));
+    };
+
+    var errors = this.format(Joi.validate(data, joiSchema, joiOptions));
     if (key === undefined) {
       Object.keys(joiSchema).forEach(function(key) {
         errors[key] = errors[key] || [];
