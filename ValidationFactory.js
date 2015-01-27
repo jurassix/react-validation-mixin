@@ -1,10 +1,9 @@
+require('object.assign').shim();
 var isEmpty = require("lodash.isempty");
 var flatten = require("lodash.flatten");
-var assign = Object.assign || require('object.assign');
 var ValidationStrategy = require('./JoiValidationStrategy');
 
-var ValidationFactory = assign({
-
+var ValidationFactory = Object.assign({
   isValid: function(validations, key) {
     if (isEmpty(validations)) {
       return true;
@@ -24,7 +23,6 @@ var ValidationFactory = assign({
       }
     }
   }
-
 }, ValidationStrategy);
 
 module.exports = ValidationFactory;

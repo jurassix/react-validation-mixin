@@ -1,6 +1,6 @@
 "use strict";
 
-var assign = Object.assign || require('object.assign');
+require('object.assign').shim();
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
@@ -23,7 +23,7 @@ var ValidationMixin = {
       state: this.state,
       field: field
     };
-    var nextErrors = assign({}, this.state.errors, ValidationFactory.validate(options));
+    var nextErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(options));
     this.setState({
       errors: nextErrors
     });
