@@ -9,10 +9,12 @@ var ValidationFactory = Object.assign({
     if (isEmpty(errors)) {
       return [];
     } else {
-      if (key) {
-        return errors[key] || [];
+      if (key === undefined) {
+        return flatten(Object.keys(errors).map(function(error) {
+          return errors[error] || [];
+        }));
       } else {
-        return flatten(Object.keys(errors).map(function(key) { return errors[key] || []; }));
+        return errors[key] || [];
       }
     }
   },
@@ -20,6 +22,7 @@ var ValidationFactory = Object.assign({
   isValid: function(errors, key) {
     return isEmpty(this.getValidationMessages(errors, key));
   },
+
 }, ValidationStrategy);
 
 module.exports = ValidationFactory;

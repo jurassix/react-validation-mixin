@@ -32,11 +32,11 @@ describe('Validation Factory', function() {
           username: '', // invalid
           password: 'qwerty', // valid required
           age: 10, // valid optional
-          something: "xyz" // schema is undefined
+          something: 'xyz' // schema is undefined
         };
         var result = ValidationFactory.validate(schema, data);
         expect(result).to.eql({
-          username: ["username is not allowed to be empty"],
+          username: ['username is not allowed to be empty'],
           password: [],
           age: [],
           bonus: [],
@@ -53,8 +53,8 @@ describe('Validation Factory', function() {
         };
         var result = ValidationFactory.validate(schema, data);
         expect(result['password']).to.eql([
-          "password must only contain alpha-numeric characters",
-          "password length must be at least 6 characters long"
+          'password must only contain alpha-numeric characters',
+          'password length must be at least 6 characters long'
         ]);
       });
 
@@ -66,22 +66,22 @@ describe('Validation Factory', function() {
         var data = {};
         var result = ValidationFactory.validate(schema, data);
 
-        expect(result['username']).to.eql(["Username is required"]);
+        expect(result['username']).to.eql(['Username is required']);
       });
     });
 
     describe('of specified key', function() {
-      it('should validate specified', function() {
+      it('should validate specified key only', function() {
         var schema = {
           username: Joi.string().required(),
         };
         var data = {};
 
-        var result = ValidationFactory.validate(schema, data, "username");
-        expect(result.length).to.equal(1);
+        var result = ValidationFactory.validate(schema, data, 'username');
+        expect(result['username'].length).to.equal(1);
       });
 
-      it('should not validate others', function() {
+      it('should not validate other fields', function() {
         // TODO: see https://github.com/hapijs/joi/pull/484
         var schema = {
           username: Joi.string().required(),
@@ -89,23 +89,23 @@ describe('Validation Factory', function() {
         };
         var data = {password: 'qwerty'};
 
-        var result = ValidationFactory.validate(schema, data, "password");
-        expect(result.length).to.equal(0);
+        var result = ValidationFactory.validate(schema, data, 'password');
+        expect(result['password']).to.be.undefined;
       });
 
       it('should handle Joi refs', function() {
         // TODO: see https://github.com/hapijs/joi/pull/484
         var schema = {
           password: Joi.string().required(),
-          verifyPassword: Joi.any().valid(Joi.ref('password')).options({language: {any: {allowOnly: "don't match password"}}}).required()
+          verifyPassword: Joi.any().valid(Joi.ref('password')).options({language: {any: {allowOnly: 'don\'t match password'}}}).required()
         };
         var data = {
           password: 'qwerty',
           verifyPassword: 'qerty',
         };
 
-        var result3 = ValidationFactory.validate(schema, data, "verifyPassword");
-        expect(result3).to.eql(["verifyPassword don\'t match password"]);
+        var result = ValidationFactory.validate(schema, data, 'verifyPassword');
+        expect(result['verifyPassword']).to.eql(['verifyPassword don\'t match password']);
       });
     });
   });

@@ -2,37 +2,63 @@
 
 require('object.assign').shim();
 var result = require('lodash.result');
+var isObject = require('lodash.isObject');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
+
   /**
    * Check for sane configurations
    */
   componentDidMount: function() {
-    if (typeof this.validatorTypes !== 'function' && !Array.isArray(this.validatorTypes)) {
+    if (this.validatorTypes !== undefined &&
+      typeof this.validatorTypes !== 'function' &&
+      !isObject(this.validatorTypes)) {
       throw Error('invalid `validatorTypes` type');
+    }
+    if (this.validatorData !== undefined &&
+      typeof this.validatorData !== 'function' &&
+      !isObject(this.validatorData)) {
+      throw Error('invalid `validatorData` type');
     }
   },
 
   /**
-   * Validate single form field or entire form against the component's state.
+   * Validate single form key or entire form against the component's state.
    *
-   * @param {?String} key. Field key to validate (entire form if undefined).
-   * @return {Boolean} Result of `isValid` call after validation.
+   * @param {?String} key to validate (entire form validation if undefined).
+   * @return {Boolean} newly updated errors object keyed on state field
+   * names.
    */
   validate: function(key) {
-    var schema = result(this, 'validatorTypes', {});
-    var errors = Object.assign({}, this.state.errors, ValidationFactory.validate(this.state, schema, key));
+    var schema = result(this, 'validatorTypes') || {};
+    var data = result(this, 'validatorData') || this.state;
+    var nextErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key));
     this.setState({
-      errors: errors
+      errors: nextErrors
     });
-    return this.isValid(key);
+    return nextErrors;
   },
 
   /**
-   * Get current validation messages for a specified field or entire form.
+   * Convenience method to validate a key via an event handler. Useful for
+   * onBlur, onClick, onChange, etc...
    *
-   * @param {?String} key. Field key to get messages (entire form if undefined)
+   * @param {?String} State key to validate
+   * default is false.
+   * @return {function} validation event handler
+   */
+  handleValidation: function(key) {
+    return function(event) {
+      event.preventDefault();
+      this.validate(key);
+    }.bind(this);
+  },
+
+  /**
+   * Get current validation messages for a specified key or entire form.
+   *
+   * @param {?String} key to get messages (entire form if undefined)
    * @return {Array}
    */
   getValidationMessages: function(key) {
@@ -40,13 +66,17 @@ var ValidationMixin = {
   },
 
   /**
-   * Check current validity for a specified field or entire form.
+   * Check current validity for a specified key or entire form.
    *
-   * @param {?String} key. Field key to check validity (entire form if undefined).
+   * @param {?String} key to check validity (entire form if undefined).
    * @return {Boolean}.
    */
   isValid: function(key) {
-    return ValidationFactory.isValid(this.state.errors, key);
+    var errors = this.state.errors;
+    if (key === undefined) {
+      errors = this.validate();
+    }
+    return ValidationFactory.isValid(errors, key);
   }
 };
 
