@@ -120,7 +120,7 @@ onBlur={this.handleValidation('username')} // returns an event handler to valida
 
 validatorData provides a way for developers to validate props, state, or a combination of both.
 
-**By default, *react-validation-mixin* will only validate a componets *state*.**
+**By default, *react-validation-mixin* will only validate a components *state*.**
 
 validatorData should be defined as an **object or function**, as long as a valid Object is returned.
 
