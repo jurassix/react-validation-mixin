@@ -27,7 +27,7 @@ var ValidationMixin = {
    * Validate single form key or entire form against the component's state.
    *
    * @param {?String} key to validate (entire form validation if undefined).
-   * @return {Boolean} newly updated errors object keyed on state field
+   * @return {Object} newly updated errors object keyed on state field
    * names.
    */
   validate: function(key) {
