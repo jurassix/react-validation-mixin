@@ -1,17 +1,11 @@
 # react-validation-mixin
 Simple validation mixin for React.
 
-This library provides the boilerplate needed to validate your React component state.
-State validation concerns foremost form components, though is not limited to them.
+This library provides the boilerplate needed to validate a React component.
 
-**react-validation-mixin** aims to provide low-to-middle level toolkit for state validation,
-relying on existing validation libraries. We don't reinvent the wheel.
+**react-validation-mixin** aims to provide a low-to-mid level toolkit for *state or props* validation, relying on existing validation libraries. This mixin currently supports [Joi](https://github.com/hapijs/joi) which aligns perfectly with React.
 
-For now **react-validation-mixin** supports only [Joi](https://github.com/hapijs/joi) which proved to be one the best
-validation libraries in JS.
-
-Simply define the validation schema of your state using Joi validators, and the mixin will give you access
-to each fields validity and error messages.
+Simply define the validation schema using Joi validators, and the mixin will give you access to each fields validity and error messages.
 
 ## Install
 
@@ -23,19 +17,19 @@ Make sure you install the peer dependency Joi:
 
     > npm install --save joi
 
-_See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available._
+*See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available.*
 
 ## Usage
 
 ### `validatorTypes`
 
-validatorTypes is the object schema defining the validity of your components state.
+validatorTypes is the Joi object schema defining the validity of a component.
 
-validatorTypes can be defined as an object or function, as long as a valid Joi schema is returned.
+validatorTypes can be defined as an **object or function**, as long as a valid Joi schema is returned.
 
 You do not have to provide validation for all state fields.
 
-_See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available._
+*See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available.*
 
 ```javascript
 // defined as object
@@ -71,25 +65,25 @@ validatorTypes: function() {
 }
 ```
 
-### `validate([fieldName])`
+### `validate([key])`
 
 validates the specified field, or entire form if no field specifed.
 
 returns errors messages for the field or all messages for the form, depending on the validity of the current state.
 
-This API is lazy for single fields, allowing developers to check for the validity of a single field and pull the results from `this.state.errors`. When no field is provided the API eagerly validates the entire form and returns the validity.
+This API allows developers to check for the validity of a single field and pull the results from `this.state.errors`. When no field is provided the API validates the entire form.
 
 ```javascript
-this.isValid('username'); // returns boolean for validity of only this field
+this.validate('username'); // returns boolean for validity of only this field
 
-this.isValid(); // returns boolean for validity of all fields in schema
+this.validate(); // returns boolean for validity of all fields in schema
 ```
 
-### `isValid([fieldName])`
+### `isValid([key])`
 
 returns true|false depending on the validity of the current state.
 
-This API is lazy for single fields, allowing developers to check for the validity of a single field and pull the results from `this.state.errors`. When no field is provided the API eagerly validates the entire form and returns the validity.
+This API allows developers to check for the validity of a single field. When no field is provided the API validates the entire form and returns the validity.
 
 ```javascript
 this.isValid('username'); // returns boolean for validity of only this field
@@ -97,11 +91,11 @@ this.isValid('username'); // returns boolean for validity of only this field
 this.isValid(); // returns boolean for validity of all fields in schema
 ```
 
-### `getValidationMessages([fieldName])`
+### `getValidationMessages([key])`
 
 returns an array of validation messages for this field.
 
-This API is lazy for all invocations; all results are pulled directly from `this.state.errors`.
+This API is a wrapper around `this.state.errors`, that returns validations for a single key, or all validations.
 
 ```javascript
 this.getValidationMessages('username'); // returns array of messages for this field or empty array if valid
@@ -109,20 +103,36 @@ this.getValidationMessages('username'); // returns array of messages for this fi
 this.getValidationMessages(); // returns array of messages for all fields or empty array if valid
 ```
 
-### `handleValidation([fieldName], [preventDefault])`
+### `handleValidation([key])`
 
-returns an event handler for this field or entire form.
+returns an event handler to validate this key or entire form.
 
-This is a simple wrapper around `this.validate([fieldName])`.
+This is a simple wrapper around `this.validate([key])`.
 
-Allows the developer to easily validate onBlur, onChange, onSubmit, etc. *Contains a second paramater to toggle preventDefault on the event; false by default.*
+Allows the developer to easily validate onBlur, onChange, etc.
 
-This API is lazy for all invocations; all results are pulled directly from `this.state.errors`.
 
 ```javascript
 onBlur={this.handleValidation('username')} // returns an event handler to validate this field
+```
 
-onSubmit={this.handleValidation(undefined, true)} // returns an event handler to validate the entire form
+### `validatorData`
+
+validatorData provides a way for developers to validate props, state, or a combination of both.
+
+**By default, *react-validation-mixin* will only validate a componets *state*.**
+
+validatorData should be defined as an **object or function**, as long as a valid Object is returned.
+
+
+```javascript
+// defined as object
+validatorData: this.props
+
+// defined as function
+validatorData: function() {
+  return Object.assign({}, this.props, this.state);
+}
 ```
 
 ### `this.state.errors`
@@ -236,7 +246,7 @@ validatorTypes: function() {
 }
 ```
 
-But you, probably, have already defined that labels in your form declaration and don't want to repeat it again. To manually handle this it's possible to make `validatorTypes` a function and access field labels by `this.refs`.
+But you, probably, have already defined labels in your form declaration and don't want to repeat it again. To manually handle this it's possible to make `validatorTypes` a function and access field labels by `this.refs`.
 
 ```javascript
 validatorTypes: function() {

@@ -1,29 +1,27 @@
-var isEmpty = require("lodash.isempty");
-var flatten = require("lodash.flatten");
-var assign = Object.assign || require('object.assign');
+require('object.assign').shim();
+var isEmpty = require('lodash.isempty');
+var flatten = require('lodash.flatten');
 var ValidationStrategy = require('./JoiValidationStrategy');
 
-var ValidationFactory = assign({
-
-  isValid: function(validations, key) {
-    if (isEmpty(validations)) {
-      return true;
+var ValidationFactory = Object.assign({
+  getValidationMessages: function(errors, key) {
+    errors = errors || {};
+    if (isEmpty(errors)) {
+      return [];
     } else {
-      return key ? isEmpty(validations[key]) : isEmpty(validations);
+      if (key === undefined) {
+        return flatten(Object.keys(errors).map(function(error) {
+          return errors[error] || [];
+        }));
+      } else {
+        return errors[key] || [];
+      }
     }
   },
 
-  getValidationMessages: function(validations, key) {
-    if (isEmpty(validations)) {
-      return [];
-    } else {
-      if (key) {
-        return validations[key] || [];
-      } else {
-        return flatten(Object.keys(validations).map(function(key) { return validations[key] || []; }));
-      }
-    }
-  }
+  isValid: function(errors, key) {
+    return isEmpty(this.getValidationMessages(errors, key));
+  },
 
 }, ValidationStrategy);
 

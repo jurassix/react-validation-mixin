@@ -1,41 +1,39 @@
 var Joi = require('joi');
-
-var formatErrors = function(result) {
-  if (result.error !== null) {
-    return result.error.details.reduce(function(memo, detail) {
-      if (!Array.isArray(memo[detail.path])) {
-        memo[detail.path] = [];
-      }
-      memo[detail.path].push(detail.message);
-      return memo;
-    }, {});
-  } else {
-    return {};
-  }
-};
-
-var joiValidation = function(state, schema) {
-  return Joi.validate(state, schema, {
-    abortEarly: false,
-    allowUnknown: true,
-  });
-};
+var union = require('lodash.union');
 
 var JoiValidationStrategy = {
-
-  validate: function(options) {
-    if (options && options.schema) {
-      var errors = formatErrors(joiValidation(options.state || {}, options.schema));
-      if (options.field) {
-        var result = {};
-        result[options.field] = errors[options.field];
-        return result;
-      } else {
-        return errors;
-      }
-
+  validate: function(joiSchema, data, key) {
+    joiSchema = joiSchema || {};
+    data = data || {};
+    var joiOptions = {
+      abortEarly: false,
+      allowUnknown: true,
+    };
+    var errors = this._format(Joi.validate(data, joiSchema, joiOptions));
+    if (key === undefined) {
+      union(Object.keys(joiSchema), Object.keys(data)).forEach(function(error) {
+        errors[error] = errors[error] || [];
+      });
+      return errors;
+    } else {
+      var result = {};
+      result[key] = errors[key];
+      return result;
     }
-    throw new Error('schema is undefined');
+  },
+
+  _format: function(joiResult) {
+    if (joiResult.error !== null) {
+      return joiResult.error.details.reduce(function(memo, detail) {
+        if (!Array.isArray(memo[detail.path])) {
+          memo[detail.path] = [];
+        }
+        memo[detail.path].push(detail.message);
+        return memo;
+      }, {});
+    } else {
+      return {};
+    }
   }
 
 };
