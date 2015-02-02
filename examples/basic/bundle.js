@@ -59,12 +59,15 @@ var Signup = React.createClass({
               React.createElement("input", {type: "password", id: "verifyPassword", valueLink: this.linkState('verifyPassword'), onBlur: this.handleValidation('verifyPassword'), className: "form-control", placeholder: "Verify Password"}), 
               this.getValidationMessages('verifyPassword').map(this.renderHelpText)
             ), 
+            React.createElement("div", {className: "form-group"}, 
+              React.createElement("h3", null, this.state.feedback)
+            ), 
             React.createElement("div", {className: "text-center form-group"}, 
-              React.createElement("button", {type: "submit", className: "btn btn-large btn-primary"}, "Sign up")
+              React.createElement("button", {type: "submit", className: "btn btn-large btn-primary"}, "Sign up"), 
+              React.createElement("button", {onClick: this.handleReset, className: "btn btn-large btn-warning"}, "Reset")
             )
           )
-        ), 
-        React.createElement("h2", null, this.state.feedback)
+        )
       )
     )
   },
@@ -77,6 +80,14 @@ var Signup = React.createClass({
     return React.addons.classSet({
       'form-group': true,
       'has-error': !this.isValid(field)
+    });
+  },
+  handleReset: function(event) {
+    event.preventDefault();
+    this.setState(this.getInitialState());
+    this.setState({
+      errors: undefined,
+      feedback: undefined
     });
   },
   handleSubmit: function(event) {

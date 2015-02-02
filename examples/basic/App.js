@@ -58,12 +58,15 @@ var Signup = React.createClass({
               <input type='password' id='verifyPassword' valueLink={this.linkState('verifyPassword')} onBlur={this.handleValidation('verifyPassword')}  className='form-control' placeholder='Verify Password' />
               {this.getValidationMessages('verifyPassword').map(this.renderHelpText)}
             </div>
+            <div className='form-group'>
+              <h3>{this.state.feedback}</h3>
+            </div>
             <div className='text-center form-group'>
               <button type='submit' className='btn btn-large btn-primary'>Sign up</button>
+              <button onClick={this.handleReset} className='btn btn-large btn-warning'>Reset</button>
             </div>
           </fieldset>
         </form>
-        <h2>{this.state.feedback}</h2>
       </section>
     )
   },
@@ -76,6 +79,14 @@ var Signup = React.createClass({
     return React.addons.classSet({
       'form-group': true,
       'has-error': !this.isValid(field)
+    });
+  },
+  handleReset: function(event) {
+    event.preventDefault();
+    this.setState(this.getInitialState());
+    this.setState({
+      errors: undefined,
+      feedback: undefined
     });
   },
   handleSubmit: function(event) {
