@@ -7,6 +7,8 @@ This library provides the boilerplate needed to validate a React component.
 
 Simply define the validation schema using Joi validators, and the mixin will give you access to each fields validity and error messages.
 
+[View DEMO](http://jurassix.github.io/react-validation-mixin/)
+
 ## Install
 
 Install mixin via npm:

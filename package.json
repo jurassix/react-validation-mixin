@@ -33,6 +33,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "husky": "^0.6.2",
+    "joi": "^5.1.0",
     "jsdoc": "^3.3.0-beta1",
     "mocha": "^2.1.0"
   },
