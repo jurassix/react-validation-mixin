@@ -64,7 +64,8 @@ var Signup = React.createClass({
             ), 
             React.createElement("div", {className: "text-center form-group"}, 
               React.createElement("button", {type: "submit", className: "btn btn-large btn-primary"}, "Sign up"), 
-              React.createElement("button", {onClick: this.handleReset, className: "btn btn-large btn-warning"}, "Reset")
+              ' ', 
+              React.createElement("button", {onClick: this.handleReset, className: "btn btn-large btn-info"}, "Reset")
             )
           )
         )

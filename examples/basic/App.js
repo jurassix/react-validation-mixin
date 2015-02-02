@@ -63,7 +63,8 @@ var Signup = React.createClass({
             </div>
             <div className='text-center form-group'>
               <button type='submit' className='btn btn-large btn-primary'>Sign up</button>
-              <button onClick={this.handleReset} className='btn btn-large btn-warning'>Reset</button>
+              {' '}
+              <button onClick={this.handleReset} className='btn btn-large btn-info'>Reset</button>
             </div>
           </fieldset>
         </form>
