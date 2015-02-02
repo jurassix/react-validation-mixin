@@ -27,7 +27,7 @@ var Signup = React.createClass({
   render: function() {
     return (
       React.createElement("section", {className: "row"}, 
-        React.createElement("h3", null, "React Validation Mixin Demo Signup"), 
+        React.createElement("h3", null, "Signup"), 
         React.createElement("form", {onSubmit: this.handleSubmit, className: "form-horizontal"}, 
           React.createElement("fieldset", null, 
             React.createElement("div", {className: this.getClasses('firstName')}, 
