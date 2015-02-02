@@ -1,0 +1,18 @@
+{
+  "name": "basic",
+  "version": "1.0.0",
+  "description": "simple example project to hightlight usage of this mixin",
+  "main": "App.js",
+  "scripts": {
+    "bundle": "browserify -t reactify App.js > bundle.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^8.1.1",
+    "joi": "^5.1.0",
+    "react": "^0.12.2",
+    "react-validation-mixin": "^3.1.0",
+    "reactify": "^1.0.0"
+  }
+}
