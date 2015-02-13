@@ -1,5 +1,9 @@
-/out
-/.idea
+# exact folders
+/out/
+/examples/
+
+# masks
+.idea
+node_modules
 *.log
-/node_modules
 *.sublime-project
