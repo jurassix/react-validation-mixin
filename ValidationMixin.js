@@ -93,11 +93,7 @@ var ValidationMixin = {
    * @return {Boolean}.
    */
   isValid: function(key) {
-    var errors = this.state.errors;
-    if (key === undefined) {
-      errors = this.validate();
-    }
-    return ValidationFactory.isValid(errors, key);
+    return ValidationFactory.isValid(this.state.errors, key);
   }
 };
 
