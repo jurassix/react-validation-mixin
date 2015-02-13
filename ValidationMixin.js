@@ -6,7 +6,6 @@ var isObject = require('lodash.isObject');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
-
   /**
    * Check for sane configurations
    */
@@ -44,15 +43,37 @@ var ValidationMixin = {
    * Convenience method to validate a key via an event handler. Useful for
    * onBlur, onClick, onChange, etc...
    *
-   * @param {?String} State key to validate
+   * Usage: <input onBlur={this.handleUnfocusFor('password')} .../>
+   *
+   * @param {?String} key to validate
    * default is false.
    * @return {function} validation event handler
    */
-  handleValidation: function(key) {
-    return function(event) {
+  handleUnfocusFor: function(key) {
+    return function handleUnfocus(event) {
       event.preventDefault();
       this.validate(key);
     }.bind(this);
+  },
+
+  /**
+   * Convenience method to validate a whole form on submit
+   *
+   * Usage: <form onSubmit={this.handleSubmit}>...</form>
+   */
+  handleSubmit: function(event) {
+    event.preventDefault();
+    this.validate();
+  },
+
+  /**
+   * Convenience method to reset a form to initial state
+   *
+   * Usage: <button onClick={this.handleReset}>Reset</button>
+   */
+  handleReset: function(event) {
+    event.preventDefault();
+    this.setState(this.getInitialState());
   },
 
   /**
