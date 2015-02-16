@@ -2,7 +2,9 @@
 
 require('object.assign').shim();
 var result = require('lodash.result');
-var isObject = require('lodash.isObject');
+var merge = require('lodash.merge');
+var isObject = require('lodash.isobject');
+var isArray = require('lodash.isarray');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
@@ -32,7 +34,9 @@ var ValidationMixin = {
   validate: function(key) {
     var schema = result(this, 'validatorTypes') || {};
     var data = result(this, 'validatorData') || this.state;
-    var nextErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key));
+    var nextErrors = merge({}, this.state.errors, ValidationFactory.validate(schema, data, key), function(a, b) {
+      return isArray(b) ? b : undefined;
+    });
     this.setState({
       errors: nextErrors
     });
