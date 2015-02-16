@@ -279,7 +279,7 @@ Then, in render function:
 ```html
 <div className={this.getClasses("model.username")}>
   <label htmlFor="username">Username</label>
-  <input type="username" id="username" valueLink={this.linkState("model.username")} onBlur={this.handleBlurFor("model.assemblyDate")} ... />
+  <input type="username" id="username" valueLink={this.linkState("model.username")} onBlur={this.handleBlurFor("model.username")} ... />
   {this.getValidationMessages("model.username").map(this.renderHelpText)}
 </div>
 ```
