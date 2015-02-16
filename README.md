@@ -67,25 +67,28 @@ validatorTypes: function() {
 }
 ```
 
-### `validate([key])`
+### `validate([key,] callback)`
 
-validates the specified field, or entire form if no field specifed.
+Asynchronous validation of entire form or specifc key if provided. Error-first callback will return an error if form or key is invalid.
 
-returns errors messages for the field or all messages for the form, depending on the validity of the current state.
-
-This API allows developers to check for the validity of a single field and pull the results from `this.state.errors`. When no field is provided the API validates the entire form.
+This API allows developers to validate a single field or the entire form if no key is provided.
 
 ```javascript
-this.validate('username'); // returns boolean for validity of only this field
+this.validate(function(error, data) {
+  if(error) {
+    // form contains errors
+    return;
+  }
+  // form is valid, fire action
+});
 
-this.validate(); // returns boolean for validity of all fields in schema
 ```
 
 ### `isValid([key])`
 
 returns true|false depending on the validity of the current state.
 
-This API allows developers to check for the validity of a single field. When no field is provided the API validates the entire form and returns the validity.
+This API is a wrapper around `this.state.errors`, that allows developers to check for the validity of a single field or entire form.
 
 ```javascript
 this.isValid('username'); // returns boolean for validity of only this field
@@ -105,27 +108,25 @@ this.getValidationMessages('username'); // returns array of messages for this fi
 this.getValidationMessages(); // returns array of messages for all fields or empty array if valid
 ```
 
-### `handleValidation([key])`
+### `handleValidation([key, callback])`
 
-returns an event handler to validate this key or entire form.
+higher order function that returns an event handler for asynchronous validation of specifc key or entire form if no key is provided. Optional error-first callback will return an error if form or key is invalid.
 
-This is a simple wrapper around `this.validate([key])`.
+This is a simple wrapper around `this.validate(key, callback)`.
 
 Allows the developer to easily validate onBlur, onChange, etc.
-
 
 ```javascript
 onBlur={this.handleValidation('username')} // returns an event handler to validate this field
 ```
 
-### `validatorData`
+### `getValidatorData`
 
-validatorData provides a way for developers to validate props, state, or a combination of both.
+This API provides a way for developers to validate props, state, or a combination of both.
 
 **By default, *react-validation-mixin* will only validate a components *state*.**
 
 validatorData should be defined as an **object or function**, as long as a valid Object is returned.
-
 
 ```javascript
 // defined as object
@@ -145,66 +146,73 @@ Validation results are stored on the components state, allowing developers direc
 
 ```javascript
 var React = require('react/addons');
-var assign = Object.assign || require('object.assign');
 var ValidationMixin = require('react-validation-mixin');
 var Joi = require('joi');
-var UserAction = require('../actions/UserAction');
-var SessionStore = require('../stores/SessionStore');
 
 var Signup = React.createClass({
   displayName: 'Signup',
   mixins: [ValidationMixin, React.addons.LinkedStateMixin],
-  validatorTypes: {
-    firstName: Joi.string().required(),
-    lastName: Joi.string().allow(null),
-    email: Joi.string().email(),
-    username:  Joi.string().alphanum().min(3).max(30).required(),
-    password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
-    verifyPassword: Joi.ref('password')
+  validatorTypes:  {
+    firstName: Joi.string().required().label('First Name'),
+    lastName: Joi.string().allow(null).label('Last Name'),
+    email: Joi.string().email().label('Email Address'),
+    username:  Joi.string().alphanum().min(3).max(30).required().label('Username'),
+    password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).label('Password'),
+    verifyPassword: Joi.any().valid(Joi.ref('password')).required().label('Password Confirmation')
   },
   getInitialState: function() {
-    return assign({
+    return {
+      firstName: null,
+      lastName: null,
+      email: null,
+      username: null,
       password: null,
-      verifyPassword: null
-    }, SessionStore.getUser());
+      verifyPassword: null,
+      feedback: null
+    };
   },
   render: function() {
     return (
       <section className='row'>
-        <h3>Sign Up</h3>
+        <h3>Signup</h3>
         <form onSubmit={this.handleSubmit} className='form-horizontal'>
           <fieldset>
             <div className={this.getClasses('firstName')}>
               <label htmlFor='firstName'>First Name</label>
-              <input type='text' id='firstName' onBlur={this.handleValidation('firstName')} valueLink={this.linkState('firstName')} className='form-control' placeholder='First Name' />
+              <input type='text' id='firstName' ref='firstName' valueLink={this.linkState('firstName')} onBlur={this.handleValidation('firstName')} className='form-control' placeholder='First Name' />
               {this.getValidationMessages('firstName').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('lastName')}>
               <label htmlFor='lastName'>Last Name</label>
-              <input type='text' id='lastName' onBlur={this.handleValidation('lastName')} valueLink={this.linkState('lastName')} className='form-control' placeholder='Last Name' />
+              <input type='text' id='lastName' valueLink={this.linkState('lastName')} onBlur={this.handleValidation('lastName')} className='form-control' placeholder='Last Name' />
             </div>
             <div className={this.getClasses('email')}>
               <label htmlFor='email'>Email</label>
-              <input type='email' id='email' onBlur={this.handleValidation('email')} valueLink={this.linkState('email')} className='form-control' placeholder='Email' />
+              <input type='email' id='email' valueLink={this.linkState('email')} onBlur={this.handleValidation('email')}  className='form-control' placeholder='Email' />
               {this.getValidationMessages('email').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('username')}>
               <label htmlFor='username'>Username</label>
-              <input type='text' id='username' onBlur={this.handleValidation('username')} valueLink={this.linkState('username')} className='form-control' placeholder='Username' />
+              <input type='text' id='username' valueLink={this.linkState('username')} onBlur={this.handleValidation('username')} className='form-control' placeholder='Username' />
               {this.getValidationMessages('username').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('password')}>
               <label htmlFor='password'>Password</label>
-              <input type='password' id='password' onBlur={this.handleValidation('password')} valueLink={this.linkState('password')} className='form-control' placeholder='Password' />
+              <input type='password' id='password' valueLink={this.linkState('password')} onBlur={this.handleValidation('password')} className='form-control' placeholder='Password' />
               {this.getValidationMessages('password').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('verifyPassword')}>
               <label htmlFor='verifyPassword'>Verify Password</label>
-              <input type='password' id='verifyPassword' onBlur={this.handleValidation('verifyPassword')} valueLink={this.linkState('verifyPassword')} className='form-control' placeholder='Verify Password' />
+              <input type='password' id='verifyPassword' valueLink={this.linkState('verifyPassword')} onBlur={this.handleValidation('verifyPassword')}  className='form-control' placeholder='Verify Password' />
               {this.getValidationMessages('verifyPassword').map(this.renderHelpText)}
+            </div>
+            <div className='form-group'>
+              <h3>{this.state.feedback}</h3>
             </div>
             <div className='text-center form-group'>
               <button type='submit' className='btn btn-large btn-primary'>Sign up</button>
+              {' '}
+              <button onClick={this.handleReset} className='btn btn-large btn-info'>Reset</button>
             </div>
           </fieldset>
         </form>
@@ -222,11 +230,25 @@ var Signup = React.createClass({
       'has-error': !this.isValid(field)
     });
   },
+  handleReset: function(event) {
+    event.preventDefault();
+    this.clearValidations();
+    this.setState(this.getInitialState());
+  },
   handleSubmit: function(event) {
     event.preventDefault();
-    if (this.isValid()) {
-      UserAction.signup(this.state);
-    }
+    onValidate = function(error, validationErrors) {
+      if (error) {
+        this.setState({
+          feedback: 'Form is invalid do not submit'
+        });
+      } else {
+        this.setState({
+          feedback: 'Form is valid send to action creator'
+        });
+      }
+    }.bind(this);
+    this.validate(onValidate);
   }
 });
 
@@ -261,5 +283,16 @@ validatorTypes: function() {
 ```
 
 It's a bit more in-sync, but even more verbose :(
+
+## Release Notes
+
+4.0.0 (Major release with breaking API changes):
+
+  * `validatorData` is now `getValidatorData` to be more idiomatic of React
+  * `validate` now takes an error-first callback, which allows for a simpler API when validating on Submit. `validate` also takes an optional key as a first param that can be used to validate a single form field.
+  * `isValid` is now a simple wrapper around `this.state.errors` **see example for handling form submission in 4.x.x**
+  * `clearValidations` has been added to reset all current errors.
+  * `handleValidations` now takes a second parameter error-first callback that can be used for custom handling of errors.
+
 
 ### _Please contribute suggestions, features, issues, and pull requests._
