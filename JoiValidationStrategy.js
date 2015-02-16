@@ -1,5 +1,6 @@
 var Joi = require('joi');
 var union = require('lodash.union');
+var flattenAndResetTo = require('./helpers').flattenAndResetTo;
 
 var JoiValidationStrategy = {
   validate: function(joiSchema, data, key) {
@@ -9,20 +10,20 @@ var JoiValidationStrategy = {
       abortEarly: false,
       allowUnknown: true,
     };
-    var errors = this._format(Joi.validate(data, joiSchema, joiOptions));
+    var errors = this.formatErrors(Joi.validate(data, joiSchema, joiOptions));
     if (key === undefined) {
-      union(Object.keys(joiSchema), Object.keys(data)).forEach(function(error) {
-        errors[error] = errors[error] || [];
-      });
-      return errors;
+      return Object.assign(
+        flattenAndResetTo(joiSchema, []),
+        errors
+      );
     } else {
       var result = {};
-      result[key] = errors[key];
+      result[key] = errors[key] || [];
       return result;
     }
   },
 
-  _format: function(joiResult) {
+  formatErrors: function(joiResult) {
     if (joiResult.error !== null) {
       return joiResult.error.details.reduce(function(memo, detail) {
         if (!Array.isArray(memo[detail.path])) {
@@ -35,7 +36,6 @@ var JoiValidationStrategy = {
       return {};
     }
   }
-
 };
 
 module.exports = JoiValidationStrategy;

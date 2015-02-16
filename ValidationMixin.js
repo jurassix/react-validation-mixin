@@ -2,11 +2,12 @@
 
 require('object.assign').shim();
 var result = require('lodash.result');
-var isObject = require('lodash.isObject');
+var merge = require('lodash.merge');
+var isObject = require('lodash.isobject');
+var isArray = require('lodash.isarray');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
-
   /**
    * Check for sane configurations
    */
@@ -33,7 +34,9 @@ var ValidationMixin = {
   validate: function(key) {
     var schema = result(this, 'validatorTypes') || {};
     var data = result(this, 'validatorData') || this.state;
-    var nextErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key));
+    var nextErrors = merge({}, this.state.errors, ValidationFactory.validate(schema, data, key), function(a, b) {
+      return isArray(b) ? b : undefined;
+    });
     this.setState({
       errors: nextErrors
     });
@@ -44,15 +47,37 @@ var ValidationMixin = {
    * Convenience method to validate a key via an event handler. Useful for
    * onBlur, onClick, onChange, etc...
    *
-   * @param {?String} State key to validate
+   * Usage: <input onBlur={this.handleUnfocusFor('password')} .../>
+   *
+   * @param {?String} key to validate
    * default is false.
    * @return {function} validation event handler
    */
-  handleValidation: function(key) {
-    return function(event) {
+  handleUnfocusFor: function(key) {
+    return function handleUnfocus(event) {
       event.preventDefault();
       this.validate(key);
     }.bind(this);
+  },
+
+  /**
+   * Convenience method to validate a whole form on submit
+   *
+   * Usage: <form onSubmit={this.handleSubmit}>...</form>
+   */
+  handleSubmit: function(event) {
+    event.preventDefault();
+    this.validate();
+  },
+
+  /**
+   * Convenience method to reset a form to initial state
+   *
+   * Usage: <button onClick={this.handleReset}>Reset</button>
+   */
+  handleReset: function(event) {
+    event.preventDefault();
+    this.setState(this.getInitialState());
   },
 
   /**
@@ -72,11 +97,7 @@ var ValidationMixin = {
    * @return {Boolean}.
    */
   isValid: function(key) {
-    var errors = this.state.errors;
-    if (key === undefined) {
-      errors = this.validate();
-    }
-    return ValidationFactory.isValid(errors, key);
+    return ValidationFactory.isValid(this.state.errors, key);
   }
 };
 
