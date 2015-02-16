@@ -141,7 +141,7 @@ validatorData: function() {
 
 Validation results are stored on the components state, allowing developers direct access to the underlying validity of the form.
 
-# Example Component:
+## Example Component:
 
 ```javascript
 var React = require('react/addons');
@@ -261,5 +261,27 @@ validatorTypes: function() {
 ```
 
 It's a bit more in-sync, but even more verbose :(
+
+## Nested state
+
+`React.addons.LinkedStateMixin` does not support two-way binding for nested fields.
+But sometimes you need one. To solve this, you may use `react-lensed-state`.
+
+```javascript
+var Signup = React.createClass({
+  ...
+  mixins: [ValidationMixin, LensedStateMixin], // instead of `LinkedStateMixin`
+}
+```
+
+Then, in render function:
+
+```html
+<div className={this.getClasses("model.username")}>
+  <label htmlFor="username">Username</label>
+  <input type="username" id="username" valueLink={this.linkState("model.username")} onBlur={this.handleBlurFor("model.username")} ... />
+  {this.getValidationMessages("model.username").map(this.renderHelpText)}
+</div>
+```
 
 ### _Please contribute suggestions, features, issues, and pull requests._
