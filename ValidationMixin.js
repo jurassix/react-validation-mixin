@@ -2,7 +2,8 @@
 
 require('object.assign').shim();
 var result = require('lodash.result');
-var isObject = require('lodash.isObject');
+var isEmpty = require('lodash.isempty');
+var isObject = require('lodash.isobject');
 var ValidationFactory = require('./ValidationFactory');
 
 var ValidationMixin = {
@@ -10,49 +11,44 @@ var ValidationMixin = {
    * Check for sane configurations
    */
   componentDidMount: function() {
-    if (this.validatorTypes !== undefined &&
-      typeof this.validatorTypes !== 'function' &&
-      !isObject(this.validatorTypes)) {
+    if (this.validatorTypes !== undefined && !isObject(this.validatorTypes)) {
       throw Error('invalid `validatorTypes` type');
     }
-    if (this.validatorData !== undefined &&
-      typeof this.validatorData !== 'function' &&
-      !isObject(this.validatorData)) {
-      throw Error('invalid `validatorData` type');
+    if (this.getValidatorData !== undefined && !isObject(this.getValidatorData)) {
+      throw Error('invalid `getValidatorData` type');
     }
   },
 
   /**
-   * Validate single form key or entire form against the component's state.
+   * Method to validate single form key or entire form against the component data.
    *
-   * @param {?String} key to validate (entire form validation if undefined).
-   * @return {Object} newly updated errors object keyed on state field
-   * names.
+   * @param {String|Function} key to validate, or error-first containing the validation errors if any.
+   * @param {?Function} error-first callback containing the validation errors if any.
    */
-  validate: function(key) {
+  validate: function(key, callback) {
+    if (typeof key === 'function') {
+      callback = key;
+      key = undefined;
+    }
     var schema = result(this, 'validatorTypes') || {};
-    var data = result(this, 'validatorData') || this.state;
-    var nextErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key));
+    var data = result(this, 'getValidatorData') || this.state;
+    var validationErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key));
     this.setState({
-      errors: nextErrors
-    });
-    return nextErrors;
+      errors: validationErrors
+    }, this._invokeCallback.bind(this, key, callback));
   },
 
   /**
    * Convenience method to validate a key via an event handler. Useful for
    * onBlur, onClick, onChange, etc...
    *
-   * Usage: <input onBlur={this.handleUnfocusFor('password')} .../>
-   *
-   * @param {?String} key to validate
-   * default is false.
+   * @param {?String} State key to validate
    * @return {function} validation event handler
    */
-  handleUnfocusFor: function(key) {
-    return function handleUnfocus(event) {
+  handleValidation: function(key, callback) {
+    return function(event) {
       event.preventDefault();
-      this.validate(key);
+      this.validate(key, callback);
     }.bind(this);
   },
 
@@ -79,11 +75,22 @@ var ValidationMixin = {
   /**
    * Get current validation messages for a specified key or entire form.
    *
-   * @param {?String} key to get messages (entire form if undefined)
+   * @param {?String} key to get messages, or entire form if key is undefined.
    * @return {Array}
    */
   getValidationMessages: function(key) {
     return ValidationFactory.getValidationMessages(this.state.errors, key);
+  },
+
+  /**
+   * Clear all previous validations
+   *
+   * @return {void}
+   */
+  clearValidations: function() {
+    return this.setState({
+      errors: {}
+    });
   },
 
   /**
@@ -94,7 +101,25 @@ var ValidationMixin = {
    */
   isValid: function(key) {
     return ValidationFactory.isValid(this.state.errors, key);
+  },
+
+  /**
+   * Private method that handles executing users callback on validation
+   *
+   * @param {Object} errors object keyed on data field names.
+   * @param {Function} error-first callback containing the validation errors if any.
+   */
+  _invokeCallback: function(key, callback) {
+    if (typeof callback !== 'function') {
+      return;
+    }
+    if (this.isValid(key)) {
+      callback(null, this.state.errors);
+    } else {
+      callback(new Error('Validation errors exist'), this.state.errors);
+    }
   }
+
 };
 
 module.exports = ValidationMixin;
