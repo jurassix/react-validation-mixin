@@ -15,13 +15,21 @@ var JoiValidationStrategy = {
     if (key === undefined) {
       return Object.assign(
         this.resetErrors(joiSchema),
-        this.resetErrors(data),
         errors
       );
     } else {
-      var result = {};
-      result[key] = errors[key];
-      return result;
+      var lens = Lens(key);
+      var keyErrors;
+      try {
+        keyErrors = lens.get(errors);
+      } catch (err) {
+        if (err instanceof TypeError) {
+          keyErrors = [];
+        } else {
+          throw err;
+        }
+      }
+      return lens.set(keyErrors, {});
     }
   },
 

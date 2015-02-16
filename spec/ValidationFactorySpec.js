@@ -13,21 +13,16 @@ describe('Validation Factory', function() {
         expect(result2).to.eql({username: []});
       });
 
-      it('should follow `data` keys', function() {
-        var result1 = ValidationFactory.validate(undefined, {});
-        expect(result1).to.eql({});
-        var result2 = ValidationFactory.validate(undefined, {username: 'foo'});
-        expect(result2).to.eql({username: []});
-      });
-
       it('should follow `schema` compound keys', function() {
         var result = ValidationFactory.validate({model: {username: Joi.string()}}, undefined);
         expect(result).to.eql({model: {username: []}});
       });
 
-      it('should follow `data` compound keys', function() {
-        var result = ValidationFactory.validate(undefined, {model: {username: 'foo'}});
-        expect(result).to.eql({model: {username: []}});
+      it('should not follow `data` keys', function() {
+        var result1 = ValidationFactory.validate(undefined, {});
+        expect(result1).to.eql({});
+        var result2 = ValidationFactory.validate(undefined, {errors: []});
+        expect(result2).to.eql({});
       });
     });
 
@@ -47,10 +42,8 @@ describe('Validation Factory', function() {
         var result = ValidationFactory.validate(schema, data);
         expect(result).to.eql({
           username: ['username is not allowed to be empty'],
-          password: [],
           age: [],
           bonus: [],
-          something: [],
         });
       });
 
