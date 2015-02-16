@@ -41,9 +41,11 @@
     "joi": ">=5.1.0"
   },
   "dependencies": {
+    "data.lens": "0.0.3",
     "lodash.flatten": "^2.4.1",
     "lodash.isempty": "^2.4.1",
     "lodash.isobject": "^2.4.1",
+    "lodash.isplainobject": "^3.0.0",
     "lodash.result": "^3.0.0",
     "lodash.union": "^3.0.0",
     "object.assign": "^1.1.1"

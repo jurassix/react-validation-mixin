@@ -19,6 +19,16 @@ describe('Validation Factory', function() {
         var result2 = ValidationFactory.validate(undefined, {username: 'foo'});
         expect(result2).to.eql({username: []});
       });
+
+      it('should follow `schema` compound keys', function() {
+        var result = ValidationFactory.validate({model: {username: Joi.string()}}, undefined);
+        expect(result).to.eql({model: {username: []}});
+      });
+
+      it('should follow `data` compound keys', function() {
+        var result = ValidationFactory.validate(undefined, {model: {username: 'foo'}});
+        expect(result).to.eql({model: {username: []}});
+      });
     });
 
     describe('of entire form', function() {
@@ -127,6 +137,24 @@ describe('Validation Factory', function() {
         var result = ValidationFactory.getValidationMessages(errors, 'username');
         expect(result.length).to.equal(1);
       });
+
+      it('should support compound keys for valid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {username: 'bar'}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.getValidationMessages(errors, 'model.username');
+        expect(result).to.be.instanceOf(Array);
+        expect(result.length).to.equal(0);
+      });
+
+      it('should support compound keys for invalid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.getValidationMessages(errors, 'model.username');
+        expect(result).to.be.instanceOf(Array);
+        expect(result.length).to.equal(1);
+      });
     });
 
     describe('key is undefined', function() {
@@ -143,6 +171,24 @@ describe('Validation Factory', function() {
         var data = {};
         var errors = ValidationFactory.validate(schema, data);
         var result = ValidationFactory.getValidationMessages(errors);
+        expect(result.length).to.equal(1);
+      });
+
+      it('should support compound keys for valid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {username: 'bar'}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.getValidationMessages(errors);
+        expect(result).to.be.instanceOf(Array);
+        expect(result.length).to.equal(0);
+      });
+
+      it('should support compound keys for invalid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.getValidationMessages(errors);
+        expect(result).to.be.instanceOf(Array);
         expect(result.length).to.equal(1);
       });
     });
@@ -165,6 +211,22 @@ describe('Validation Factory', function() {
         var result = ValidationFactory.isValid(errors, 'username');
         expect(result).to.be.false;
       });
+
+      it('should support compound keys for valid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {username: 'bar'}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.isValid(errors, 'model.username');
+        expect(result).to.be.true;
+      });
+
+      it('should support compound keys for invalid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.isValid(errors, 'model.username');
+        expect(result).to.be.false;
+      });
     });
 
     describe('key is undefined', function() {
@@ -179,6 +241,22 @@ describe('Validation Factory', function() {
       it('should be false for invalid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.isValid(errors);
+        expect(result).to.be.false;
+      });
+
+      it('should support compound keys for valid input', function() {
+          var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {username: 'bar'}};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.isValid(errors);
+        expect(result).to.be.true;
+      });
+
+      it('should support compound keys for invalid input', function() {
+        var schema = {model: {username: Joi.string().required()}};
+        var data = {model: {}};
         var errors = ValidationFactory.validate(schema, data);
         var result = ValidationFactory.isValid(errors);
         expect(result).to.be.false;
