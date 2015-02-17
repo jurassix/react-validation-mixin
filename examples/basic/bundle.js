@@ -26850,26 +26850,6 @@ var ValidationMixin = {
   },
 
   /**
-   * Convenience method to validate a whole form on submit
-   *
-   * Usage: <form onSubmit={this.handleSubmit}>...</form>
-   */
-  handleSubmit: function(event) {
-    event.preventDefault();
-    this.validate();
-  },
-
-  /**
-   * Convenience method to reset a form to initial state
-   *
-   * Usage: <button onClick={this.handleReset}>Reset</button>
-   */
-  handleReset: function(event) {
-    event.preventDefault();
-    this.setState(this.getInitialState());
-  },
-
-  /**
    * Get current validation messages for a specified key or entire form.
    *
    * @param {?String} key to get messages, or entire form if key is undefined.
