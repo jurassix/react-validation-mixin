@@ -59,7 +59,7 @@ var Signup = React.createClass({
               {this.getValidationMessages('verifyPassword').map(this.renderHelpText)}
             </div>
             <div className='form-group'>
-              {this.isValid() ? '': <h3>Form is not valid</h3>}
+              <h3>{this.state.feedback}</h3>
             </div>
             <div className='text-center form-group'>
               <button type='submit' className='btn btn-large btn-primary'>Sign up</button>
@@ -102,7 +102,7 @@ var Signup = React.createClass({
           feedback: 'Form is valid send to action creator'
         });
       }
-    }
+    }.bind(this);
     this.validate(onValidate);
   }
 });

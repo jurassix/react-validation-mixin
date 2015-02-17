@@ -12,7 +12,7 @@
     "browserify": "^8.1.3",
     "joi": "^5.1.0",
     "react": "^0.12.2",
-    "react-validation-mixin": "^4.0.1",
+    "react-validation-mixin": "^4.0.2",
     "reactify": "^1.0.0"
   }
 }
