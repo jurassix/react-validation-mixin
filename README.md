@@ -84,6 +84,18 @@ this.validate(function(error, data) {
 
 ```
 
+### `handleValidation([key, callback])`
+
+higher order function that returns an event handler for asynchronous validation of specifc key or entire form if no key is provided. Optional error-first callback will return an error if form or key is invalid.
+
+This is a simple wrapper around `this.validate(key, callback)`.
+
+Allows the developer to easily validate onBlur, onChange, etc.
+
+```javascript
+onBlur={this.handleValidation('username')} // returns an event handler to validate this field
+```
+
 ### `isValid([key])`
 
 returns true|false depending on the validity of the current state.
@@ -108,32 +120,20 @@ this.getValidationMessages('username'); // returns array of messages for this fi
 this.getValidationMessages(); // returns array of messages for all fields or empty array if valid
 ```
 
-### `handleValidation([key, callback])`
-
-higher order function that returns an event handler for asynchronous validation of specifc key or entire form if no key is provided. Optional error-first callback will return an error if form or key is invalid.
-
-This is a simple wrapper around `this.validate(key, callback)`.
-
-Allows the developer to easily validate onBlur, onChange, etc.
-
-```javascript
-onBlur={this.handleValidation('username')} // returns an event handler to validate this field
-```
-
 ### `getValidatorData`
 
 This API provides a way for developers to validate props, state, or a combination of both.
 
 **By default, *react-validation-mixin* will only validate a components *state*.**
 
-validatorData should be defined as an **object or function**, as long as a valid Object is returned.
+getValidatorData should be defined as an **object or function**, as long as a valid Object is returned.
 
 ```javascript
 // defined as object
-validatorData: this.props
+getValidatorData: this.props
 
 // defined as function
-validatorData: function() {
+getValidatorData: function() {
   return Object.assign({}, this.props, this.state);
 }
 ```
