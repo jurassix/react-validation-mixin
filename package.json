@@ -1,11 +1,11 @@
 {
   "name": "react-validation-mixin",
   "version": "4.0.2",
-  "description": "Simple Validation Mixin for React based on Joi",
+  "description": "Simple Validation Mixin for React.",
   "main": "ValidationMixin.js",
   "scripts": {
-    "test": "mocha spec",
-    "test-watch": "mocha -w spec",
+    "test": "karma start karma.conf.js --single-run",
+    "test-watch": "karma start karma.conf.js",
     "doc": "jsdoc ValidationMixin.js",
     "precommit": "npm test",
     "prepush": "npm test",
@@ -35,7 +35,13 @@
     "husky": "^0.6.2",
     "joi": "^5.1.0",
     "jsdoc": "^3.3.0-beta1",
-    "mocha": "^2.1.0"
+    "karma": "^0.12.31",
+    "karma-bro": "^0.11.1",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-mocha": "^0.1.10",
+    "mocha": "^2.1.0",
+    "react": "^0.12.2",
+    "reactify": "^1.0.0"
   },
   "peerDependencies": {
     "joi": ">=5.1.0"
