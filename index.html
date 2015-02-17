@@ -1,352 +1,313 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>react-validation-mixin by jurassix</title>
-
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' />
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="wrapper">
-      <header>
-        <h1>react-validation-mixin</h1>
-        <p>Simple validation mixin for React.</p>
-
-        <p class="view"><a href="https://github.com/jurassix/react-validation-mixin">View the Project on GitHub <small>jurassix/react-validation-mixin</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/jurassix/react-validation-mixin/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/jurassix/react-validation-mixin/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/jurassix/react-validation-mixin">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a id="react-validation-mixin" class="anchor" href="#react-validation-mixin" aria-hidden="true"><span class="octicon octicon-link"></span></a>react-validation-mixin</h1>
-
-<p>Simple validation mixin for React.</p>
-
-<p>This library provides the boilerplate needed to validate a React component.</p>
-
-<p><strong>react-validation-mixin</strong> aims to provide a low-to-mid level toolkit for <em>state or props</em> validation, relying on existing validation libraries. This mixin currently supports <a href="https://github.com/hapijs/joi">Joi</a> which aligns perfectly with React.</p>
-
-<p>Simply define the validation schema using Joi validators, and the mixin will give you access to each fields validity and error messages.</p>
-
-<p><a href="http://jurassix.github.io/react-validation-mixin/">View DEMO</a></p>
-
-<h2>
-<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
-
-<p>Install mixin via npm:</p>
-
-<pre><code>&gt; npm install --save react-validation-mixin
+        <header>
+            <h1>react-validation-mixin</h1>
+            <p>Simple validation mixin for React.</p>
+            <p class="view"><a href="https://github.com/jurassix/react-validation-mixin">View the Project on GitHub <small>jurassix/react-validation-mixin</small></a>
+            </p>
+            <ul>
+                <li><a href="https://github.com/jurassix/react-validation-mixin/zipball/master">Download <strong>ZIP File</strong></a>
+                </li>
+                <li><a href="https://github.com/jurassix/react-validation-mixin/tarball/master">Download <strong>TAR Ball</strong></a>
+                </li>
+                <li><a href="https://github.com/jurassix/react-validation-mixin">View On <strong>GitHub</strong></a>
+                </li>
+            </ul>
+        </header>
+        <section>
+            <h1>
+  <a id="react-validation-mixin" class="anchor" href="#react-validation-mixin" aria-hidden="true"><span class="octicon octicon-link"></span></a>react-validation-mixin</h1>
+            <p>Simple validation mixin for React.</p>
+            <p>This library provides the boilerplate needed to validate a React component.</p>
+            <p><strong>react-validation-mixin</strong> aims to provide a low-to-mid level toolkit for <em>state or props</em> validation, relying on existing validation libraries. This mixin currently supports <a href="https://github.com/hapijs/joi">Joi</a> which aligns perfectly with React.</p>
+            <p>Simply define the validation schema using Joi validators, and the mixin will give you access to each fields validity and error messages.</p>
+            <p><a href="http://jurassix.github.io/react-validation-mixin/">View DEMO</a>
+            </p>
+            <h2>
+  <a id="demo" class="anchor" href="#demo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demo</h2>
+            <div id='app'>
+            </div>
+            <script src='./examples/basic/bundle.js'></script>
+            <h2>
+  <a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+            <p>Install mixin via npm:</p>
+            <pre><code>&gt; npm install --save react-validation-mixin
 </code></pre>
-
-<p>Make sure you install the peer dependency Joi:</p>
-
-<pre><code>&gt; npm install --save joi
+            <p>Make sure you install the peer dependency Joi:</p>
+            <pre><code>&gt; npm install --save joi
 </code></pre>
-
-<p><em>See <a href="https://github.com/hapijs/joi">Joi</a> for a full list of api validation strategies available.</em></p>
-
-<h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<h3>
-<a id="validatortypes" class="anchor" href="#validatortypes" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>validatorTypes</code>
-</h3>
-
-<p>validatorTypes is the Joi object schema defining the validity of a component.</p>
-
-<p>validatorTypes can be defined as an <strong>object or function</strong>, as long as a valid Joi schema is returned.</p>
-
-<p>You do not have to provide validation for all state fields.</p>
-
-<p><em>See <a href="https://github.com/hapijs/joi">Joi</a> for a full list of api validation strategies available.</em></p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-c">// defined as object</span>
-validatorTypes<span class="pl-k">:</span> {
-  username<span class="pl-k">:</span> Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required(),
-  password<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>)
-}
-
-<span class="pl-c">// defined as function</span>
-<span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
-  <span class="pl-k">return</span> Joi.<span class="pl-sc">object</span>().keys({
-    username<span class="pl-k">:</span> Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required(),
-    password<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>)
-  });
-}
-
-<span class="pl-c">// defined as a function with conditional component state</span>
-<span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
-  <span class="pl-s">var</span> base <span class="pl-k">=</span> Joi.<span class="pl-sc">object</span>().keys({
-    firstName<span class="pl-k">:</span> Joi.string().required(),
-    lastName<span class="pl-k">:</span> Joi.string().allow(<span class="pl-c1">null</span>),
-    email<span class="pl-k">:</span> Joi.string().email(),
-    username<span class="pl-k">:</span>  Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required()
-  });
-  <span class="pl-k">if</span> (<span class="pl-v">this</span>.props.user.anonymous) {
-    <span class="pl-k">return</span> base.keys({
-      newPassword<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>),
-      verifyPassword<span class="pl-k">:</span> Joi.ref(<span class="pl-s1"><span class="pl-pds">'</span>newPassword<span class="pl-pds">'</span></span>)
-    });
-  } <span class="pl-k">else</span> {
-    <span class="pl-k">return</span> base;
-  }
-}</pre></div>
-
-<h3>
-<a id="validatekey-callback" class="anchor" href="#validatekey-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>validate([key,] callback)</code>
-</h3>
-
-<p>Asynchronous validation of entire form or specifc key if provided. Error-first callback will return an error if form or key is invalid.</p>
-
-<p>This API allows developers to validate a single field or the entire form if no key is provided.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-v">this</span>.validate(<span class="pl-st">function</span>(<span class="pl-vpf">error</span>, <span class="pl-vpf">data</span>) {
-  <span class="pl-k">if</span>(error) {
-    <span class="pl-c">// form contains errors</span>
-    <span class="pl-k">return</span>;
-  }
-  <span class="pl-c">// form is valid, fire action</span>
-});
-</pre></div>
-
-<h3>
-<a id="isvalidkey" class="anchor" href="#isvalidkey" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>isValid([key])</code>
-</h3>
-
-<p>returns true|false depending on the validity of the current state.</p>
-
-<p>This API is a wrapper around <code>this.state.errors</code>, that allows developers to check for the validity of a single field or entire form.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-v">this</span>.isValid(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>); <span class="pl-c">// returns boolean for validity of only this field</span>
-
-<span class="pl-v">this</span>.isValid(); <span class="pl-c">// returns boolean for validity of all fields in schema</span></pre></div>
-
-<h3>
-<a id="getvalidationmessageskey" class="anchor" href="#getvalidationmessageskey" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>getValidationMessages([key])</code>
-</h3>
-
-<p>returns an array of validation messages for this field.</p>
-
-<p>This API is a wrapper around <code>this.state.errors</code>, that returns validations for a single key, or all validations.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>); <span class="pl-c">// returns array of messages for this field or empty array if valid</span>
-
-<span class="pl-v">this</span>.getValidationMessages(); <span class="pl-c">// returns array of messages for all fields or empty array if valid</span></pre></div>
-
-<h3>
-<a id="handlevalidationkey-callback" class="anchor" href="#handlevalidationkey-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>handleValidation([key, callback])</code>
-</h3>
-
-<p>higher order function that returns an event handler for asynchronous validation of specifc key or entire form if no key is provided. Optional error-first callback will return an error if form or key is invalid.</p>
-
-<p>This is a simple wrapper around <code>this.validate(key, callback)</code>.</p>
-
-<p>Allows the developer to easily validate onBlur, onChange, etc.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)} <span class="pl-c">// returns an event handler to validate this field</span></pre></div>
-
-<h3>
-<a id="getvalidatordata" class="anchor" href="#getvalidatordata" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>getValidatorData</code>
-</h3>
-
-<p>This API provides a way for developers to validate props, state, or a combination of both.</p>
-
-<p><strong>By default, <em>react-validation-mixin</em> will only validate a components <em>state</em>.</strong></p>
-
-<p>validatorData should be defined as an <strong>object or function</strong>, as long as a valid Object is returned.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-c">// defined as object</span>
-validatorData<span class="pl-k">:</span> <span class="pl-v">this</span>.props
-
-<span class="pl-c">// defined as function</span>
-<span class="pl-en">validatorData</span>: <span class="pl-st">function</span>() {
-  <span class="pl-k">return</span> <span class="pl-s3">Object</span>.assign({}, <span class="pl-v">this</span>.props, <span class="pl-v">this</span>.state);
-}</pre></div>
-
-<h3>
-<a id="thisstateerrors" class="anchor" href="#thisstateerrors" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>this.state.errors</code>
-</h3>
-
-<p>Validation results are stored on the components state, allowing developers direct access to the underlying validity of the form.</p>
-
-<h1>
-<a id="example-component" class="anchor" href="#example-component" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Component:</h1>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> React <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>react/addons<span class="pl-pds">'</span></span>);
-<span class="pl-s">var</span> ValidationMixin <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>react-validation-mixin<span class="pl-pds">'</span></span>);
-<span class="pl-s">var</span> Joi <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>joi<span class="pl-pds">'</span></span>);
-
-<span class="pl-s">var</span> Signup <span class="pl-k">=</span> React.createClass({
-  displayName<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Signup<span class="pl-pds">'</span></span>,
-  mixins<span class="pl-k">:</span> [ValidationMixin, React.addons.LinkedStateMixin],
-  validatorTypes<span class="pl-k">:</span>  {
-    firstName<span class="pl-k">:</span> Joi.string().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>First Name<span class="pl-pds">'</span></span>),
-    lastName<span class="pl-k">:</span> Joi.string().allow(<span class="pl-c1">null</span>).<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Last Name<span class="pl-pds">'</span></span>),
-    email<span class="pl-k">:</span> Joi.string().email().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Email Address<span class="pl-pds">'</span></span>),
-    username<span class="pl-k">:</span>  Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Username<span class="pl-pds">'</span></span>),
-    password<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>).<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Password<span class="pl-pds">'</span></span>),
-    verifyPassword<span class="pl-k">:</span> Joi.any().valid(Joi.ref(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)).required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Password Confirmation<span class="pl-pds">'</span></span>)
-  },
-  <span class="pl-en">getInitialState</span>: <span class="pl-st">function</span>() {
-    <span class="pl-k">return</span> {
-      firstName<span class="pl-k">:</span> <span class="pl-c1">null</span>,
-      lastName<span class="pl-k">:</span> <span class="pl-c1">null</span>,
-      email<span class="pl-k">:</span> <span class="pl-c1">null</span>,
-      username<span class="pl-k">:</span> <span class="pl-c1">null</span>,
-      password<span class="pl-k">:</span> <span class="pl-c1">null</span>,
-      verifyPassword<span class="pl-k">:</span> <span class="pl-c1">null</span>,
-      feedback<span class="pl-k">:</span> <span class="pl-c1">null</span>
-    };
-  },
-  <span class="pl-en">render</span>: <span class="pl-st">function</span>() {
-    <span class="pl-k">return</span> (
-      <span class="pl-k">&lt;</span>section className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>row<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
-        <span class="pl-k">&lt;</span>h3<span class="pl-k">&gt;</span>Signup<span class="pl-k">&lt;</span>/h3<span class="pl-k">&gt;</span>
-        <span class="pl-k">&lt;</span>form <span class="pl-s3">onSubmit</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleSubmit} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-horizontal<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
-          <span class="pl-k">&lt;</span>fieldset<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>First Name<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span> ref<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>First Name<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
-              {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Last Name<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Last Name<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Email<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)}  className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
-              {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Username<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Username<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
-              {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span><span class="pl-s3">Password</span><span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Password<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
-              {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Verify <span class="pl-s3">Password</span><span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>)}  className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Verify Password<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
-              {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-group<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>h3<span class="pl-k">&gt;</span>{<span class="pl-v">this</span>.state.feedback}<span class="pl-k">&lt;</span>/h3<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text-center form-group<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
-              <span class="pl-k">&lt;</span>button type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>submit<span class="pl-pds">'</span></span> className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>btn btn-large btn-primary<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Sign up<span class="pl-k">&lt;</span>/button<span class="pl-k">&gt;</span>
-              {<span class="pl-s1"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span>}
-              <span class="pl-k">&lt;</span>button <span class="pl-s3">onClick</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleReset} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>btn btn-large btn-info<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span><span class="pl-s3">Reset</span><span class="pl-k">&lt;</span>/button<span class="pl-k">&gt;</span>
-            <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
-          <span class="pl-k">&lt;</span>/fieldset<span class="pl-k">&gt;</span>
-        <span class="pl-k">&lt;</span>/form<span class="pl-k">&gt;</span>
-      <span class="pl-k">&lt;</span>/section<span class="pl-k">&gt;</span>
-    )
-  },
-  <span class="pl-en">renderHelpText</span>: <span class="pl-st">function</span>(<span class="pl-vpf">message</span>) {
-    <span class="pl-k">return</span> (
-      <span class="pl-k">&lt;</span>span className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">"</span>help-block<span class="pl-pds">"</span></span><span class="pl-k">&gt;</span>{message}<span class="pl-k">&lt;</span>/span<span class="pl-k">&gt;</span>
-    );
-  },
-  <span class="pl-en">getClasses</span>: <span class="pl-st">function</span>(<span class="pl-vpf">field</span>) {
-    <span class="pl-k">return</span> React.addons.classSet({
-      <span class="pl-s1"><span class="pl-pds">'</span>form-group<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
-      <span class="pl-s1"><span class="pl-pds">'</span>has-error<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">!</span><span class="pl-v">this</span>.isValid(field)
-    });
-  },
-  <span class="pl-en">handleReset</span>: <span class="pl-st">function</span>(<span class="pl-vpf">event</span>) {
-    <span class="pl-s3">event</span>.preventDefault();
-    <span class="pl-v">this</span>.clearValidations();
-    <span class="pl-v">this</span>.setState(<span class="pl-v">this</span>.getInitialState());
-  },
-  <span class="pl-en">handleSubmit</span>: <span class="pl-st">function</span>(<span class="pl-vpf">event</span>) {
-    <span class="pl-s3">event</span>.preventDefault();
-    <span class="pl-en">onValidate</span> <span class="pl-k">=</span> <span class="pl-st">function</span>(<span class="pl-vpf">error</span>, <span class="pl-vpf">validationErrors</span>) {
-      <span class="pl-k">if</span> (error) {
-        <span class="pl-v">this</span>.setState({
-          feedback<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Form is invalid do not submit<span class="pl-pds">'</span></span>
+            <p><em>See <a href="https://github.com/hapijs/joi">Joi</a> for a full list of api validation strategies available.</em>
+            </p>
+            <h2>
+  <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+            <h3>
+  <a id="validatortypes" class="anchor" href="#validatortypes" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>validatorTypes</code>
+  </h3>
+            <p>validatorTypes is the Joi object schema defining the validity of a component.</p>
+            <p>validatorTypes can be defined as an <strong>object or function</strong>, as long as a valid Joi schema is returned.</p>
+            <p>You do not have to provide validation for all state fields.</p>
+            <p><em>See <a href="https://github.com/hapijs/joi">Joi</a> for a full list of api validation strategies available.</em>
+            </p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-c">// defined as object</span>
+    validatorTypes<span class="pl-k">:</span> {
+      username<span class="pl-k">:</span> Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required(),
+      password<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>)
+    }
+    <span class="pl-c">// defined as function</span>
+    <span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
+      <span class="pl-k">return</span> Joi.<span class="pl-sc">object</span>().keys({
+        username<span class="pl-k">:</span> Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required(),
+        password<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>)
+      });
+    }
+    <span class="pl-c">// defined as a function with conditional component state</span>
+    <span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
+      <span class="pl-s">var</span> base <span class="pl-k">=</span> Joi.<span class="pl-sc">object</span>().keys({
+        firstName<span class="pl-k">:</span> Joi.string().required(),
+        lastName<span class="pl-k">:</span> Joi.string().allow(<span class="pl-c1">null</span>),
+        email<span class="pl-k">:</span> Joi.string().email(),
+        username<span class="pl-k">:</span>  Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required()
+      });
+      <span class="pl-k">if</span> (<span class="pl-v">this</span>.props.user.anonymous) {
+        <span class="pl-k">return</span> base.keys({
+          newPassword<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>),
+          verifyPassword<span class="pl-k">:</span> Joi.ref(<span class="pl-s1"><span class="pl-pds">'</span>newPassword<span class="pl-pds">'</span></span>)
         });
       } <span class="pl-k">else</span> {
-        <span class="pl-v">this</span>.setState({
-          feedback<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Form is valid send to action creator<span class="pl-pds">'</span></span>
-        });
+        <span class="pl-k">return</span> base;
       }
-    }.bind(<span class="pl-v">this</span>);
-    <span class="pl-v">this</span>.validate(onValidate);
-  }
-});
-
-<span class="pl-sv">module</span>.exports <span class="pl-k">=</span> Signup;</pre></div>
-
-<h2>
-<a id="human-readable-errors" class="anchor" href="#human-readable-errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Human readable errors</h2>
-
-<p>Messages like "serialNumber must be a number" are not very friendly.
-Joi provides an option to override key name in message with <a href="https://github.com/hapijs/joi#anylabelname">label</a> method.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
-  <span class="pl-k">return</span> {
-    serialNumber<span class="pl-k">:</span> Joi.number().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">"</span>Serial Number<span class="pl-pds">"</span></span>),
-    assemblyDate<span class="pl-k">:</span> Joi.date().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">"</span>Assembly Date<span class="pl-pds">"</span></span>),
-    manufacturer<span class="pl-k">:</span> Joi.string().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">"</span>Manufacturer),</span>
-<span class="pl-s1">  };</span>
-<span class="pl-s1">}</span></pre></div>
-
-<p>But you, probably, have already defined labels in your form declaration and don't want to repeat it again. To manually handle this it's possible to make <code>validatorTypes</code> a function and access field labels by <code>this.refs</code>.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
-  <span class="pl-k">return</span> {
-    serialNumber<span class="pl-k">:</span> Joi.number().required().<span class="pl-sc">label</span>(<span class="pl-v">this</span>.refs.serialNumber.props.<span class="pl-sc">label</span>),
-    assemblyDate<span class="pl-k">:</span> Joi.date().required().<span class="pl-sc">label</span>(<span class="pl-v">this</span>.refs.assemblyDate.props.<span class="pl-sc">label</span>),
-    manufacturer<span class="pl-k">:</span> Joi.string().required().<span class="pl-sc">label</span>(<span class="pl-v">this</span>.refs.manufacturer.props.<span class="pl-sc">label</span>),
-  };
-},</pre></div>
-
-<p>It's a bit more in-sync, but even more verbose :(</p>
-
-<h2>
-<a id="release-notes" class="anchor" href="#release-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release Notes</h2>
-
-<p>4.0.0 (Major release with breaking API changes):</p>
-
-<ul>
-<li>
-<code>validatorData</code> is now <code>getValidatorData</code> to be more idiomatic of React</li>
-<li>
-<code>validate</code> now takes an error-first callback, which allows for a simpler API when validating on Submit. <code>validate</code> also takes an optional key as a first param that can be used to validate a single form field.</li>
-<li>
-<code>isValid</code> is now a simple wrapper around <code>this.state.errors</code> <strong>see example for handling form submission in 4.x.x</strong>
-</li>
-<li>
-<code>clearValidations</code> has been added to reset all current errors.</li>
-<li>
-<code>handleValidations</code> now takes a second parameter error-first callback that can be used for custom handling of errors.</li>
-</ul>
-
-<h3>
-<a id="please-contribute-suggestions-features-issues-and-pull-requests" class="anchor" href="#please-contribute-suggestions-features-issues-and-pull-requests" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>Please contribute suggestions, features, issues, and pull requests.</em>
-</h3>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/jurassix">jurassix</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+}</pre>
+            </div>
+            <h3>
+  <a id="validatekey-callback" class="anchor" href="#validatekey-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>validate([key,] callback)</code>
+  </h3>
+            <p>Asynchronous validation of entire form or specifc key if provided. Error-first callback will return an error if form or key is invalid.</p>
+            <p>This API allows developers to validate a single field or the entire form if no key is provided.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-v">this</span>.validate(<span class="pl-st">function</span>(<span class="pl-vpf">error</span>, <span class="pl-vpf">data</span>) {
+      <span class="pl-k">if</span>(error) {
+        <span class="pl-c">// form contains errors</span>
+        <span class="pl-k">return</span>;
+      }
+      <span class="pl-c">// form is valid, fire action</span>
+    });
+</pre>
+            </div>
+            <h3>
+  <a id="isvalidkey" class="anchor" href="#isvalidkey" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>isValid([key])</code>
+  </h3>
+            <p>returns true|false depending on the validity of the current state.</p>
+            <p>This API is a wrapper around <code>this.state.errors</code>, that allows developers to check for the validity of a single field or entire form.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-v">this</span>.isValid(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>); <span class="pl-c">// returns boolean for validity of only this field</span>
+<span class="pl-v">this</span>.isValid(); <span class="pl-c">// returns boolean for validity of all fields in schema</span></pre>
+            </div>
+            <h3>
+  <a id="getvalidationmessageskey" class="anchor" href="#getvalidationmessageskey" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>getValidationMessages([key])</code>
+  </h3>
+            <p>returns an array of validation messages for this field.</p>
+            <p>This API is a wrapper around <code>this.state.errors</code>, that returns validations for a single key, or all validations.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>); <span class="pl-c">// returns array of messages for this field or empty array if valid</span>
+<span class="pl-v">this</span>.getValidationMessages(); <span class="pl-c">// returns array of messages for all fields or empty array if valid</span></pre>
+            </div>
+            <h3>
+  <a id="handlevalidationkey-callback" class="anchor" href="#handlevalidationkey-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>handleValidation([key, callback])</code>
+  </h3>
+            <p>higher order function that returns an event handler for asynchronous validation of specifc key or entire form if no key is provided. Optional error-first callback will return an error if form or key is invalid.</p>
+            <p>This is a simple wrapper around <code>this.validate(key, callback)</code>.</p>
+            <p>Allows the developer to easily validate onBlur, onChange, etc.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)} <span class="pl-c">// returns an event handler to validate this field</span></pre>
+            </div>
+            <h3>
+  <a id="getvalidatordata" class="anchor" href="#getvalidatordata" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>getValidatorData</code>
+  </h3>
+            <p>This API provides a way for developers to validate props, state, or a combination of both.</p>
+            <p><strong>By default, <em>react-validation-mixin</em> will only validate a components <em>state</em>.</strong>
+            </p>
+            <p>validatorData should be defined as an <strong>object or function</strong>, as long as a valid Object is returned.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-c">// defined as object</span>
+    validatorData<span class="pl-k">:</span> <span class="pl-v">this</span>.props
+    <span class="pl-c">// defined as function</span>
+    <span class="pl-en">validatorData</span>: <span class="pl-st">function</span>() {
+      <span class="pl-k">return</span> <span class="pl-s3">Object</span>.assign({}, <span class="pl-v">this</span>.props, <span class="pl-v">this</span>.state);
+}</pre>
+            </div>
+            <h3>
+  <a id="thisstateerrors" class="anchor" href="#thisstateerrors" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>this.state.errors</code>
+  </h3>
+            <p>Validation results are stored on the components state, allowing developers direct access to the underlying validity of the form.</p>
+            <h1>
+  <a id="example-component" class="anchor" href="#example-component" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Component:</h1>
+            <div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> React <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>react/addons<span class="pl-pds">'</span></span>);
+    <span class="pl-s">var</span> ValidationMixin <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>react-validation-mixin<span class="pl-pds">'</span></span>);
+    <span class="pl-s">var</span> Joi <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>joi<span class="pl-pds">'</span></span>);
+    <span class="pl-s">var</span> Signup <span class="pl-k">=</span> React.createClass({
+      displayName<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Signup<span class="pl-pds">'</span></span>,
+      mixins<span class="pl-k">:</span> [ValidationMixin, React.addons.LinkedStateMixin],
+      validatorTypes<span class="pl-k">:</span>  {
+        firstName<span class="pl-k">:</span> Joi.string().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>First Name<span class="pl-pds">'</span></span>),
+        lastName<span class="pl-k">:</span> Joi.string().allow(<span class="pl-c1">null</span>).<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Last Name<span class="pl-pds">'</span></span>),
+        email<span class="pl-k">:</span> Joi.string().email().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Email Address<span class="pl-pds">'</span></span>),
+        username<span class="pl-k">:</span>  Joi.string().alphanum().<span class="pl-s3">min</span>(<span class="pl-c1">3</span>).<span class="pl-s3">max</span>(<span class="pl-c1">30</span>).required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Username<span class="pl-pds">'</span></span>),
+        password<span class="pl-k">:</span> Joi.string().regex(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-c1">[<span class="pl-c1">a-zA-Z0-9</span>]</span><span class="pl-k">{3,30}</span><span class="pl-pds">/</span></span>).<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Password<span class="pl-pds">'</span></span>),
+        verifyPassword<span class="pl-k">:</span> Joi.any().valid(Joi.ref(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)).required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">'</span>Password Confirmation<span class="pl-pds">'</span></span>)
+      },
+      <span class="pl-en">getInitialState</span>: <span class="pl-st">function</span>() {
+        <span class="pl-k">return</span> {
+          firstName<span class="pl-k">:</span> <span class="pl-c1">null</span>,
+          lastName<span class="pl-k">:</span> <span class="pl-c1">null</span>,
+          email<span class="pl-k">:</span> <span class="pl-c1">null</span>,
+          username<span class="pl-k">:</span> <span class="pl-c1">null</span>,
+          password<span class="pl-k">:</span> <span class="pl-c1">null</span>,
+          verifyPassword<span class="pl-k">:</span> <span class="pl-c1">null</span>,
+          feedback<span class="pl-k">:</span> <span class="pl-c1">null</span>
+        };
+      },
+      <span class="pl-en">render</span>: <span class="pl-st">function</span>() {
+        <span class="pl-k">return</span> (
+          <span class="pl-k">&lt;</span>section className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>row<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
+            <span class="pl-k">&lt;</span>h3<span class="pl-k">&gt;</span>Signup<span class="pl-k">&lt;</span>/h3<span class="pl-k">&gt;</span>
+            <span class="pl-k">&lt;</span>form <span class="pl-s3">onSubmit</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleSubmit} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-horizontal<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
+              <span class="pl-k">&lt;</span>fieldset<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>First Name<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span> ref<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>First Name<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
+                  {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Last Name<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>lastName<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Last Name<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Email<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)}  className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
+                  {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Username<span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Username<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
+                  {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span><span class="pl-s3">Password</span><span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>)} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Password<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
+                  {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span>{<span class="pl-v">this</span>.getClasses(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>)}<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>label htmlFor<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Verify <span class="pl-s3">Password</span><span class="pl-k">&lt;</span>/label<span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>input type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> id<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span> valueLink<span class="pl-k">=</span>{<span class="pl-v">this</span>.linkState(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>)} <span class="pl-s3">onBlur</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleValidation(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>)}  className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-control<span class="pl-pds">'</span></span> placeholder<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>Verify Password<span class="pl-pds">'</span></span> /<span class="pl-k">&gt;</span>
+                  {<span class="pl-v">this</span>.getValidationMessages(<span class="pl-s1"><span class="pl-pds">'</span>verifyPassword<span class="pl-pds">'</span></span>).map(<span class="pl-v">this</span>.renderHelpText)}
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>form-group<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>h3<span class="pl-k">&gt;</span>{<span class="pl-v">this</span>.state.feedback}<span class="pl-k">&lt;</span>/h3<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>div className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>text-center form-group<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>
+                  <span class="pl-k">&lt;</span>button type<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>submit<span class="pl-pds">'</span></span> className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>btn btn-large btn-primary<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span>Sign up<span class="pl-k">&lt;</span>/button<span class="pl-k">&gt;</span>
+                  {<span class="pl-s1"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span>}
+                  <span class="pl-k">&lt;</span>button <span class="pl-s3">onClick</span><span class="pl-k">=</span>{<span class="pl-v">this</span>.handleReset} className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">'</span>btn btn-large btn-info<span class="pl-pds">'</span></span><span class="pl-k">&gt;</span><span class="pl-s3">Reset</span><span class="pl-k">&lt;</span>/button<span class="pl-k">&gt;</span>
+                <span class="pl-k">&lt;</span>/div<span class="pl-k">&gt;</span>
+              <span class="pl-k">&lt;</span>/fieldset<span class="pl-k">&gt;</span>
+            <span class="pl-k">&lt;</span>/form<span class="pl-k">&gt;</span>
+          <span class="pl-k">&lt;</span>/section<span class="pl-k">&gt;</span>
+        )
+      },
+      <span class="pl-en">renderHelpText</span>: <span class="pl-st">function</span>(<span class="pl-vpf">message</span>) {
+        <span class="pl-k">return</span> (
+          <span class="pl-k">&lt;</span>span className<span class="pl-k">=</span><span class="pl-s1"><span class="pl-pds">"</span>help-block<span class="pl-pds">"</span></span><span class="pl-k">&gt;</span>{message}<span class="pl-k">&lt;</span>/span<span class="pl-k">&gt;</span>
+        );
+      },
+      <span class="pl-en">getClasses</span>: <span class="pl-st">function</span>(<span class="pl-vpf">field</span>) {
+        <span class="pl-k">return</span> React.addons.classSet({
+          <span class="pl-s1"><span class="pl-pds">'</span>form-group<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
+          <span class="pl-s1"><span class="pl-pds">'</span>has-error<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-k">!</span><span class="pl-v">this</span>.isValid(field)
+        });
+      },
+      <span class="pl-en">handleReset</span>: <span class="pl-st">function</span>(<span class="pl-vpf">event</span>) {
+        <span class="pl-s3">event</span>.preventDefault();
+        <span class="pl-v">this</span>.clearValidations();
+        <span class="pl-v">this</span>.setState(<span class="pl-v">this</span>.getInitialState());
+      },
+      <span class="pl-en">handleSubmit</span>: <span class="pl-st">function</span>(<span class="pl-vpf">event</span>) {
+        <span class="pl-s3">event</span>.preventDefault();
+        <span class="pl-en">onValidate</span> <span class="pl-k">=</span> <span class="pl-st">function</span>(<span class="pl-vpf">error</span>, <span class="pl-vpf">validationErrors</span>) {
+          <span class="pl-k">if</span> (error) {
+            <span class="pl-v">this</span>.setState({
+              feedback<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Form is invalid do not submit<span class="pl-pds">'</span></span>
+            });
+          } <span class="pl-k">else</span> {
+            <span class="pl-v">this</span>.setState({
+              feedback<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Form is valid send to action creator<span class="pl-pds">'</span></span>
+            });
+          }
+        }.bind(<span class="pl-v">this</span>);
+        <span class="pl-v">this</span>.validate(onValidate);
+      }
+    });
+<span class="pl-sv">module</span>.exports <span class="pl-k">=</span> Signup;</pre>
+            </div>
+            <h2>
+  <a id="human-readable-errors" class="anchor" href="#human-readable-errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Human readable errors</h2>
+            <p>Messages like "serialNumber must be a number" are not very friendly. Joi provides an option to override key name in message with <a href="https://github.com/hapijs/joi#anylabelname">label</a> method.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
+      <span class="pl-k">return</span> {
+        serialNumber<span class="pl-k">:</span> Joi.number().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">"</span>Serial Number<span class="pl-pds">"</span></span>),
+        assemblyDate<span class="pl-k">:</span> Joi.date().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">"</span>Assembly Date<span class="pl-pds">"</span></span>),
+        manufacturer<span class="pl-k">:</span> Joi.string().required().<span class="pl-sc">label</span>(<span class="pl-s1"><span class="pl-pds">"</span>Manufacturer),</span>
+    <span class="pl-s1">  };</span>
+<span class="pl-s1">}</span></pre>
+            </div>
+            <p>But you, probably, have already defined labels in your form declaration and don't want to repeat it again. To manually handle this it's possible to make <code>validatorTypes</code> a function and access field labels by <code>this.refs</code>.</p>
+            <div class="highlight highlight-javascript"><pre><span class="pl-en">validatorTypes</span>: <span class="pl-st">function</span>() {
+      <span class="pl-k">return</span> {
+        serialNumber<span class="pl-k">:</span> Joi.number().required().<span class="pl-sc">label</span>(<span class="pl-v">this</span>.refs.serialNumber.props.<span class="pl-sc">label</span>),
+        assemblyDate<span class="pl-k">:</span> Joi.date().required().<span class="pl-sc">label</span>(<span class="pl-v">this</span>.refs.assemblyDate.props.<span class="pl-sc">label</span>),
+        manufacturer<span class="pl-k">:</span> Joi.string().required().<span class="pl-sc">label</span>(<span class="pl-v">this</span>.refs.manufacturer.props.<span class="pl-sc">label</span>),
+      };
+},</pre>
+            </div>
+            <p>It's a bit more in-sync, but even more verbose :(</p>
+            <h2>
+  <a id="release-notes" class="anchor" href="#release-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release Notes</h2>
+            <p>4.0.0 (Major release with breaking API changes):</p>
+            <ul>
+                <li>
+                    <code>validatorData</code> is now <code>getValidatorData</code> to be more idiomatic of React</li>
+                <li>
+                    <code>validate</code> now takes an error-first callback, which allows for a simpler API when validating on Submit. <code>validate</code> also takes an optional key as a first param that can be used to validate a single form field.</li>
+                <li>
+                    <code>isValid</code> is now a simple wrapper around <code>this.state.errors</code> <strong>see example for handling form submission in 4.x.x</strong>
+                </li>
+                <li>
+                    <code>clearValidations</code> has been added to reset all current errors.</li>
+                <li>
+                    <code>handleValidations</code> now takes a second parameter error-first callback that can be used for custom handling of errors.</li>
+            </ul>
+            <h3>
+  <a id="please-contribute-suggestions-features-issues-and-pull-requests" class="anchor" href="#please-contribute-suggestions-features-issues-and-pull-requests" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>Please contribute suggestions, features, issues, and pull requests.</em>
+  </h3>
+        </section>
+        <footer>
+            <p>This project is maintained by <a href="https://github.com/jurassix">jurassix</a>
+            </p>
+            <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small>
+            </p>
+        </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+</body>
+
 </html>
