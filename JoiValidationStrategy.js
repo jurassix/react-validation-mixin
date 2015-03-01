@@ -1,5 +1,4 @@
 var Joi = require('joi');
-var union = require('lodash.union');
 var flattenAndResetTo = require('./helpers').flattenAndResetTo;
 
 var JoiValidationStrategy = {

@@ -53,32 +53,32 @@ var ValidationMixin = {
    * default is false.
    * @return {function} validation event handler
    */
-  handleUnfocusFor: function(key) {
-    return function handleUnfocus(event) {
-      event.preventDefault();
-      this.validate(key);
-    }.bind(this);
-  },
+  //handleUnfocusFor: function(key) {
+  //  return function handleUnfocus(event) {
+  //    event.preventDefault();
+  //    this.validate(key);
+  //  }.bind(this);
+  //},
 
   /**
    * Convenience method to validate a whole form on submit
    *
    * Usage: <form onSubmit={this.handleSubmit}>...</form>
    */
-  handleSubmit: function(event) {
-    event.preventDefault();
-    this.validate();
-  },
+  //handleSubmit: function(event) {
+  //  event.preventDefault();
+  //  this.validate();
+  //},
 
   /**
    * Convenience method to reset a form to initial state
    *
    * Usage: <button onClick={this.handleReset}>Reset</button>
    */
-  handleReset: function(event) {
-    event.preventDefault();
-    this.setState(this.getInitialState());
-  },
+  //handleReset: function(event) {
+  //  event.preventDefault();
+  //  this.setState(this.getInitialState());
+  //},
 
   /**
    * Get current validation messages for a specified key or entire form.
