@@ -1,6 +1,6 @@
 {
   "name": "react-validation-mixin",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Simple Validation Mixin for React.",
   "main": "ValidationMixin.js",
   "scripts": {
