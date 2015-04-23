@@ -120,6 +120,15 @@ describe('Validation Factory', function() {
         expect(result.length).to.equal(0);
       });
 
+      it('should be decode for HTML entity encoder', function() {
+        var label = '使用者名稱';
+        var schema = {username: Joi.string().required().label(label)};
+        var data = {username: ''};
+        var errors = ValidationFactory.validate(schema, data);
+        var result = ValidationFactory.getValidationMessages(errors, 'username');
+        expect(result[0]).to.equal(label+' is not allowed to be empty');
+      });
+
       it('should be filled for invalid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {};

@@ -2,6 +2,7 @@ require('object.assign').shim();
 var isEmpty = require('lodash.isempty');
 var flatten = require('lodash.flatten');
 var ValidationStrategy = require('./JoiValidationStrategy');
+var he = require('he');
 
 var ValidationFactory = Object.assign({
   getValidationMessages: function(errors, key) {
@@ -14,7 +15,7 @@ var ValidationFactory = Object.assign({
           return errors[error] || [];
         }));
       } else {
-        return errors[key] || [];
+        return errors[key]? errors[key].map(he.decode): [];
       }
     }
   },
