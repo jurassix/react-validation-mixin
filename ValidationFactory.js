@@ -15,7 +15,7 @@ var ValidationFactory = Object.assign({
           return errors[error] || [];
         }));
       } else {
-        return errors[key]? errors[key].map(he.decode): [];
+        return errors[key] ? errors[key].map(he.decode) : [];
       }
     }
   },
