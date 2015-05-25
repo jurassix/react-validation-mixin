@@ -237,7 +237,7 @@ var Signup = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
-    onValidate = function(error, validationErrors) {
+    var onValidate = function(error, validationErrors) {
       if (error) {
         this.setState({
           feedback: 'Form is invalid do not submit'
