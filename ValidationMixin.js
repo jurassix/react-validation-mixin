@@ -32,7 +32,12 @@ var ValidationMixin = {
     }
     var schema = result(this, 'validatorTypes') || {};
     var data = result(this, 'getValidatorData') || this.state;
-    var validationErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key));
+    var joiOptions = null;
+    if (this.joiOptions !== undefined && isObject(this.joiOptions)) {
+      joiOptions = this.joiOptions;
+    }
+    console.log(this.joiOptions);
+    var validationErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key, joiOptions));
     this.setState({
       errors: validationErrors
     }, this._invokeCallback.bind(this, key, callback));
@@ -99,7 +104,6 @@ var ValidationMixin = {
       callback(new Error('Validation errors exist'), this.state.errors);
     }
   }
-
 };
 
 module.exports = ValidationMixin;
