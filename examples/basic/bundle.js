@@ -110,6 +110,8 @@ var Signup = React.createClass({
 
 React.render(React.createElement(Signup, null), document.getElementById('app'));
 
+window.React = React;
+
 
 },{"joi":165,"react-validation-mixin":191,"react/addons":219}],2:[function(require,module,exports){
 

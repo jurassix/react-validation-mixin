@@ -108,3 +108,5 @@ var Signup = React.createClass({
 });
 
 React.render(<Signup />, document.getElementById('app'));
+
+window.React = React;
