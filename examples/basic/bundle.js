@@ -32,31 +32,31 @@ var Signup = React.createClass({
           React.createElement("fieldset", null, 
             React.createElement("div", {className: this.getClasses('firstName')}, 
               React.createElement("label", {htmlFor: "firstName"}, "First Name"), 
-              React.createElement("input", {type: "text", id: "firstName", ref: "firstName", valueLink: this.linkState('firstName'), onBlur: this.handleValidation('firstName'), className: "form-control", placeholder: "First Name"}), 
+              React.createElement("input", {type: "text", refs: "firstName", id: "firstName", ref: "firstName", valueLink: this.linkState('firstName'), onBlur: this.handleValidation('firstName'), className: "form-control", placeholder: "First Name"}), 
               this.getValidationMessages('firstName').map(this.renderHelpText)
             ), 
             React.createElement("div", {className: this.getClasses('lastName')}, 
               React.createElement("label", {htmlFor: "lastName"}, "Last Name"), 
-              React.createElement("input", {type: "text", id: "lastName", valueLink: this.linkState('lastName'), onBlur: this.handleValidation('lastName'), className: "form-control", placeholder: "Last Name"})
+              React.createElement("input", {type: "text", refs: "lastName", id: "lastName", valueLink: this.linkState('lastName'), onBlur: this.handleValidation('lastName'), className: "form-control", placeholder: "Last Name"})
             ), 
             React.createElement("div", {className: this.getClasses('email')}, 
               React.createElement("label", {htmlFor: "email"}, "Email"), 
-              React.createElement("input", {type: "email", id: "email", valueLink: this.linkState('email'), onBlur: this.handleValidation('email'), className: "form-control", placeholder: "Email"}), 
+              React.createElement("input", {type: "email", refs: "email", id: "email", valueLink: this.linkState('email'), onBlur: this.handleValidation('email'), className: "form-control", placeholder: "Email"}), 
               this.getValidationMessages('email').map(this.renderHelpText)
             ), 
             React.createElement("div", {className: this.getClasses('username')}, 
               React.createElement("label", {htmlFor: "username"}, "Username"), 
-              React.createElement("input", {type: "text", id: "username", valueLink: this.linkState('username'), onBlur: this.handleValidation('username'), className: "form-control", placeholder: "Username"}), 
+              React.createElement("input", {type: "text", refs: "username", id: "username", valueLink: this.linkState('username'), onBlur: this.handleValidation('username'), className: "form-control", placeholder: "Username"}), 
               this.getValidationMessages('username').map(this.renderHelpText)
             ), 
             React.createElement("div", {className: this.getClasses('password')}, 
               React.createElement("label", {htmlFor: "password"}, "Password"), 
-              React.createElement("input", {type: "password", id: "password", valueLink: this.linkState('password'), onBlur: this.handleValidation('password'), className: "form-control", placeholder: "Password"}), 
+              React.createElement("input", {type: "password", refs: "password", id: "password", valueLink: this.linkState('password'), onBlur: this.handleValidation('password'), className: "form-control", placeholder: "Password"}), 
               this.getValidationMessages('password').map(this.renderHelpText)
             ), 
             React.createElement("div", {className: this.getClasses('verifyPassword')}, 
               React.createElement("label", {htmlFor: "verifyPassword"}, "Verify Password"), 
-              React.createElement("input", {type: "password", id: "verifyPassword", valueLink: this.linkState('verifyPassword'), onBlur: this.handleValidation('verifyPassword'), className: "form-control", placeholder: "Verify Password"}), 
+              React.createElement("input", {type: "password", refs: "verifyPassword", id: "verifyPassword", valueLink: this.linkState('verifyPassword'), onBlur: this.handleValidation('verifyPassword'), className: "form-control", placeholder: "Verify Password"}), 
               this.getValidationMessages('verifyPassword').map(this.renderHelpText)
             ), 
             React.createElement("div", {className: "form-group"}, 
