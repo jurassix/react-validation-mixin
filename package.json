@@ -31,28 +31,28 @@
   },
   "homepage": "https://github.com/jurassix/react-validation-mixin",
   "devDependencies": {
-    "chai": "^1.10.0",
-    "husky": "^0.6.2",
-    "joi": "^5.1.0",
-    "jsdoc": "^3.3.0-beta1",
-    "karma": "^0.12.31",
+    "chai": "^3.0.0",
+    "husky": "^0.8.1",
+    "joi": "^6.5.0",
+    "jsdoc": "^3.3.2",
+    "karma": "^0.12.37",
     "karma-bro": "^0.11.1",
-    "karma-chrome-launcher": "^0.1.7",
-    "karma-mocha": "^0.1.10",
-    "mocha": "^2.1.0",
-    "react": "^0.12.2",
-    "reactify": "^1.0.0"
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "mocha": "^2.2.5",
+    "react": "^0.13.3",
+    "reactify": "^1.1.1"
   },
   "peerDependencies": {
     "joi": ">=5.1.0"
   },
   "dependencies": {
-    "lodash.flatten": "^3.0.0",
-    "lodash.isempty": "^3.0.0",
-    "lodash.isobject": "^3.0.0",
-    "lodash.result": "^3.0.0",
-    "lodash.union": "^3.0.0",
-    "object.assign": "^1.1.1",
-    "he": "^0.5.0"
+    "he": "^0.5.0",
+    "lodash.flatten": "^3.0.2",
+    "lodash.isempty": "^3.0.4",
+    "lodash.isobject": "^3.0.2",
+    "lodash.result": "^3.1.2",
+    "lodash.union": "^3.1.0",
+    "object.assign": "^3.0.1"
   }
 }

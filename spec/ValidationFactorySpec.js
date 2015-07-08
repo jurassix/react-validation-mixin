@@ -36,10 +36,10 @@ describe('Validation Factory', function() {
         };
         var result = ValidationFactory.validate(schema, data);
         expect(result).to.eql({
-          username: ['username is not allowed to be empty'],
-          password: [],
+          username: ['"username" is not allowed to be empty'],
           age: [],
           bonus: [],
+          password: [],
           something: [],
         });
       });
@@ -52,10 +52,8 @@ describe('Validation Factory', function() {
           password: '???',
         };
         var result = ValidationFactory.validate(schema, data);
-        expect(result['password']).to.eql([
-          'password must only contain alpha-numeric characters',
-          'password length must be at least 6 characters long'
-        ]);
+        expect(result['password'][0]).to.eql('"password" must only contain alpha-numeric characters');
+        expect(result['password'][1]).to.eql('"password" length must be at least 6 characters long');
       });
 
       it('should use labels from Joi Schema', function() {
@@ -66,7 +64,7 @@ describe('Validation Factory', function() {
         var data = {};
         var result = ValidationFactory.validate(schema, data);
 
-        expect(result['username']).to.eql(['Username is required']);
+        expect(result['username']).to.eql(['"Username" is required']);
       });
     });
 
@@ -105,7 +103,7 @@ describe('Validation Factory', function() {
         };
 
         var result = ValidationFactory.validate(schema, data, 'verifyPassword');
-        expect(result['verifyPassword']).to.eql(['verifyPassword don\'t match password']);
+        expect(result['verifyPassword'][0]).to.eql('"verifyPassword" don\'t match password');
       });
     });
   });
@@ -120,13 +118,13 @@ describe('Validation Factory', function() {
         expect(result.length).to.equal(0);
       });
 
-      it('should be decode for HTML entity encoder', function() {
+      it('should decode for HTML entity encoder', function() {
         var label = '使用者名稱';
         var schema = {username: Joi.string().required().label(label)};
         var data = {username: ''};
         var errors = ValidationFactory.validate(schema, data);
         var result = ValidationFactory.getValidationMessages(errors, 'username');
-        expect(result[0]).to.equal(label+' is not allowed to be empty');
+        expect(result[0]).to.equal('"'+label+'" is not allowed to be empty');
       });
 
       it('should be filled for invalid input', function() {
