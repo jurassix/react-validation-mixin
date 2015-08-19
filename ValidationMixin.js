@@ -36,7 +36,6 @@ var ValidationMixin = {
     if (this.joiOptions !== undefined && isObject(this.joiOptions)) {
       joiOptions = this.joiOptions;
     }
-    console.log(this.joiOptions);
     var validationErrors = Object.assign({}, this.state.errors, ValidationFactory.validate(schema, data, key, joiOptions));
     this.setState({
       errors: validationErrors
