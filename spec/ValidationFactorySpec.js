@@ -191,5 +191,20 @@ describe('Validation Factory', function() {
         expect(result).to.be.false;
       });
     });
+    describe('setJoiOptions', function() {
+      it('should setJoiOptions', function() {
+        var schema = {username: Joi.string().required()};
+        var data = {username: ''};
+        var customRequiredString = 'is not allowed to be blank';
+        var joiOptions = {
+          language:{
+            any: {empty: customRequiredString}
+          }
+        };
+
+        var result = ValidationFactory.validate(schema, data, 'username', joiOptions);
+        expect(result).to.eql({username: ['username '+customRequiredString]});
+      });
+    });
   });
 });

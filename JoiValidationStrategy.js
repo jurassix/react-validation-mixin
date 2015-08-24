@@ -1,14 +1,15 @@
 var Joi = require('joi');
 var union = require('lodash.union');
+require('object.assign').shim();
 
 var JoiValidationStrategy = {
-  validate: function(joiSchema, data, key) {
+  validate: function(joiSchema, data, key, _joiOptions) {
     joiSchema = joiSchema || {};
     data = data || {};
-    var joiOptions = {
+    var joiOptions = Object.assign({
       abortEarly: false,
       allowUnknown: true,
-    };
+    }, _joiOptions);
     var errors = this._format(Joi.validate(data, joiSchema, joiOptions));
     if (key === undefined) {
       union(Object.keys(joiSchema), Object.keys(data)).forEach(function(error) {
