@@ -22,6 +22,27 @@ var JoiValidationStrategy = {
     }
   },
 
+  validateSingleField(joiSchema, data, key) {
+    joiSchema = joiSchema || {};
+    data = data || {};
+    var joiOptions = {abortEarly: false, allowUnknown: true},
+      newData = {},
+      newSchema = {},
+      errors;
+    newData[key] = data[key];
+    newSchema[key] = joiSchema[key];
+    if (joiSchema[key]._refs.length > 0) {
+      joiSchema[key]._refs.map(function (i) {
+        newSchema[i] = joiSchema[i];
+        newData[i] = data[i];
+      });
+    }
+    errors = this._format(Joi.validate(newData, newSchema, joiOptions));
+    var result = {};
+    result[key] = errors[key];
+    return result;
+  },
+
   _format: function(joiResult) {
     if (joiResult.error !== null) {
       return joiResult.error.details.reduce(function(memo, detail) {
