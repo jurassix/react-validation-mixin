@@ -9,7 +9,7 @@
     "build:demo": "mkdirp lib/spec && browserify ./spec/demo.js -t babelify --outfile ./lib/spec/demo.js",
     "test": "karma start karma.conf.js --single-run",
     "test-watch": "karma start karma.conf.js",
-    "clean": "rimraf lib dist coverage",
+    "clean": "rimraf lib",
     "lint": "eslint src",
     "prepublish": "npm run clean && npm run build",
     "precommit": "npm test && npm build",
@@ -49,6 +49,7 @@
     "eslint-plugin-react": "^3.3.0",
     "husky": "^0.8.1",
     "joi": "^6.5.0",
+    "joi-validation-strategy": "0.0.2",
     "karma": "^0.13.9",
     "karma-browserify": "^4.3.0",
     "karma-chrome-launcher": "^0.2.0",
@@ -56,16 +57,12 @@
     "mkdirp": "^0.5.1",
     "mocha": "^2.2.5",
     "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3",
     "react-addons-test-utils": "^0.14.0-beta3",
+    "react-dom": "^0.14.0-beta3",
     "rimraf": "^2.4.3"
-  },
-  "peerDependencies": {
-    "joi": ">=5.1.0"
   },
   "dependencies": {
     "he": "^0.5.0",
-    "invariant": "^2.1.0",
-    "lodash.union": "^3.1.0"
+    "invariant": "^2.1.0"
   }
 }

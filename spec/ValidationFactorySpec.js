@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import Joi from 'joi';
 import factory from '../src/validationFactory';
-import strategy from '../src/joiValidationStrategy';
+import strategy from 'joi-validation-strategy';
 
 const validator = factory(strategy);
 

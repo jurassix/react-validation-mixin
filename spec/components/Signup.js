@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import Joi from 'joi';
+import strategy from 'joi-validation-strategy';
 import validation from '../../src/components/validationMixin';
-import strategy from '../../src/joiValidationStrategy';
 
 var Signup = React.createClass({
   displayName: 'Signup',
@@ -68,7 +68,7 @@ var Signup = React.createClass({
               {this.props.getValidationMessages('verifyPassword').map(this.renderHelpText)}
             </div>
             <div className='form-group'>
-              <label htmlFor='verifyPassword'>How did you hear about us?</label>
+              <label htmlFor='referral'>How did you hear about us?</label>
               <label htmlFor='tv' className="radio-inline">
                 <input type='checkbox' id="tv" ref='tv' name='referral' value='tv' checked={this.state.referral === 'tv'} onChange={this.onRadioChange('referral')}/>
                 {' '}tv
