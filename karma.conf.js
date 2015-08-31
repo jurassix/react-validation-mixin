@@ -8,7 +8,7 @@ module.exports = function(config) {
       'spec/**/*.js': ['browserify']
     },
     browserify: {
-      transform: ['reactify'],
+      transform: ['babelify'],
       watch: true
     },
     reporters: ['progress'],

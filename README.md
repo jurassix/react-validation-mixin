@@ -145,7 +145,7 @@ Validation results are stored on the components state, allowing developers direc
 # Example Component:
 
 ```javascript
-var React = require('react/addons');
+var React = require('react');
 var ValidationMixin = require('react-validation-mixin');
 var Joi = require('joi');
 

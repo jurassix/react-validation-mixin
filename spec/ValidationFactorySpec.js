@@ -1,22 +1,24 @@
-var expect = require('chai').expect;
-var Joi = require('joi');
+import {expect} from 'chai';
+import Joi from 'joi';
+import factory from '../src/validationFactory';
+import strategy from '../src/joiValidationStrategy';
 
-var ValidationFactory = require('../ValidationFactory');
+const validator = factory(strategy);
 
 describe('Validation Factory', function() {
   describe('validation()', function() {
     describe('edge cases', function() {
       it('should follow `schema` keys', function() {
-        var result1 = ValidationFactory.validate({}, undefined);
+        var result1 = validator.validate({}, undefined);
         expect(result1).to.eql({});
-        var result2 = ValidationFactory.validate({username: Joi.string()}, undefined);
+        var result2 = validator.validate({username: Joi.string()}, undefined);
         expect(result2).to.eql({username: []});
       });
 
       it('should follow `data` keys', function() {
-        var result1 = ValidationFactory.validate(undefined, {});
+        var result1 = validator.validate(undefined, {});
         expect(result1).to.eql({});
-        var result2 = ValidationFactory.validate(undefined, {username: 'foo'});
+        var result2 = validator.validate(undefined, {username: 'foo'});
         expect(result2).to.eql({username: []});
       });
     });
@@ -34,7 +36,7 @@ describe('Validation Factory', function() {
           age: 10, // valid optional
           something: 'xyz' // schema is undefined
         };
-        var result = ValidationFactory.validate(schema, data);
+        var result = validator.validate(data, schema);
         expect(result).to.eql({
           username: ['"username" is not allowed to be empty'],
           age: [],
@@ -51,7 +53,7 @@ describe('Validation Factory', function() {
         var data = {
           password: '???',
         };
-        var result = ValidationFactory.validate(schema, data);
+        var result = validator.validate(data, schema);
         expect(result['password'][0]).to.eql('"password" must only contain alpha-numeric characters');
         expect(result['password'][1]).to.eql('"password" length must be at least 6 characters long');
       });
@@ -62,7 +64,7 @@ describe('Validation Factory', function() {
           password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/)
         };
         var data = {};
-        var result = ValidationFactory.validate(schema, data);
+        var result = validator.validate(data, schema);
 
         expect(result['username']).to.eql(['"Username" is required']);
       });
@@ -75,7 +77,7 @@ describe('Validation Factory', function() {
         };
         var data = {};
 
-        var result = ValidationFactory.validate(schema, data, 'username');
+        var result = validator.validate(data, schema, 'username');
         expect(result['username'].length).to.equal(1);
       });
 
@@ -87,7 +89,7 @@ describe('Validation Factory', function() {
         };
         var data = {password: 'qwerty'};
 
-        var result = ValidationFactory.validate(schema, data, 'password');
+        var result = validator.validate(data, schema, 'password');
         expect(result['password']).to.be.undefined;
       });
 
@@ -102,7 +104,7 @@ describe('Validation Factory', function() {
           verifyPassword: 'qerty',
         };
 
-        var result = ValidationFactory.validate(schema, data, 'verifyPassword');
+        var result = validator.validate(data, schema, 'verifyPassword');
         expect(result['verifyPassword'][0]).to.eql('"verifyPassword" don\'t match password');
       });
     });
@@ -113,8 +115,8 @@ describe('Validation Factory', function() {
       it('should be empty for valid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {username: 'bar'};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.getValidationMessages(errors, 'username');
+        var errors = validator.validate(data, schema);
+        var result = validator.getValidationMessages(errors, 'username');
         expect(result.length).to.equal(0);
       });
 
@@ -122,16 +124,16 @@ describe('Validation Factory', function() {
         var label = '使用者名稱';
         var schema = {username: Joi.string().required().label(label)};
         var data = {username: ''};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.getValidationMessages(errors, 'username');
+        var errors = validator.validate(data, schema);
+        var result = validator.getValidationMessages(errors, 'username');
         expect(result[0]).to.equal('"'+label+'" is not allowed to be empty');
       });
 
       it('should be filled for invalid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.getValidationMessages(errors, 'username');
+        var errors = validator.validate(data, schema);
+        var result = validator.getValidationMessages(errors, 'username');
         expect(result.length).to.equal(1);
       });
     });
@@ -140,16 +142,16 @@ describe('Validation Factory', function() {
       it('should be empty for valid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {username: 'bar'};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.getValidationMessages(errors);
+        var errors = validator.validate(data, schema);
+        var result = validator.getValidationMessages(errors);
         expect(result.length).to.equal(0);
       });
 
       it('should be filled for invalid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.getValidationMessages(errors);
+        var errors = validator.validate(data, schema);
+        var result = validator.getValidationMessages(errors);
         expect(result.length).to.equal(1);
       });
     });
@@ -160,16 +162,16 @@ describe('Validation Factory', function() {
       it('should be true for valid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {username: 'bar'};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.isValid(errors, 'username');
+        var errors = validator.validate(data, schema);
+        var result = validator.isValid(errors, 'username');
         expect(result).to.be.true;
       });
 
       it('should be false for invalid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.isValid(errors, 'username');
+        var errors = validator.validate(data, schema);
+        var result = validator.isValid(errors, 'username');
         expect(result).to.be.false;
       });
     });
@@ -178,16 +180,16 @@ describe('Validation Factory', function() {
       it('should be true for valid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {username: 'bar'};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.isValid(errors);
+        var errors = validator.validate(data, schema);
+        var result = validator.isValid(errors);
         expect(result).to.be.true;
       });
 
       it('should be false for invalid input', function() {
         var schema = {username: Joi.string().required()};
         var data = {};
-        var errors = ValidationFactory.validate(schema, data);
-        var result = ValidationFactory.isValid(errors);
+        var errors = validator.validate(data, schema);
+        var result = validator.isValid(errors);
         expect(result).to.be.false;
       });
     });

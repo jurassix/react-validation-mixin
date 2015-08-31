@@ -1,6 +1,7 @@
 # exact folders
 /out/
 /examples/
+/lib
 
 # masks
 .idea

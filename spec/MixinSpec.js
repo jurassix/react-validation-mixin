@@ -1,17 +1,16 @@
-var expect = require('chai').expect;
-var Joi = require('joi');
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
-var Signin = require('./components/Signin');
+import {expect} from 'chai';
+import React from 'react';
+import {findDOMNode} from 'react-dom';
+import Signup from './components/Signup';
+import TestUtils from 'react-addons-test-utils';
 
 describe('Validation Mixin', function() {
   it('validates field on blur', function() {
-    var signin = TestUtils.renderIntoDocument(React.createElement(Signin));
-    var email = signin.refs.email.getDOMNode();
+    const signup = TestUtils.renderIntoDocument(<Signup/>);
+    const email = findDOMNode(signup.refs.component.refs.email);
 
     TestUtils.Simulate.blur(email);
-    expect(signin.isValid('email')).to.equal(false);
-
+    expect(signup.isValid('email')).to.equal(false);
     TestUtils.Simulate.change(email, {
       target: {
         value: 'invalid.email.com'
@@ -19,7 +18,7 @@ describe('Validation Mixin', function() {
     });
 
     TestUtils.Simulate.blur(email);
-    expect(signin.isValid('email')).to.equal(false);
+    expect(signup.isValid('email')).to.equal(false);
 
     TestUtils.Simulate.change(email, {
       target: {
@@ -28,23 +27,22 @@ describe('Validation Mixin', function() {
     });
 
     TestUtils.Simulate.blur(email);
-    expect(signin.isValid('email')).to.equal(true);
-
+    expect(signup.isValid('email')).to.equal(true);
   });
   it('validates form on submit', function() {
-    var signin = TestUtils.renderIntoDocument(React.createElement(Signin));
-    var form = TestUtils.findRenderedDOMComponentWithTag(
-      signin, 'form');
+    const signup = TestUtils.renderIntoDocument(<Signup/>);
+    const form = TestUtils.findRenderedDOMComponentWithTag(signup, 'form');
 
     TestUtils.Simulate.submit(form);
-    expect(signin.isValid()).to.equal(false);
+    expect(signup.isValid()).to.equal(false);
 
-    var firstName = signin.refs.firstName.getDOMNode();
-    var lastName = signin.refs.lastName.getDOMNode();
-    var email = signin.refs.email.getDOMNode();
-    var username = signin.refs.username.getDOMNode();
-    var password = signin.refs.password.getDOMNode();
-    var verifyPassword = signin.refs.verifyPassword.getDOMNode();
+    const firstName = findDOMNode(signup.refs.component.refs.firstName);
+    const lastName = findDOMNode(signup.refs.component.refs.lastName);
+    const email = findDOMNode(signup.refs.component.refs.email);
+    const username = findDOMNode(signup.refs.component.refs.username);
+    const password = findDOMNode(signup.refs.component.refs.password);
+    const verifyPassword = findDOMNode(signup.refs.component.refs.verifyPassword);
+    const tv = findDOMNode(signup.refs.component.refs.tv);
 
     TestUtils.Simulate.change(firstName, {
       target: {
@@ -82,7 +80,13 @@ describe('Validation Mixin', function() {
       }
     });
 
+    TestUtils.Simulate.change(tv, {
+      target: {
+        value: 'tv'
+      }
+    });
+
     TestUtils.Simulate.submit(form);
-    expect(signin.isValid()).to.equal(true);
+    expect(signup.isValid()).to.equal(true);
   });
 });
