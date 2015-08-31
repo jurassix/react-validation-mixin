@@ -13,12 +13,16 @@ Users of the library are required to install and include the mixin and a chosen 
 
 Simply define the validation schema using Joi validators, and the mixin will give you access to each fields validity and error messages.
 
-## [Read the Documentation](http://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/index.html)
-
 ## Install
 
 Install mixin via npm:
 
     > npm install --save react-validation-mixin
+
+---
+
+## [Read the Documentation](http://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/index.html)
+
+## [Steps for migrating from 4.x](http://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/migration-to-5.html)
 
 ### _Please contribute suggestions, features, issues, and pull requests._
