@@ -2,7 +2,7 @@
   "name": "react-validation-mixin",
   "version": "5.0.0",
   "description": "Simple Validation Mixin for React.",
-  "main": "ValidationMixin.js",
+  "main": "./lib/index.js",
   "scripts": {
     "build": "npm run build:lib && npm run build:demo",
     "build:lib": "babel src --out-dir lib",
