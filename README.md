@@ -11,6 +11,8 @@ Users of the library are required to install and include the mixin and a chosen 
 
 ---
 
+### [View the Demo](http://jurassix.github.io/react-validation-mixin/)
+
 ### [Read the Documentation](http://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/index.html)
 
 ### [Steps for migrating from 4.x](http://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/migration-to-5.html)
