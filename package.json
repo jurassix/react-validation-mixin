@@ -1,0 +1,34 @@
+{
+  "name": "gh-pages",
+  "version": "0.0.0",
+  "description": "demo",
+  "main": "index.html",
+  "scripts": {
+    "build": "npm run build:demo",
+    "build:demo": "mkdirp lib && browserify ./node_modules/react-validation-mixin/spec/demo.js -t babelify --outfile ./lib/demo.js",
+    "clean": "rimraf lib",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jurassix/react-validation-mixin.git"
+  },
+  "author": "jurassix (clinton.ayres@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jurassix/react-validation-mixin/issues"
+  },
+  "homepage": "https://github.com/jurassix/react-validation-mixin",
+  "devDependencies": {
+    "babelify": "^6.2.0",
+    "browserify": "^11.0.1",
+    "classnames": "^2.1.3",
+    "joi": "^6.5.0",
+    "joi-validation-strategy": "0.0.2",
+    "mkdirp": "^0.5.1",
+    "react": "^0.14.0-beta3",
+    "react-dom": "^0.14.0-beta3",
+    "react-validation-mixin": "git://github.com/jurassix/react-validation-mixin.git#master",
+    "rimraf": "^2.4.3"
+  }
+}
