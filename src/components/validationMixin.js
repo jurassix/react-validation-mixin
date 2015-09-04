@@ -41,7 +41,7 @@ export default function(strategy) {
        * @return {function} validation event handler
        */
       handleValidation(key, callback) {
-        return event => {
+        return () => {
           this.validate(key, callback);
         };
       }
