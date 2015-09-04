@@ -148,11 +148,13 @@ describe('Validation Factory', function() {
       });
 
       it('should be filled for invalid input', function() {
-        var schema = {username: Joi.string().required()};
+        var label = '使用者名稱';
+        var schema = {username: Joi.string().required().label(label)};
         var data = {};
         var errors = validator.validate(data, schema);
         var result = validator.getValidationMessages(errors);
         expect(result.length).to.equal(1);
+        expect(result[0]).to.equal('"'+label+'" is required');
       });
     });
   });

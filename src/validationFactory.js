@@ -14,7 +14,7 @@ export default function(strategy) {
       }
       if (key === undefined) {
         return flatten(Object.keys(errors).map(function(error) {
-          return errors[error] || [];
+          return errors[error].map(he.decode) || [];
         }));
       }
       return errors[key] ? errors[key].map(he.decode) : [];
