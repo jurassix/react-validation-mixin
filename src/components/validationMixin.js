@@ -2,11 +2,12 @@ import React from 'react';
 import invariant from 'invariant';
 import factory from '../validationFactory';
 import result from '../utils/result';
+import defined from '../utils/defined';
 
 export default function(strategy) {
   const validator = factory(strategy);
   return function(WrappedComponent) {
-    invariant(WrappedComponent !== null && WrappedComponent !== undefined, 'Component was not provided to the Validator. Export you Component with "export default validator(strategy)(Component);"');
+    invariant(defined(WrappedComponent), 'Component was not provided to the Validator. Export you Component with "export default validator(strategy)(Component);"');
     function getDisplayName(Component) {
       return Component.displayName || Component.name || 'Component';
     }
@@ -52,16 +53,16 @@ export default function(strategy) {
        * @param {String|Function} key to validate, or error-first containing the validation errors if any.
        * @param {?Function} error-first callback containing the validation errors if any.
        */
-      validate() {
+      validate(/* [key], callback */) {
         const _fallback = arguments.length <= 1 && typeof arguments[0] === 'function' ? arguments[0] : undefined;
-        const _key = arguments.length <= 1 && typeof arguments[0] === 'function' ? undefined : arguments[0];
+        const _key = typeof _fallback === 'function' ? undefined : _fallback;
         const _callback = arguments.length <= 2 && typeof arguments[1] === 'function' ? arguments[1] : _fallback;
 
         const data = result(this.refs.component, 'getValidatorData');
         const schema = result(this.refs.component, 'validatorTypes');
 
-        invariant(data !== null && data !== undefined, 'Data was not provided to the Validator. Implement "getValidatorData" to return data.');
-        invariant(schema !== null && schema !== undefined, 'A schema was not provided to the Validator. Implement "validatorTypes" to return a validation schema.');
+        invariant(defined(data), 'Data was not provided to the Validator. Implement "getValidatorData" to return data.');
+        invariant(defined(schema), 'A schema was not provided to the Validator. Implement "validatorTypes" to return a validation schema.');
 
         const errors = {...this.state.errors, ...validator.validate(data, schema, _key)};
         this.setState({ errors }, this._invokeCallback.bind(this, _key, _callback));

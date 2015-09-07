@@ -1,5 +1,6 @@
+import defined from './defined';
 
 export default function isEmpty(obj) {
-  if (obj === null || obj === undefined) return true;
+  if (!defined(obj)) return true;
   return Object.keys(obj).length === 0;
 }

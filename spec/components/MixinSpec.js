@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
-import Signup from './components/Signup';
+import Signup from './Signup';
 import TestUtils from 'react-addons-test-utils';
 
 describe('Validation Mixin', function() {

@@ -1,10 +1,11 @@
+import defined from './defined';
 
 export default function result(object, path, defaultValue) {
-  if (object === null || object === undefined || path === null || path === undefined) {
+  if (!defined(object, path)) {
     return defaultValue;
   }
   const data = object[path];
-  if (data === null || data === undefined) {
+  if (!defined(data)) {
     return defaultValue;
   }
   if (typeof data === 'function') {
