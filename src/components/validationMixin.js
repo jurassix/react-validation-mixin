@@ -6,6 +6,7 @@ import result from '../utils/result';
 export default function(strategy) {
   const validator = factory(strategy);
   return function(WrappedComponent) {
+    invariant(WrappedComponent !== null && WrappedComponent !== undefined, 'Component was not provided to the Validator. Export you Component with "export default validator(strategy)(Component);"');
     function getDisplayName(Component) {
       return Component.displayName || Component.name || 'Component';
     }

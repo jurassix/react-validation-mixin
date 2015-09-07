@@ -1,4 +1,5 @@
 import React from 'react';
+import {render} from 'react-dom';
 import Signup from './components/Signup';
 
-React.render(<Signup />, document.getElementById('app'));
+render(<Signup />, document.getElementById('app'));

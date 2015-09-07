@@ -4,7 +4,7 @@
   "description": "Simple Validation Mixin for React.",
   "main": "./lib/index.js",
   "scripts": {
-    "build": "npm run build:lib && npm run build:demo",
+    "build": "npm run lint && npm run build:lib && npm run build:demo",
     "build:lib": "babel src --out-dir lib",
     "build:demo": "mkdirp lib/spec && browserify ./spec/demo.js -t babelify --outfile ./lib/spec/demo.js",
     "test": "karma start karma.conf.js --single-run",
