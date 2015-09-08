@@ -55,7 +55,7 @@ export default function(strategy) {
        */
       validate(/* [key], callback */) {
         const _fallback = arguments.length <= 1 && typeof arguments[0] === 'function' ? arguments[0] : undefined;
-        const _key = typeof _fallback === 'function' ? undefined : _fallback;
+        const _key = arguments.length <= 1 && typeof arguments[0] === 'function' ? undefined : arguments[0];
         const _callback = arguments.length <= 2 && typeof arguments[1] === 'function' ? arguments[1] : _fallback;
 
         const data = result(this.refs.component, 'getValidatorData');
