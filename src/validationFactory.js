@@ -1,8 +1,5 @@
 import invariant from 'invariant';
-import isEmpty from './utils/isEmpty';
-import flatten from './utils/flatten';
-import decode from './utils/decode';
-import defined from './utils/defined';
+import {isEmpty, flatten, decode, defined} from './utils';
 
 export default function(strategy) {
   const _strategy = typeof strategy === 'function' ? strategy() : strategy;

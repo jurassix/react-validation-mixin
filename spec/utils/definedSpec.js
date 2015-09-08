@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import defined from '../../src/utils/defined';
+import {defined} from '../../src/utils';
 
 describe('defined', function() {
   it('ensures null item is not defined', function() {

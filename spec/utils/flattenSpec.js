@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import flatten from '../../src/utils/flatten';
+import {flatten} from '../../src/utils';
 
 describe('flatten', function() {
   it('ensures list is returned if no elements are arrays', function() {

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import result from '../../src/utils/result';
+import {result} from '../../src/utils';
 
 describe('result', function() {
   it('ensures value at key is retuned from object', function() {

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import isSome from '../../src/utils/isSome';
+import {isSome} from '../../src/utils';
 
 describe('isSome', function() {
   it('ensures strictly equal to single argument', function() {

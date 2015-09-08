@@ -1,8 +1,7 @@
 import React from 'react';
 import invariant from 'invariant';
 import factory from '../validationFactory';
-import result from '../utils/result';
-import defined from '../utils/defined';
+import {result, defined} from '../utils';
 
 export default function(strategy) {
   const validator = factory(strategy);
