@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import isEmpty from '../../src/utils/isEmpty';
+import {isEmpty} from '../../src/utils';
 
 describe('isEmpty', function() {
   it('ensures object with no keys is empty', function() {
@@ -24,10 +24,10 @@ describe('isEmpty', function() {
   });
   it('ensures null is empty', function() {
     const result = isEmpty(null);
-    expect(result).to.equal(false);
+    expect(result).to.equal(true);
   });
   it('ensures undefined is empty', function() {
     const result = isEmpty();
-    expect(result).to.equal(false);
+    expect(result).to.equal(true);
   });
 });
