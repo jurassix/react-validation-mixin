@@ -63,8 +63,11 @@ export default function(strategy) {
         invariant(defined(data), 'Data was not provided to the Validator. Implement "getValidatorData" to return data.');
         invariant(defined(schema), 'A schema was not provided to the Validator. Implement "validatorTypes" to return a validation schema.');
 
-        const errors = {...this.state.errors, ...validator.validate(data, schema, _key)};
-        this.setState({ errors }, this._invokeCallback.bind(this, _key, _callback));
+        validator.validate(data, schema, _key, validateErrors => {
+          const errors = {...this.state.errors, ...validateErrors};
+          this.setState({ errors }, this._invokeCallback.bind(this, _key, _callback));
+        });
+
       }
 
       /* Clear all previous validations
