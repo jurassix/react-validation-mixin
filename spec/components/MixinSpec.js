@@ -29,12 +29,21 @@ describe('Validation Mixin', function() {
     TestUtils.Simulate.blur(email);
     expect(signup.isValid('email')).to.equal(true);
   });
-  it('validates form on submit', function() {
+
+  it('ensure submit on invalid form is invalid', function(done) {
     const signup = TestUtils.renderIntoDocument(<Signup/>);
     const form = TestUtils.findRenderedDOMComponentWithTag(signup, 'form');
 
-    TestUtils.Simulate.submit(form);
-    expect(signup.isValid()).to.equal(false);
+    //need to mock for submit
+    signup.refs.component.props.validate(function() {
+      expect(signup.isValid()).to.equal(false);
+      done();
+    });
+  });
+
+  it('ensure submit on valid form is valid', function(done) {
+    const signup = TestUtils.renderIntoDocument(<Signup/>);
+    const form = TestUtils.findRenderedDOMComponentWithTag(signup, 'form');
 
     const firstName = findDOMNode(signup.refs.component.refs.firstName);
     const lastName = findDOMNode(signup.refs.component.refs.lastName);
@@ -86,7 +95,10 @@ describe('Validation Mixin', function() {
       }
     });
 
-    TestUtils.Simulate.submit(form);
-    expect(signup.isValid()).to.equal(true);
+    //need to mock for submit
+    signup.refs.component.props.validate(function() {
+      expect(signup.isValid()).to.equal(true);
+      done();
+    });
   });
 });
