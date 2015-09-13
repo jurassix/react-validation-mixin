@@ -1,6 +1,6 @@
 {
   "name": "react-validation-mixin",
-  "version": "5.0.11",
+  "version": "5.1.0",
   "description": "Simple Validation Mixin for React.",
   "main": "./lib/index.js",
   "scripts": {
