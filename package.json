@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build:lib && npm run build:demo",
     "build:lib": "babel spec --out-dir lib/spec",
-    "build:demo": "mkdirp lib/spec && browserify spec/demo.js -t babelify --outfile ./lib/demo.js",
+    "build:demo": "mkdirp lib/spec && browserify spec/demo.js -t babelify --outfile ./lib/bundle.js",
     "clean": "rimraf lib",
     "prepublish": "npm run clean && npm run build"
   },
@@ -33,7 +33,7 @@
     "mkdirp": "^0.5.1",
     "react": "^0.14.0-beta3",
     "react-dom": "^0.14.0-beta3",
-    "react-validation-mixin": "5.1.0",
+    "react-validation-mixin": "5.1.1",
     "rimraf": "^2.4.3"
   }
 }
