@@ -1,8 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import Joi from 'joi';
-import strategy from 'joi-validation-strategy';
-import validation from '../../src/components/validationMixin';
 
 var Signup = React.createClass({
   displayName: 'Signup',
@@ -153,4 +151,4 @@ var Signup = React.createClass({
   }
 });
 
-module.exports = validation(strategy)(Signup);
+module.exports = Signup;

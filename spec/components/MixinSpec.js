@@ -1,8 +1,12 @@
 import {expect} from 'chai';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
-import Signup from './Signup';
+import SignupComponent from './Signup';
 import TestUtils from 'react-addons-test-utils';
+import strategy from 'joi-validation-strategy';
+import validation from '../../src/components/validationMixin';
+
+const Signup = validation(strategy)(SignupComponent);
 
 describe('Validation Mixin', function() {
   it('validates field on blur', function() {
