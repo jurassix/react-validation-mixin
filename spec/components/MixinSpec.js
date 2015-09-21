@@ -34,6 +34,20 @@ describe('Validation Mixin', function() {
     expect(signup.isValid('email')).to.equal(true);
   });
 
+  it('ensure previous invalid fields remain invalid', function() {
+    const signup = TestUtils.renderIntoDocument(<Signup/>);
+    const email = findDOMNode(signup.refs.component.refs.email);
+    const username = findDOMNode(signup.refs.component.refs.username);
+
+    TestUtils.Simulate.blur(email);
+    expect(signup.isValid('username')).to.equal(true);
+    expect(signup.isValid('email')).to.equal(false);
+
+    TestUtils.Simulate.blur(username);
+    expect(signup.isValid('username')).to.equal(false);
+    expect(signup.isValid('email')).to.equal(false);
+  });
+
   it('ensure submit on invalid form is invalid', function(done) {
     const signup = TestUtils.renderIntoDocument(<Signup/>);
     const form = TestUtils.findRenderedDOMComponentWithTag(signup, 'form');
