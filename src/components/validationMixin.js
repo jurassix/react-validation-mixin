@@ -64,7 +64,7 @@ export default function(strategy) {
         invariant(defined(schema), 'A schema was not provided to the Validator. Implement "validatorTypes" to return a validation schema.');
 
         validator.validate(data, schema, _key, validationErrors => {
-          const errors = {...this.state.errors, ...validationErrors};
+          const errors = {...validationErrors};
           this.setState({ errors }, this._invokeCallback.bind(this, _key, _callback));
         });
       }
