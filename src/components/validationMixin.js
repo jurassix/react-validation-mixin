@@ -1,7 +1,8 @@
 import React from 'react';
 import invariant from 'invariant';
+import result from 'lodash.result';
 import factory from '../validationFactory';
-import {result, defined} from '../utils';
+import {defined} from '../utils';
 
 export default function(strategy) {
   const validator = factory(strategy);
@@ -53,9 +54,9 @@ export default function(strategy) {
        * @param {?Function} error-first callback containing the validation errors if any.
        */
       validate(/* [key], callback */) {
-        const _fallback = arguments.length <= 1 && typeof arguments[0] === 'function' ? arguments[0] : undefined;
-        const _key = arguments.length <= 1 && typeof arguments[0] === 'function' ? undefined : arguments[0];
-        const _callback = arguments.length <= 2 && typeof arguments[1] === 'function' ? arguments[1] : _fallback;
+        const fallback = arguments.length <= 1 && typeof arguments[0] === 'function' ? arguments[0] : undefined;
+        const key = arguments.length <= 1 && typeof arguments[0] === 'function' ? undefined : arguments[0];
+        const callback = arguments.length <= 2 && typeof arguments[1] === 'function' ? arguments[1] : fallback;
 
         const data = result(this.refs.component, 'getValidatorData');
         const schema = result(this.refs.component, 'validatorTypes');
@@ -63,9 +64,12 @@ export default function(strategy) {
         invariant(defined(data), 'Data was not provided to the Validator. Implement "getValidatorData" to return data.');
         invariant(defined(schema), 'A schema was not provided to the Validator. Implement "validatorTypes" to return a validation schema.');
 
-        validator.validate(data, schema, _key, validationErrors => {
-          const errors = {...this.state.errors, ...validationErrors};
-          this.setState({ errors }, this._invokeCallback.bind(this, _key, _callback));
+        const options = {
+          key,
+          prevErrors: this.state.errors,
+        };
+        validator.validate(data, schema, options, nextErrors => {
+          this.setState({ errors: nextErrors }, this._invokeCallback.bind(this, key, callback));
         });
       }
 

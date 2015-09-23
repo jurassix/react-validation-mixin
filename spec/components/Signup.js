@@ -1,12 +1,15 @@
 import React from 'react';
 import classnames from 'classnames';
 import Joi from 'joi';
+import set from 'lodash.set';
 
 var Signup = React.createClass({
   displayName: 'Signup',
   validatorTypes:  {
-    firstName: Joi.string().required().label('First Name'),
-    lastName: Joi.string().allow(null).label('Last Name'),
+    auth: {
+      firstName: Joi.string().required().label('First Name'),
+      lastName: Joi.string().allow(null).label('Last Name'),
+    },
     email: Joi.string().email().label('Email Address'),
     username:  Joi.string().alphanum().min(3).max(30).required().label('Username'),
     password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/).label('Password'),
@@ -19,8 +22,10 @@ var Signup = React.createClass({
   },
   getInitialState: function() {
     return {
-      firstName: null,
-      lastName: null,
+      auth: {
+        firstName: null,
+        lastName: null,
+      },
       email: null,
       username: null,
       password: null,
@@ -36,14 +41,14 @@ var Signup = React.createClass({
         <h3>Signup</h3>
         <form onSubmit={this.handleSubmit} className='form-horizontal'>
           <fieldset>
-            <div className={this.getClasses('firstName')}>
+            <div className={this.getClasses('auth.firstName')}>
               <label htmlFor='firstName'>First Name</label>
-              <input type='text' id='firstName' ref='firstName' value={this.state.firstName} onChange={this.onChange('firstName')} onBlur={this.props.handleValidation('firstName')} className='form-control' placeholder='First Name' />
-              {this.props.getValidationMessages('firstName').map(this.renderHelpText)}
+              <input type='text' id='firstName' ref='firstName' value={this.state.auth.firstName} onChange={this.onChange('auth.firstName')} onBlur={this.props.handleValidation('auth.firstName')} className='form-control' placeholder='First Name' />
+              {this.props.getValidationMessages('auth.firstName').map(this.renderHelpText)}
             </div>
-            <div className={this.getClasses('lastName')}>
+            <div className={this.getClasses('auth.lastName')}>
               <label htmlFor='lastName'>Last Name</label>
-              <input type='text' id='lastName' ref='lastName' value={this.state.lastName} onChange={this.onChange('lastName')} onBlur={this.props.handleValidation('lastName')} className='form-control' placeholder='Last Name' />
+              <input type='text' id='lastName' ref='lastName' value={this.state.auth.lastName} onChange={this.onChange('auth.lastName')} onBlur={this.props.handleValidation('auth.lastName')} className='form-control' placeholder='Last Name' />
             </div>
             <div className={this.getClasses('email')}>
               <label htmlFor='email'>Email</label>
@@ -110,9 +115,7 @@ var Signup = React.createClass({
   },
   onChange: function(field) {
     return event => {
-      let state = {};
-      state[field] = event.target.value;
-      this.setState(state);
+      this.setState(set(this.state, field, event.target.value));
     };
   },
   onCheckboxChange: function(field) {
