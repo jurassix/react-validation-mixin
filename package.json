@@ -7,7 +7,6 @@
     "build": "npm run lint && npm run build:lib && npm run build:spec",
     "build:lib": "mkdirp lib && babel src --out-dir lib",
     "build:spec": "mkdirp lib/spec && babel spec --out-dir lib/spec",
-    "build:demo": "mkdirp lib/spec && browserify spec/demo.js -t babelify --outfile ./lib/bundle.js",
     "test": "karma start karma.conf.js --single-run",
     "test-watch": "karma start karma.conf.js",
     "clean": "rimraf lib",
@@ -50,7 +49,7 @@
     "eslint-plugin-react": "^3.3.0",
     "husky": "^0.8.1",
     "joi": "^6.5.0",
-    "joi-validation-strategy": "https://github.com/jurassix/joi-validation-strategy.git#master",
+    "joi-validation-strategy": "0.2.0",
     "karma": "^0.13.9",
     "karma-browserify": "^4.3.0",
     "karma-chrome-launcher": "^0.2.0",
@@ -66,7 +65,6 @@
   "dependencies": {
     "he": "^0.5.0",
     "invariant": "^2.1.0",
-    "lodash.flatten": "^3.0.2",
     "lodash.get": "^3.7.0",
     "lodash.isempty": "^3.0.4",
     "lodash.result": "^3.1.2"

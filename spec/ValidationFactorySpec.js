@@ -66,7 +66,7 @@ describe('Validation Factory', () => {
           password: '???',
         };
         validator.validate(data, schema, undefined, (result) => {
-          expect(result['password']).to.eql('"password" must only contain alpha-numeric characters\n"password" length must be at least 6 characters long');
+          expect(result['password']).to.eql('"password" length must be at least 6 characters long');
           done();
         });
       });
@@ -149,17 +149,17 @@ describe('Validation Factory', () => {
         var data = {username: ''};
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors, 'username');
-          expect(result[0]).to.equal('"'+label+'" is not allowed to be empty');
+          expect(result).to.equal('"'+label+'" is not allowed to be empty');
           done();
         });
       });
 
-      it('should be filled for invalid input', done => {
+      it('should be have message for invalid input field', done => {
         var schema = {username: Joi.string().required()};
         var data = {};
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors, 'username');
-          expect(result.length).to.equal(1);
+          expect(result).to.equal('"username" is required');
           done();
         });
       });

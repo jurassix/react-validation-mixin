@@ -1,7 +1,6 @@
 import invariant from 'invariant';
 import isEmpty from 'lodash.isempty';
 import get from 'lodash.get';
-import flatten from 'lodash.flatten';
 import {decode, defined} from './utils';
 
 export default function(strategy) {
@@ -14,9 +13,9 @@ export default function(strategy) {
         return [];
       }
       if (key === undefined) {
-        return flatten([...Object.keys(errors).map(decode.bind(this, errors))]);
+        return Object.keys(errors).map(decode.bind(this, errors));
       }
-      return flatten([...decode(errors, key)]);
+      return decode(errors, key);
     },
     isValid: function(errors, key) {
       if (!defined(key)) return isEmpty(errors);
