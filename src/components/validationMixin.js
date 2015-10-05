@@ -69,7 +69,7 @@ export default function(strategy) {
           prevErrors: this.state.errors,
         };
         validator.validate(data, schema, options, nextErrors => {
-          this.setState({ errors: nextErrors }, this._invokeCallback.bind(this, key, callback));
+          this.setState({ errors: { ...nextErrors } }, this._invokeCallback.bind(this, key, callback));
         });
       }
 
