@@ -9,6 +9,9 @@ import validation from '../../src/components/validationMixin';
 const Signup = validation(strategy)(SignupComponent);
 
 describe('Validation Mixin', function() {
+  it('wraps components displayName correctly', () => {
+    expect(Signup.displayName).to.equal('Validation(Signup)')
+  });
   it('validates field on blur', function() {
     const signup = TestUtils.renderIntoDocument(<Signup/>);
     const email = findDOMNode(signup.refs.component.refs.email);

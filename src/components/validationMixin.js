@@ -2,15 +2,13 @@ import React from 'react';
 import invariant from 'invariant';
 import result from 'lodash.result';
 import factory from '../validationFactory';
+import getDisplayName from 'react-display-name';
 import {defined} from '../utils';
 
 export default function(strategy) {
   const validator = factory(strategy);
   return function(WrappedComponent) {
     invariant(defined(WrappedComponent), 'Component was not provided to the Validator. Export you Component with "export default validator(strategy)(Component);"');
-    function getDisplayName(Component) {
-      return Component.displayName || Component.name || 'Component';
-    }
     class Validation extends React.Component {
 
       constructor(props, context) {
@@ -23,7 +21,6 @@ export default function(strategy) {
         this.handleValidation = this.handleValidation.bind(this);
         this._invokeCallback = this._invokeCallback.bind(this);
 
-        this.displayName = `Validation(${getDisplayName(WrappedComponent)})`;
         this.state = { errors: {} };
       }
 
@@ -125,6 +122,7 @@ export default function(strategy) {
         );
       }
     }
+    Validation.displayName = `Validation(${getDisplayName(WrappedComponent)})`;
     Validation.propTypes = {
       children: React.PropTypes.array,
     };
