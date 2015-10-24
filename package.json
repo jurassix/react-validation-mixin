@@ -49,7 +49,7 @@
     "eslint-plugin-react": "^3.3.0",
     "husky": "^0.8.1",
     "joi": "^6.5.0",
-    "joi-validation-strategy": "0.2.0",
+    "joi-validation-strategy": "0.3.0",
     "karma": "^0.13.9",
     "karma-browserify": "^4.3.0",
     "karma-chrome-launcher": "^0.2.0",

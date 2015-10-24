@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import Joi from 'joi';
 import factory from '../src/validationFactory';
 import strategy from 'joi-validation-strategy';
@@ -16,7 +16,9 @@ describe('Validation Factory', () => {
       });
 
       it('should use `schema` keys when schema provided', done => {
-        validator.validate({username: Joi.string()}, undefined, undefined, (result) => {
+        validator.validate({
+          username: Joi.string()
+        }, undefined, undefined, (result) => {
           expect(result).to.eql({});
           done();
         });
@@ -30,7 +32,9 @@ describe('Validation Factory', () => {
       });
 
       it('should use `data` keys when data provided', done => {
-        validator.validate(undefined, {username: 'foo'}, undefined, (result) => {
+        validator.validate(undefined, {
+          username: 'foo'
+        }, undefined, (result) => {
           expect(result).to.eql({});
           done();
         });
@@ -51,8 +55,8 @@ describe('Validation Factory', () => {
           something: 'xyz' // schema is undefined
         };
         validator.validate(data, schema, undefined, (result) => {
-          expect(result).to.eql({
-            username: '"username" is not allowed to be empty',
+          expect(result).to.deep.eql({
+            username: ['"username" is not allowed to be empty'],
           });
           done();
         });
@@ -66,7 +70,7 @@ describe('Validation Factory', () => {
           password: '???',
         };
         validator.validate(data, schema, undefined, (result) => {
-          expect(result['password']).to.eql('"password" length must be at least 6 characters long');
+          expect(result['password']).to.deep.eql(['"password" must only contain alpha-numeric characters', '"password" length must be at least 6 characters long']);
           done();
         });
       });
@@ -78,7 +82,22 @@ describe('Validation Factory', () => {
         };
         var data = {};
         validator.validate(data, schema, undefined, (result) => {
-          expect(result['username']).to.eql('"Username" is required');
+          expect(result['username']).to.deep.eql(['"Username" is required']);
+          done();
+        });
+      });
+
+      it('should return array of items when validating an arry', done => {
+        var schema = {
+          list: Joi.array().items(Joi.string().required(), Joi.string().required())
+        };
+        var data = {
+          list: [
+            'only one item'
+          ]
+        };
+        validator.validate(data, schema, undefined, (result) => {
+          expect(result['list']).to.deep.eql(['"list" does not contain 1 required value(s)']);
           done();
         });
       });
@@ -91,8 +110,10 @@ describe('Validation Factory', () => {
         };
         var data = {};
 
-        validator.validate(data, schema, {key: 'username'}, (result) => {
-          expect(result['username']).to.eql('"username" is required');
+        validator.validate(data, schema, {
+          key: 'username'
+        }, (result) => {
+          expect(result['username']).to.deep.eql(['"username" is required']);
           done();
         });
       });
@@ -103,9 +124,13 @@ describe('Validation Factory', () => {
           username: Joi.string().required(),
           password: Joi.string().required(),
         };
-        var data = {password: 'qwerty'};
+        var data = {
+          password: 'qwerty'
+        };
 
-        validator.validate(data, schema, {key: 'password'}, (result) => {
+        validator.validate(data, schema, {
+          key: 'password'
+        }, (result) => {
           expect(result).to.have.keys(['password']);
           expect(result['password']).to.be.undefind;
           done();
@@ -116,15 +141,23 @@ describe('Validation Factory', () => {
         // TODO: see https://github.com/hapijs/joi/pull/484
         var schema = {
           password: Joi.string().required(),
-          verifyPassword: Joi.any().valid(Joi.ref('password')).options({language: {any: {allowOnly: 'don\'t match password'}}}).required()
+          verifyPassword: Joi.any().valid(Joi.ref('password')).options({
+            language: {
+              any: {
+                allowOnly: 'don\'t match password'
+              }
+            }
+          }).required()
         };
         var data = {
           password: 'qwerty',
           verifyPassword: 'qerty',
         };
 
-        validator.validate(data, schema, {key: 'verifyPassword'}, (result) => {
-          expect(result['verifyPassword']).to.eql('"verifyPassword" don\'t match password');
+        validator.validate(data, schema, {
+          key: 'verifyPassword'
+        }, (result) => {
+          expect(result['verifyPassword']).to.deep.eql(['"verifyPassword" don\'t match password']);
           done();
         });
       });
@@ -134,8 +167,12 @@ describe('Validation Factory', () => {
   describe('getValidationMessages()', () => {
     describe('key is defined', () => {
       it('should be empty for valid input', done => {
-        var schema = {username: Joi.string().required()};
-        var data = {username: 'bar'};
+        var schema = {
+          username: Joi.string().required()
+        };
+        var data = {
+          username: 'bar'
+        };
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors, 'username');
           expect(result).to.be.empty;
@@ -145,21 +182,27 @@ describe('Validation Factory', () => {
 
       it('should decode for HTML entity encoder', done => {
         var label = '使用者名稱';
-        var schema = {username: Joi.string().required().label(label)};
-        var data = {username: ''};
+        var schema = {
+          username: Joi.string().required().label(label)
+        };
+        var data = {
+          username: ''
+        };
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors, 'username');
-          expect(result).to.equal('"'+label+'" is not allowed to be empty');
+          expect(result).to.deep.equal(['"' + label + '" is not allowed to be empty']);
           done();
         });
       });
 
       it('should be have message for invalid input field', done => {
-        var schema = {username: Joi.string().required()};
+        var schema = {
+          username: Joi.string().required()
+        };
         var data = {};
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors, 'username');
-          expect(result).to.equal('"username" is required');
+          expect(result).to.deep.equal(['"username" is required']);
           done();
         });
       });
@@ -167,8 +210,12 @@ describe('Validation Factory', () => {
 
     describe('key is undefined', () => {
       it('should be empty for valid input', done => {
-        var schema = {username: Joi.string().required()};
-        var data = {username: 'bar'};
+        var schema = {
+          username: Joi.string().required()
+        };
+        var data = {
+          username: 'bar'
+        };
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors);
           expect(result).to.be.empty;
@@ -178,12 +225,14 @@ describe('Validation Factory', () => {
 
       it('should be filled for invalid input', done => {
         var label = '使用者名稱';
-        var schema = {username: Joi.string().required().label(label)};
+        var schema = {
+          username: Joi.string().required().label(label)
+        };
         var data = {};
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors);
           expect(result.length).to.equal(1);
-          expect(result[0]).to.equal('"'+label+'" is required');
+          expect(result[0]).to.deep.equal(['"' + label + '" is required']);
           done();
         });
       });
@@ -193,8 +242,12 @@ describe('Validation Factory', () => {
   describe('isValid()', () => {
     describe('key is defined', () => {
       it('should be true for valid input', done => {
-        var schema = {username: Joi.string().required()};
-        var data = {username: 'bar'};
+        var schema = {
+          username: Joi.string().required()
+        };
+        var data = {
+          username: 'bar'
+        };
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.isValid(errors, 'username');
           expect(result).to.be.true;
@@ -203,7 +256,9 @@ describe('Validation Factory', () => {
       });
 
       it('should be false for invalid input', done => {
-        var schema = {username: Joi.string().required()};
+        var schema = {
+          username: Joi.string().required()
+        };
         var data = {};
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.isValid(errors, 'username');
@@ -215,8 +270,12 @@ describe('Validation Factory', () => {
 
     describe('key is undefined', () => {
       it('should be true for valid input', done => {
-        var schema = {username: Joi.string().required()};
-        var data = {username: 'bar'};
+        var schema = {
+          username: Joi.string().required()
+        };
+        var data = {
+          username: 'bar'
+        };
         validator.validate(data, schema, {}, (errors) => {
           var result = validator.isValid(errors);
           expect(result).to.be.true;
@@ -225,7 +284,9 @@ describe('Validation Factory', () => {
       });
 
       it('should be false for invalid input', done => {
-        var schema = {username: Joi.string().required()};
+        var schema = {
+          username: Joi.string().required()
+        };
         var data = {};
         validator.validate(data, schema, {}, (errors) => {
           var result = validator.isValid(errors);
