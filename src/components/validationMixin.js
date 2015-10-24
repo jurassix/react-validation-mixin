@@ -30,7 +30,7 @@ export default function(strategy) {
        * @return {Array}
        */
       getValidationMessages(key) {
-        return validator.getValidationMessages(this.state.errors, key);
+        return validator.getValidationMessages(this.state.errors, key) || [];
       }
 
       /* Convenience method to validate a key via an event handler. Useful for

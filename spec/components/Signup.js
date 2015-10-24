@@ -44,7 +44,7 @@ var Signup = React.createClass({
             <div className={this.getClasses('auth.firstName')}>
               <label htmlFor='firstName'>First Name</label>
               <input type='text' id='firstName' ref='firstName' value={this.state.auth.firstName} onChange={this.onChange('auth.firstName')} onBlur={this.props.handleValidation('auth.firstName')} className='form-control' placeholder='First Name' />
-              {this.renderHelpText(this.props.getValidationMessages('auth.firstName'))}
+              {this.props.getValidationMessages('auth.firstName').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('auth.lastName')}>
               <label htmlFor='lastName'>Last Name</label>
@@ -53,22 +53,22 @@ var Signup = React.createClass({
             <div className={this.getClasses('email')}>
               <label htmlFor='email'>Email</label>
               <input type='email' id='email' ref='email' value={this.state.email} onChange={this.onChange('email')} onBlur={this.props.handleValidation('email')}  className='form-control' placeholder='Email' />
-              {this.renderHelpText(this.props.getValidationMessages('email'))}
+              {this.props.getValidationMessages('email').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('username')}>
               <label htmlFor='username'>Username</label>
               <input type='text' id='username' ref='username' value={this.state.username} onChange={this.onChange('username')} onBlur={this.props.handleValidation('username')} className='form-control' placeholder='Username' />
-              {this.renderHelpText(this.props.getValidationMessages('username'))}
+              {this.props.getValidationMessages('username').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('password')}>
               <label htmlFor='password'>Password</label>
               <input type='password' id='password' ref='password' value={this.state.password} onChange={this.onChange('password')} onBlur={this.props.handleValidation('password')} className='form-control' placeholder='Password' />
-              {this.renderHelpText(this.props.getValidationMessages('password'))}
+              {this.props.getValidationMessages('password').map(this.renderHelpText)}
             </div>
             <div className={this.getClasses('verifyPassword')}>
               <label htmlFor='verifyPassword'>Verify Password</label>
               <input type='password' id='verifyPassword' ref='verifyPassword' value={this.state.verifyPassword} onChange={this.onChange('verifyPassword')} onBlur={this.props.handleValidation('verifyPassword')}  className='form-control' placeholder='Verify Password' />
-              {this.renderHelpText(this.props.getValidationMessages('verifyPassword'))}
+              {this.props.getValidationMessages('verifyPassword').map(this.renderHelpText)}
             </div>
             <div className='form-group'>
               <label htmlFor='referral'>How did you hear about us?</label>
@@ -80,14 +80,14 @@ var Signup = React.createClass({
                 <input type='checkbox' id="radio" ref='radio' name='referral' value='radio' checked={this.state.referral === 'radio'} onChange={this.onRadioChange('referral')}/>
                 {' '}radio
               </label>
-              {this.renderHelpText(this.props.getValidationMessages('referral'))}
+              {this.props.getValidationMessages('referral').map(this.renderHelpText)}
             </div>
             <div className='form-group'>
               <label htmlFor='rememberMe'>
                 Remember me{' '}
                 <input type='checkbox' id='rememberMe' ref='rememberMe' value='on' checked={this.state.rememberMe === 'on'} onChange={this.onCheckboxChange('rememberMe')}/>
               </label>
-              {this.renderHelpText(this.props.getValidationMessages('rememberMe'))}
+              {this.props.getValidationMessages('rememberMe').map(this.renderHelpText)}
             </div>
             <div className='form-group'>
               <h3>{this.state.feedback}</h3>
