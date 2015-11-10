@@ -3,7 +3,8 @@
   "env": {
     "browser": true,
     "mocha": true,
-    "node": true
+    "node": true,
+    "es6": true
   },
   "rules": {
     "react/jsx-uses-react": 2,
@@ -14,5 +15,8 @@
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "ecmaFeatures": {
+    "experimentalObjectRestSpread": true
+  }
 }

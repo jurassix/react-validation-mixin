@@ -37,11 +37,13 @@ export default function(strategy) {
        * onBlur, onClick, onChange, etc...
        *
        * @param {?String} State key to validate
+       * @param {?Function} callback containing validation errors.
+       * @param {?Object} component to validate.
        * @return {function} validation event handler
        */
-      handleValidation(key, callback) {
+      handleValidation(key, callback, component) {
         return () => {
-          this.validate(key, callback);
+          this.validate(key, callback, component);
         };
       }
 
@@ -49,11 +51,14 @@ export default function(strategy) {
        *
        * @param {String|Function} key to validate, or error-first containing the validation errors if any.
        * @param {?Function} error-first callback containing the validation errors if any.
+       * @param {?Object} component containing getValidatorData function.
        */
-      validate(/* [key], callback */) {
+      validate(/* [key], callback, component */) {
         const fallback = arguments.length <= 1 && typeof arguments[0] === 'function' ? arguments[0] : undefined;
         const key = arguments.length <= 1 && typeof arguments[0] === 'function' ? undefined : arguments[0];
         const callback = arguments.length <= 2 && typeof arguments[1] === 'function' ? arguments[1] : fallback;
+
+        if (arguments[2]) this.refs.component = arguments[2];
 
         const data = result(this.refs.component, 'getValidatorData');
         const schema = result(this.refs.component, 'validatorTypes');
