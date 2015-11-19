@@ -70,11 +70,23 @@ export default function(strategy) {
         });
       }
 
-      /* Clear all previous validations
+      /* Clear previous validations for a specified key or entire form
        *
        * @return {void}
        */
-      clearValidations(callback) {
+      clearValidations(/* [key], callback */) {
+        const fallback = arguments.length <= 1 && typeof arguments[0] === 'function' ? arguments[0] : undefined;
+        const key = arguments.length <= 1 && typeof arguments[0] === 'function' ? undefined : arguments[0];
+        const callback = arguments.length <= 2 && typeof arguments[1] === 'function' ? arguments[1] : fallback;          
+        
+        if (key){
+          return this.setState((prevState, currProps) => {
+            const errors = prevState.errors;
+			delete errors[key];
+            return {errors: errors};
+          }, callback);
+        }  
+          
         return this.setState({
           errors: {},
         }, callback);
