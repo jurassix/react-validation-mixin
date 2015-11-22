@@ -5,7 +5,7 @@ import factory from '../validationFactory';
 import getDisplayName from 'react-display-name';
 import {defined} from '../utils';
 
-export default function(strategy) {
+export default function validationMixin(strategy) {
   const validator = factory(strategy);
   return function(WrappedComponent) {
     invariant(defined(WrappedComponent), 'Component was not provided to the Validator. Export you Component with "export default validator(strategy)(Component);"');

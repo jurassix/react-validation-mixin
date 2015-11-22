@@ -1,7 +1,7 @@
-import decode from './decode';
 import defined from './defined';
 import isSome from './isSome';
+import flattenErrorsObject from './flattenErrorsObject';
 
 export default {
-  decode, defined, isSome,
+  defined, isSome, flattenErrorsObject,
 };

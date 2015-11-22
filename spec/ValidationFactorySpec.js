@@ -232,7 +232,7 @@ describe('Validation Factory', () => {
         validator.validate(data, schema, undefined, (errors) => {
           var result = validator.getValidationMessages(errors);
           expect(result.length).to.equal(1);
-          expect(result[0]).to.deep.equal(['"' + label + '" is required']);
+          expect(result).to.deep.equal(['"' + label + '" is required']);
           done();
         });
       });
