@@ -3,6 +3,9 @@
   "version": "5.3.2",
   "description": "Simple Validation Mixin for React.",
   "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "npm run lint && npm run build:lib && npm run build:spec",
     "build:lib": "mkdirp lib && babel src --out-dir lib",
@@ -63,7 +66,6 @@
     "rimraf": "^2.4.3"
   },
   "dependencies": {
-    "he": "^0.5.0",
     "invariant": "^2.1.0",
     "lodash.flatten": "^3.0.2",
     "lodash.get": "^3.7.0",
