@@ -123,9 +123,6 @@ export default function validationMixin(strategy) {
       }
     }
     Validation.displayName = `Validation(${getDisplayName(WrappedComponent)})`;
-    Validation.propTypes = {
-      children: React.PropTypes.array,
-    };
     return Validation;
   };
 }
