@@ -116,16 +116,11 @@ export default function validationMixin(strategy) {
             clearValidations={this.clearValidations}
             handleValidation={this.handleValidation}
             {...this.props}
-          >
-            {this.props.children}
-          </WrappedComponent>
+          />
         );
       }
     }
     Validation.displayName = `Validation(${getDisplayName(WrappedComponent)})`;
-    Validation.propTypes = {
-      children: React.PropTypes.array,
-    };
     return Validation;
   };
 }
