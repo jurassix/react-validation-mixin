@@ -9,8 +9,6 @@
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
-    /*"block-scoped-var": 0,*/
-    /*"padded-blocks": 0*/
   },
   "plugins": [
     "react"
