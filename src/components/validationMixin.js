@@ -116,9 +116,7 @@ export default function validationMixin(strategy) {
             clearValidations={this.clearValidations}
             handleValidation={this.handleValidation}
             {...this.props}
-          >
-            {this.props.children}
-          </WrappedComponent>
+          />
         );
       }
     }
