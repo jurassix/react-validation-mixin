@@ -39,7 +39,7 @@ Make sure you install the peer dependency [Joi](https://github.com/hapijs/joi) i
 > npm install --save joi
 ```
 
-*See [Joi](https://github.com/hapijs/joi) for a full list of api validation strategies available.*
+*[See documentation for a full list of api validation strategies available.](https://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/install.html)*
 
 ---
 
