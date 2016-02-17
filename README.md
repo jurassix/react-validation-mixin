@@ -5,7 +5,7 @@ This library simply wraps your React Component, transferring it props containing
 
 **react-validation-mixin** aims to provide a low-level toolkit for _React.Component_ validation, relying on existing validation libraries.
 
-This library currently supports a single strategy [joi-validation-strategy](https://github.com/jurassix/joi-validation-strategy) but the community is urged to expand the available strategies. Each strategy is responsible for the data validation and error message responses. _A complete list of strategies will be maintained here for community reference._
+This library currently supports at least two strategies and the community is urged to expand the available strategies. Each strategy is responsible for the data validation and error message responses. A complete list of strategies can be found at [the end of this page](#strategies).
 
 Users of the library are required to install and include the mixin and a chosen strategy.
 
@@ -38,6 +38,8 @@ Make sure you install the peer dependency [Joi](https://github.com/hapijs/joi) i
 ```javascript
 > npm install --save joi
 ```
+
+### Strategies
 
 Current list of validation strategy implementations to choose from:
 
