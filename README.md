@@ -42,7 +42,7 @@ Make sure you install the peer dependency [Joi](https://github.com/hapijs/joi) i
 Current list of validation strategy implementations to choose from:
 
 * [joi-validation-strategy](https://github.com/jurassix/joi-validation-strategy) - based on [Joi](https://github.com/hapijs/joi)
-* [react-validatorjs-strategy](https://github.com/skaterdav85/validatorjs) - based on [validatorjs](https://github.com/skaterdav85/validatorjs)
+* [react-validatorjs-strategy](https://github.com/TheChech/react-validatorjs-strategy) - based on [validatorjs](https://github.com/skaterdav85/validatorjs)
 
 
 ---
