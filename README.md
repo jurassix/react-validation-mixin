@@ -39,7 +39,11 @@ Make sure you install the peer dependency [Joi](https://github.com/hapijs/joi) i
 > npm install --save joi
 ```
 
-*[See documentation for a full list of api validation strategies available.](https://jurassix.gitbooks.io/docs-react-validation-mixin/content/overview/install.html)*
+Current list of validation strategy implementations to choose from:
+
+* [joi-validation-strategy](https://github.com/jurassix/joi-validation-strategy) - based on [Joi](https://github.com/hapijs/joi)
+* [react-validatorjs-strategy](https://github.com/skaterdav85/validatorjs) - based on [validatorjs](https://github.com/skaterdav85/validatorjs)
+
 
 ---
 
