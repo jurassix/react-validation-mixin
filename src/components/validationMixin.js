@@ -3,11 +3,11 @@ import invariant from 'invariant';
 import result from 'lodash.result';
 import factory from '../validationFactory';
 import getDisplayName from 'react-display-name';
-import {defined} from '../utils';
+import { defined } from '../utils';
 
 export default function validationMixin(strategy) {
   const validator = factory(strategy);
-  return function(WrappedComponent) {
+  return function wrappedComponentFn(WrappedComponent) {
     invariant(defined(WrappedComponent), 'Component was not provided to the Validator. Export you Component with "export default validator(strategy)(Component);"');
     class Validation extends React.Component {
 

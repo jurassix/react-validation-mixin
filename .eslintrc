@@ -1,14 +1,25 @@
 {
   "extends": "eslint-config-airbnb",
+  "parserOptions":{
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   "env": {
     "browser": true,
     "mocha": true,
     "node": true
   },
   "rules": {
+    "import/no-unresolved": 0,
+    "max-len": 0,
+    "no-underscore-dangle": 0,
+    "prefer-rest-params": 0,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2,
+    "react/no-multi-comp": 0,
+    "react/prefer-stateless-function": 0,
+    "react/react-in-jsx-scope": 2
   },
   "plugins": [
     "react"
