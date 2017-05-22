@@ -1,6 +1,7 @@
 import React from 'react';
 import invariant from 'invariant';
 import result from 'lodash.result';
+import values from 'lodash.values';
 import factory from '../validationFactory';
 import getDisplayName from 'react-display-name';
 import { defined } from '../utils';
@@ -65,7 +66,10 @@ export default function validationMixin(strategy) {
           key,
           prevErrors: this.state.errors,
         };
-        validator.validate(data, schema, options, nextErrors => {
+        validator.validate(data, schema, options, existentErrors => {
+          const errors = values(existentErrors).filter(error => error && error.length > 0);
+          const nextErrors = errors.length === 0 ? {} : existentErrors;
+
           this.setState({ errors: { ...nextErrors } }, this._invokeCallback.bind(this, key, callback));
         });
       }
