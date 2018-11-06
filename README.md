@@ -21,24 +21,30 @@ Users of the library are required to install and include the mixin and a chosen 
 
 ### Install
 
-Install **mixin** via npm:
+Install **mixin** via npm OR yarn:
 
 ```javascript
 > npm install --save react-validation-mixin
 ```
-
-Install **validation strategy** via npm:
+```javascript
+> yarn add react-validation-mixin
+```
+Install **validation strategy** via npm OR yarn:
 
 ```javascript
 > npm install --save joi-validation-strategy
 ```
-
+```javascript
+> yarn add joi-validation-strategy
+```
 Make sure you install the peer dependency [Joi](https://github.com/hapijs/joi) if using the _joi-validation-strategy_:
 
 ```javascript
 > npm install --save joi
 ```
-
+```javascript
+> yarn add joi
+```
 ### Strategies
 
 Current list of validation strategy implementations to choose from:
